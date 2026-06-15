@@ -889,10 +889,67 @@ h1, h2, h3, .font-serif { font-family: 'Playfair Display', Georgia, serif; }
   </div>
 </section>
 
+<!-- ROI Calculator -->
+<section id="roi" class="py-32 px-4 relative bg-gradient-to-b from-transparent via-emerald-900/5 to-transparent">
+  <div class="max-w-4xl mx-auto relative z-10">
+    <div class="text-center mb-12">
+      <div class="text-sm text-white/40 uppercase tracking-wider mb-3">৬ // ROI ক্যালকুলেটর</div>
+      <h2 class="text-4xl md:text-5xl font-bold mb-4 t-grad">আপনি কত টাকা হারাছেন?</h2>
+      <p class="text-white/60 text-lg max-w-2xl mx-auto">নিচে আপনার রেস্টুরেন্টের ডেটা দিন — সব কিছু আপনার ব্রাউজারেই থাকবে, কোথাও সংরক্ষিত হবে না।</p>
+    </div>
+    <div class="glass-s rounded-2xl p-6 md:p-8 border border-white/10">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+        <div>
+          <label class="block text-sm font-medium text-white/70 mb-2">গড় মাসিক অর্ডার (মোট অর্ডার)</label>
+          <input type="number" id="roi-orders" value="500" min="0" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-emerald-500/50 transition-colors">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-white/70 mb-2">গড় অর্ডার ভ্যালু (৳)</label>
+          <input type="number" id="roi-avg" value="350" min="0" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-emerald-500/50 transition-colors">
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 mt-5">
+        <div>
+          <label class="block text-sm font-medium text-white/70 mb-2">অ্যাগ্রিগেটরে যাওয়া অর্ডারের %</label>
+          <input type="range" id="roi-agg-pct" min="10" max="100" value="60" oninput="roiCalc()" class="w-full accent-emerald-500">
+          <div class="flex justify-between text-xs text-white/30 mt-1"><span>10%</span><span id="roi-agg-pct-val" class="text-emerald-400 font-semibold">60%</span><span>100%</span></div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-white/70 mb-2">অ্যাগ্রিগেটর কমিশন (%)</label>
+          <input type="range" id="roi-comm" min="10" max="35" value="25" oninput="roiCalc()" class="w-full accent-emerald-500">
+          <div class="flex justify-between text-xs text-white/30 mt-1"><span>10%</span><span id="roi-comm-val" class="text-emerald-400 font-semibold">25%</span><span>35%</span></div>
+        </div>
+      </div>
+      <div class="mt-6 p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10">
+        <label class="block text-sm font-medium text-white/70 mb-2">আমাদের সিস্টেমে কত % অর্ডার সরাসরি নিতে পারবেন?</label>
+        <input type="range" id="roi-shift" min="10" max="90" value="50" oninput="roiCalc()" class="w-full accent-emerald-500">
+        <div class="flex justify-between text-xs text-white/30 mt-1"><span>10%</span><span id="roi-shift-val" class="text-emerald-400 font-semibold">50%</span><span>90%</span></div>
+      </div>
+      <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="glass p-5 md:p-6 rounded-xl text-center border border-white/10">
+          <div class="text-xs text-white/40 uppercase tracking-wider mb-2">মাসিক কমিশন দেওয়া</div>
+          <div class="text-2xl md:text-3xl font-extrabold text-red-400" id="roi-monthly-comm">৳০</div>
+        </div>
+        <div class="glass p-5 md:p-6 rounded-xl text-center border border-white/10">
+          <div class="text-xs text-white/40 uppercase tracking-wider mb-2">মাসিক সাধ্যতে পারবেন</div>
+          <div class="text-2xl md:text-3xl font-extrabold text-emerald-400" id="roi-monthly-save">৳০</div>
+        </div>
+        <div class="glass p-5 md:p-6 rounded-xl text-center border border-white/10">
+          <div class="text-xs text-white/40 uppercase tracking-wider mb-2">বার্ষিক সাধ্যতে পারবেন</div>
+          <div class="text-2xl md:text-3xl font-extrabold text-amber-400" id="roi-yearly-save">৳০</div>
+        </div>
+      </div>
+      <div class="mt-6 p-4 rounded-xl bg-white/[0.02] border border-white/5 text-xs text-white/30 text-center leading-relaxed">
+        এই হিসাব আপনার দেওয়া তথ্যের ভিত্তিকে। এটি কোনো গ্যারান্টি নয় — বাস্তব ফলাফল আপনার রেস্টুরেন্টের অবস্থার উপর নির্ভরশীল। আপনার ডেটা কোথাও সংরক্ষিত হয় না।
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Q&A -->
 <section id="qa" class="py-32 px-4 relative bg-gradient-to-b from-transparent via-red-900/5 to-transparent">
   <div class="max-w-4xl mx-auto">
-    <div class="text-center mb-16"><div class="text-sm text-white/40 uppercase tracking-wider mb-3">০৬ // আলোচনা</div><h2 class="text-4xl md:text-5xl font-bold mb-4 t-grad">প্রশ্ন ও পর্যালোচনা।</h2><p class="text-white/60 text-lg">উভয় পক্ষের জন্য উন্মুক্ত। সম্পূর্ণ স্বচ্ছতা।</p></div>
+    <div class="text-center mb-16"><div class="text-sm text-white/40 uppercase tracking-wider mb-3">০৭ // আলোচনা</div><h2 class="text-4xl md:text-5xl font-bold mb-4 t-grad">প্রশ্ন ও পর্যালোচনা।</h2><p class="text-white/60 text-lg">উভয় পক্ষের জন্য উন্মুক্ত। সম্পূর্ণ স্বচ্ছতা।</p></div>
     <div class="space-y-4" id="qaFeed">
       <div class="glass p-6 rounded-2xl border border-white/5"><div class="flex items-center gap-3 mb-3"><span class="px-3 py-1 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs font-medium">Vibeflow</span><span class="text-xs text-white/40">Lukas · ২ দিন আগে</span></div><p class="text-white/80 text-sm italic mb-3">"ওয়েবসাইট বানানোর আগে মেনু অডিট দিয়ে শুরু করব?"</p><div class="p-3 rounded-xl bg-white/5 border-l-2 border-red-400 text-sm text-white/60"><strong class="text-red-400">Avanti:</strong> হ্যাঁ, এটি অন্তর্ভুক্ত করুন।</div></div>
       <div class="glass p-6 rounded-2xl border border-white/5"><div class="flex items-center gap-3 mb-3"><span class="px-3 py-1 rounded-full bg-gradient-to-r from-red-500 to-amber-500 text-white text-xs font-medium">Avanti</span><span class="text-xs text-white/40">ম্যানেজমেন্ট · ১ দিন আগে</span></div><p class="text-white/80 text-sm italic mb-3">"অর্ডারিং কি আমাদের বর্তমান POS-এর সাথে কাজ করবে?"</p><div class="p-3 rounded-xl bg-white/5 border-l-2 border-amber-400 text-sm text-white/60"><strong class="text-amber-400">Vibeflow:</strong> অ্যাডভান্সড গ্রোথ প্ল্যানে POS ইন্টিগ্রেশন অন্তর্ভুক্ত।</div></div>
@@ -1722,10 +1779,67 @@ function submitQ(e){
   </div>
 </section>
 
+<!-- ROI Calculator -->
+<section id="en-roi" class="py-32 px-4 relative bg-gradient-to-b from-transparent via-emerald-900/5 to-transparent">
+  <div class="max-w-4xl mx-auto relative z-10">
+    <div class="text-center mb-12">
+      <div class="text-sm text-white/40 uppercase tracking-wider mb-3">06 // ROI CALCULATOR</div>
+      <h2 class="text-4xl md:text-5xl font-bold mb-4 t-grad">How Much Are You Losing?</h2>
+      <p class="text-white/60 text-lg max-w-2xl mx-auto">Enter your restaurant's data below — everything stays in your browser, nothing is saved.</p>
+    </div>
+    <div class="glass-s rounded-2xl p-6 md:p-8 border border-white/10">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+        <div>
+          <label class="block text-sm font-medium text-white/70 mb-2">Avg Monthly Orders (total)</label>
+          <input type="number" id="en-roi-orders" value="500" min="0" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-emerald-500/50 transition-colors">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-white/70 mb-2">Avg Order Value (&#x9F3B;)</label>
+          <input type="number" id="en-roi-avg" value="350" min="0" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-emerald-500/50 transition-colors">
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 mt-5">
+        <div>
+          <label class="block text-sm font-medium text-white/70 mb-2">Orders via Aggregators (%)</label>
+          <input type="range" id="en-roi-agg-pct" min="10" max="100" value="60" oninput="roiCalcEn()" class="w-full accent-emerald-500">
+          <div class="flex justify-between text-xs text-white/30 mt-1"><span>10%</span><span id="en-roi-agg-pct-val" class="text-emerald-400 font-semibold">60%</span><span>100%</span></div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-white/70 mb-2">Aggregator Commission (%)</label>
+          <input type="range" id="en-roi-comm" min="10" max="35" value="25" oninput="roiCalcEn()" class="w-full accent-emerald-500">
+          <div class="flex justify-between text-xs text-white/30 mt-1"><span>10%</span><span id="en-roi-comm-val" class="text-emerald-400 font-semibold">25%</span><span>35%</span></div>
+        </div>
+      </div>
+      <div class="mt-6 p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10">
+        <label class="block text-sm font-medium text-white/70 mb-2">What % of orders could shift to direct through our system?</label>
+        <input type="range" id="en-roi-shift" min="10" max="90" value="50" oninput="roiCalcEn()" class="w-full accent-emerald-500">
+        <div class="flex justify-between text-xs text-white/30 mt-1"><span>10%</span><span id="en-roi-shift-val" class="text-emerald-400 font-semibold">50%</span><span>90%</span></div>
+      </div>
+      <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="glass p-5 md:p-6 rounded-xl text-center border border-white/10">
+          <div class="text-xs text-white/40 uppercase tracking-wider mb-2">Monthly Commission Paid</div>
+          <div class="text-2xl md:text-3xl font-extrabold text-red-400" id="en-roi-monthly-comm">&#x9F3B;0</div>
+        </div>
+        <div class="glass p-5 md:p-6 rounded-xl text-center border border-white/10">
+          <div class="text-xs text-white/40 uppercase tracking-wider mb-2">You Could Save Monthly</div>
+          <div class="text-2xl md:text-3xl font-extrabold text-emerald-400" id="en-roi-monthly-save">&#x9F3B;0</div>
+        </div>
+        <div class="glass p-5 md:p-6 rounded-xl text-center border border-white/10">
+          <div class="text-xs text-white/40 uppercase tracking-wider mb-2">Annual Savings Potential</div>
+          <div class="text-2xl md:text-3xl font-extrabold text-amber-400" id="en-roi-yearly-save">&#x9F3B;0</div>
+        </div>
+      </div>
+      <div class="mt-6 p-4 rounded-xl bg-white/[0.02] border border-white/5 text-xs text-white/30 text-center leading-relaxed">
+        This calculation is based on the data you provide. It is not a guarantee — actual results depend on your restaurant's specific situation. Your data is never stored or transmitted.
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Q&A -->
 <section id="en-qa" class="py-32 px-4 relative bg-gradient-to-b from-transparent via-red-900/5 to-transparent">
   <div class="max-w-4xl mx-auto">
-    <div class="text-center mb-16"><div class="text-sm text-white/40 uppercase tracking-wider mb-3">06 // DISCUSSION</div><h2 class="text-4xl md:text-5xl font-bold mb-4 t-grad">Questions & Review.</h2><p class="text-white/60 text-lg">Open for both parties. Full transparency.</p></div>
+    <div class="text-center mb-16"><div class="text-sm text-white/40 uppercase tracking-wider mb-3">07 // DISCUSSION</div><h2 class="text-4xl md:text-5xl font-bold mb-4 t-grad">Questions & Review.</h2><p class="text-white/60 text-lg">Open for both parties. Full transparency.</p></div>
     <div class="space-y-4" id="qaFeed">
       <div class="glass p-6 rounded-2xl border border-white/5"><div class="flex items-center gap-3 mb-3"><span class="px-3 py-1 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs font-medium">Vibeflow</span><span class="text-xs text-white/40">Lukas · 2 days ago</span></div><p class="text-white/80 text-sm italic mb-3">"Start with a menu audit before the website build?"</p><div class="p-3 rounded-xl bg-white/5 border-l-2 border-red-400 text-sm text-white/60"><strong class="text-red-400">Avanti:</strong> Yes, include it.</div></div>
       <div class="glass p-6 rounded-2xl border border-white/5"><div class="flex items-center gap-3 mb-3"><span class="px-3 py-1 rounded-full bg-gradient-to-r from-red-500 to-amber-500 text-white text-xs font-medium">Avanti</span><span class="text-xs text-white/40">Management · 1 day ago</span></div><p class="text-white/80 text-sm italic mb-3">"Does ordering work with our current POS?"</p><div class="p-3 rounded-xl bg-white/5 border-l-2 border-amber-400 text-sm text-white/60"><strong class="text-amber-400">Vibeflow:</strong> Growth & Enterprise include POS integration.</div></div>
@@ -1943,6 +2057,91 @@ function doAccept(){document.querySelector("#accept .group")?.classList.add("hid
 if(localStorage.getItem("avantiAccepted")==="true"){document.querySelector("#accept .group")?.classList.add("hidden");document.getElementById("acceptedMsg").classList.remove("hidden");}
 
 function submitQ(e){e.preventDefault();var n=document.getElementById("qName").value.trim(),p=document.getElementById("qParty").value,s=document.getElementById("qSection").value,t=document.getElementById("qText").value.trim();if(!n||!t)return alert("Name and question required.");var badge=p==="Vibeflow"?"bg-gradient-to-r from-emerald-500 to-green-600":"bg-gradient-to-r from-red-500 to-amber-500";var d=new Date().toLocaleDateString("en-US",{month:"short",day:"numeric"});var el=document.createElement("div");el.className="glass p-6 rounded-2xl border border-white/5";el.innerHTML='<div class="flex items-center gap-3 mb-3"><span class="px-3 py-1 rounded-full '+badge+' text-white text-xs font-medium">'+p+'</span><span class="text-xs text-white/40">'+n+' · '+d+'</span>'+(s?'<span class="text-xs text-white/30 ml-auto">'+s+'</span>':'')+'</div><p class="text-white/80 text-sm italic mb-3">"'+t+'"</p><div class="p-3 rounded-xl bg-white/5 border-l-2 border-white/20 text-sm text-white/40"><em>Awaiting response.</em></div>';document.getElementById("qaFeed").prepend(el);document.getElementById("qText").value="";var qa=JSON.parse(localStorage.getItem("avantiQA")||"[]");qa.unshift({n:n,p:p,s:s,t:t,d:d});localStorage.setItem("avantiQA",JSON.stringify(qa));}
+
+// ROI Calculator - Bangla
+function roiFormat(n) { return '৳' + n.toLocaleString('bn-BD'); }
+function roiCalc() {
+  var a = parseFloat(document.getElementById('roi-orders').value) || 0;
+  var b = parseFloat(document.getElementById('roi-avg').value) || 0;
+  var c = parseInt(document.getElementById('roi-agg-pct').value) || 0;
+  var d = parseInt(document.getElementById('roi-comm').value) || 0;
+  var e = parseInt(document.getElementById('roi-shift').value) || 0;
+  document.getElementById('roi-agg-pct-val').textContent = c + '%';
+  document.getElementById('roi-comm-val').textContent = d + '%';
+  document.getElementById('roi-shift-val').textContent = e + '%';
+  var aggOrders = a * c / 100, aggRev = aggOrders * b;
+  var mComm = aggRev * d / 100, mSave = mComm * e / 100;
+  document.getElementById('roi-monthly-comm').textContent = roiFormat(Math.round(mComm));
+  document.getElementById('roi-monthly-save').textContent = roiFormat(Math.round(mSave));
+  document.getElementById('roi-yearly-save').textContent = roiFormat(Math.round(mSave * 12));
+}
+
+// ROI Calculator - English
+function roiCalcEn() {
+  var a = parseFloat(document.getElementById('en-roi-orders').value) || 0;
+  var b = parseFloat(document.getElementById('en-roi-avg').value) || 0;
+  var c = parseInt(document.getElementById('en-roi-agg-pct').value) || 0;
+  var d = parseInt(document.getElementById('en-roi-comm').value) || 0;
+  var e = parseInt(document.getElementById('en-roi-shift').value) || 0;
+  document.getElementById('en-roi-agg-pct-val').textContent = c + '%';
+  document.getElementById('en-roi-comm-val').textContent = d + '%';
+  document.getElementById('en-roi-shift-val').textContent = e + '%';
+  var aggOrders = a * c / 100, aggRev = aggOrders * b;
+  var mComm = aggRev * d / 100, mSave = mComm * e / 100;
+  document.getElementById('en-roi-monthly-comm').textContent = '৳' + Math.round(mComm).toLocaleString('en-US');
+  document.getElementById('en-roi-monthly-save').textContent = '৳' + Math.round(mSave).toLocaleString('en-US');
+  document.getElementById('en-roi-yearly-save').textContent = '৳' + Math.round(mSave * 12).toLocaleString('en-US');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  roiCalc(); roiCalcEn();
+  document.querySelectorAll('#roi-orders,#roi-avg').forEach(function(e){e.addEventListener('input',roiCalc)});
+  document.querySelectorAll('#en-roi-orders,#en-roi-avg').forEach(function(e){e.addEventListener('input',roiCalcEn)});
+});
+
 </script>
+<script>
+// ROI Calculator - Bangla (defined globally)
+function roiFormat(n) { return '৳' + n.toLocaleString('bn-BD'); }
+function roiCalc() {
+  var a = parseFloat(document.getElementById('roi-orders').value) || 0;
+  var b = parseFloat(document.getElementById('roi-avg').value) || 0;
+  var c = parseInt(document.getElementById('roi-agg-pct').value) || 0;
+  var d = parseInt(document.getElementById('roi-comm').value) || 0;
+  var e = parseInt(document.getElementById('roi-shift').value) || 0;
+  document.getElementById('roi-agg-pct-val').textContent = c + '%';
+  document.getElementById('roi-comm-val').textContent = d + '%';
+  document.getElementById('roi-shift-val').textContent = e + '%';
+  var aggOrders = a * c / 100, aggRev = aggOrders * b;
+  var mComm = aggRev * d / 100, mSave = mComm * e / 100;
+  document.getElementById('roi-monthly-comm').textContent = roiFormat(Math.round(mComm));
+  document.getElementById('roi-monthly-save').textContent = roiFormat(Math.round(mSave));
+  document.getElementById('roi-yearly-save').textContent = roiFormat(Math.round(mSave * 12));
+}
+
+// ROI Calculator - English
+function roiCalcEn() {
+  var a = parseFloat(document.getElementById('en-roi-orders').value) || 0;
+  var b = parseFloat(document.getElementById('en-roi-avg').value) || 0;
+  var c = parseInt(document.getElementById('en-roi-agg-pct').value) || 0;
+  var d = parseInt(document.getElementById('en-roi-comm').value) || 0;
+  var e = parseInt(document.getElementById('en-roi-shift').value) || 0;
+  document.getElementById('en-roi-agg-pct-val').textContent = c + '%';
+  document.getElementById('en-roi-comm-val').textContent = d + '%';
+  document.getElementById('en-roi-shift-val').textContent = e + '%';
+  var aggOrders = a * c / 100, aggRev = aggOrders * b;
+  var mComm = aggRev * d / 100, mSave = mComm * e / 100;
+  document.getElementById('en-roi-monthly-comm').textContent = '৳' + Math.round(mComm).toLocaleString('en-US');
+  document.getElementById('en-roi-monthly-save').textContent = '৳' + Math.round(mSave).toLocaleString('en-US');
+  document.getElementById('en-roi-yearly-save').textContent = '৳' + Math.round(mSave * 12).toLocaleString('en-US');
+}
+
+// Run on load
+setTimeout(function() {
+  roiCalc();
+  roiCalcEn();
+}, 100);
+</script>
+
 </body>
 </html>
