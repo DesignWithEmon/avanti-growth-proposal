@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Avanti × Vibeflow — Growth Proposal</title>
+<meta name="description" content="90-day restaurant automation and growth proposal for Avanti Restaurant."/>
+<link rel="alternate" hreflang="en" href="proposal.html"/>
+<link rel="alternate" hreflang="bn" href="bangla.html"/>
+<link rel="alternate" hreflang="x-default" href="proposal.html"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.8/400.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.8/600.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.8/700.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.8/800.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<style>
+:root{
+  --color-bg-dark: #140B08;
+  --color-text-light: #F5EDE4;
+  --color-accent-red: #ef4444;
+  --color-accent-orange: #f59e0b;
+  --color-accent-gold: #d4a373;
+  --color-accent-gold-hover: #fbbf24;
+  --color-accent-gold-dark: #d97706;
+  --color-white-glass-1: rgba(255, 255, 255, 0.03);
+  --color-white-glass-2: rgba(255, 255, 255, 0.06);
+  --color-white-glass-3: rgba(255, 255, 255, 0.08);
+  --color-white-glass-4: rgba(255, 255, 255, 0.12);
+  --color-white-text-55: rgba(255, 255, 255, 0.55);
+  --color-white-text-50: rgba(255, 255, 255, 0.50);
+  --color-red-glass: rgba(196, 51, 46, 0.1);
+  --color-red-glass-border: rgba(196, 51, 46, 0.3);
+}
+body{font-family:'Inter',sans-serif;background:var(--color-bg-dark);color:var(--color-text-light);overflow-x:hidden}
+.glass{background:var(--color-white-glass-1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--color-white-glass-3)}
+.glass-s{background:var(--color-white-glass-2);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border:1px solid var(--color-white-glass-4)}
+.glow-orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:0.2;z-index:-1;pointer-events:none}
+.t-grad{background:linear-gradient(135deg,#fff,#fca5a5,var(--color-accent-red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.t-gold{background:linear-gradient(135deg,#fff,var(--color-accent-gold-hover),var(--color-accent-gold-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.progress-bar{position:fixed;top:0;left:0;z-index:999;height:2px;background:linear-gradient(90deg,var(--color-accent-red),var(--color-accent-orange));width:0%;transition:width 80ms linear}
+/* ══ UTILITY CLASSES — Common patterns ══ */
+.headline-primary{font-size:clamp(2rem, 5vw, 4.2rem);font-weight:800;letter-spacing:-0.04em;line-height:1.06;margin-bottom:1rem}
+.text-description{font-size:clamp(0.9rem, 1.2vw, 1.05rem);margin-bottom:2rem}
+.btn-primary{display:inline-flex;align-items:center;gap:0.5rem;padding:14px 32px;border-radius:9999px;background:linear-gradient(to right, var(--color-accent-red), #e8613a);color:white;font-weight:600;font-size:14px;box-shadow:0 4px 6px rgba(0,0,0,0.1);transition:all 0.2s duration;cursor:pointer}
+.btn-primary:hover{transform:translateY(-3px)}
+.btn-secondary{display:inline-flex;align-items:center;gap:0.5rem;padding:14px 32px;border-radius:9999px;background:rgba(255,255,255,0.04);color:white;font-weight:500;font-size:14px;border:1px solid rgba(255,255,255,0.08);transition:all 0.2s duration;cursor:pointer}
+.btn-secondary:hover{border-color:rgba(196,51,46,0.3);transform:translateY(-3px)}
+.device-mockup-wrapper{width:100%;max-width:780px;margin-top:2rem;padding:0 1rem}
+/* RESPONSIVE PHASE CARDS — Business value cards */
+.phase-cards{width:100%;max-width:920px;margin:0 auto;padding:0 10px}
+.phase-dash{display:flex;flex-direction:column;gap:8px}
+.phase-dash-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+
+/* Hub card — primary value statement */
+.dash-hub{flex:1 1 200px;min-width:0;max-width:290px;padding:18px;border-radius:16px;position:relative}
+.dash-hub .hub-title{font-size:13px;font-weight:700;margin-bottom:4px;letter-spacing:-0.01em;line-height:1.3}
+.dash-hub .hub-desc{font-size:12px;color:var(--color-white-text-55);line-height:1.55}
+.dash-hub .hub-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:600}
+
+/* Detail card — compact supporting point */
+.dash-detail{flex:1 1 180px;min-width:0;max-width:240px;padding:14px;border-radius:12px}
+.dash-detail .detail-title{font-size:11px;font-weight:700;margin-bottom:3px;line-height:1.3}
+.dash-detail .detail-desc{font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5}
+
+/* Wide summary card */
+.dash-wide{flex:1 1 100%;max-width:100%;padding:10px 16px;border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+
+/* Standard section cards — cleaner, more readable */
+.info-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.info-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.info-card{padding:24px;border-radius:16px;position:relative;overflow:hidden}
+.info-card .card-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;margin-bottom:12px}
+.info-card .card-stat{font-size:28px;font-weight:800;letter-spacing:-0.03em;line-height:1;margin-bottom:4px}
+.info-card .card-stat-sub{font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:6px}
+.info-card h3{font-size:1rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.01em}
+.info-card p{font-size:0.9rem;color:rgba(255,255,255,0.55);line-height:1.65}
+.info-card .info-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
+.info-card .info-tags span{padding:3px 10px;border-radius:6px;font-size:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);color:rgba(255,255,255,0.4)}
+.info-card .accent-line{position:absolute;left:0;top:15%;bottom:15%;width:3px;border-radius:0 3px 3px 0}
+
+/* Pricing card */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.pricing-card{padding:28px 20px;border-radius:18px;text-align:center;position:relative;overflow:hidden}
+.pricing-card.popular{border-color:rgba(196,51,46,0.3);box-shadow:0 8px 40px rgba(196,51,46,0.1);transform:scale(1.03)}
+.pricing-card .price{font-size:2.5rem;font-weight:800;letter-spacing:-0.04em;line-height:1;margin-bottom:2px}
+.pricing-card .price-sub{font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:16px}
+.pricing-card .feature-row{display:flex;align-items:center;gap:8px;padding:10px 0;font-size:0.85rem;color:rgba(255,255,255,0.5);border-bottom:1px solid rgba(255,255,255,0.04)}
+
+@media(max-width:640px){
+.phase-dash-row{gap:6px}
+.dash-hub{flex:1 1 100%;max-width:100%;padding:12px 14px}
+.dash-detail{flex:1 1 calc(50% - 4px);max-width:calc(50% - 4px);padding:10px 12px}
+.dash-wide{padding:8px 12px;flex-direction:column;text-align:center}
+.info-grid-3{grid-template-columns:1fr;gap:12px}
+.info-grid-2{grid-template-columns:1fr;gap:12px}
+.pricing-grid{grid-template-columns:1fr;gap:14px}
+.pricing-card.popular{transform:none}
+}
+</style>
+<style>
+/* ══ LANGUAGE TOGGLE ══ */
+.lang-toggle{position:fixed;top:24px;right:24px;z-index:1000;display:flex;gap:4px}
+.lang-toggle a{padding:6px 14px;border-radius:999px;font-size:12px;font-weight:600;text-decoration:none;transition:all 0.2s;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.5)}
+.lang-toggle a.active{background:rgba(239,68,68,0.2);border-color:rgba(239,68,68,0.3);color:#fff}
+.lang-toggle a:hover{background:rgba(255,255,255,0.08);color:#fff}
+@media(max-width:640px){.lang-toggle{top:16px;right:16px}.lang-toggle a{padding:4px 10px;font-size:11px}}
+
+</style>
+
+</head>
+<body>
+
+<!-- Language Toggle -->
+<div class="lang-toggle">
+  <a href="proposal.html" class="active">EN</a>
+  <a href="bangla.html">বাংলা</a>
+</div>
+
+
+<div class="progress-bar" id="progressBar"></div>
+<button id="themeBtn" onclick="toggleTheme()" class="fixed bottom-6 right-6 z-[1000] w-11 h-11 rounded-full bg-gradient-to-r from-red-500 to-orange-500 text-white text-lg shadow-2xl shadow-red-500/20 flex items-center justify-center hover:scale-110 transition-transform duration-200">🌙</button>
+
+<!-- Navigation -->
+<nav class="fixed top-0 left-0 right-0 z-50 px-4 md:px-6 py-4" id="navbar">
+  <div class="max-w-6xl mx-auto glass-s rounded-full px-6 py-3 flex items-center justify-between shadow-2xl shadow-black/50">
+    <div class="text-lg font-bold t-grad tracking-tight flex items-center gap-2">
+      <div class="w-2 h-2 rounded-full bg-red-400 animate-pulse"></div>
+      vibeflow <span class="text-white/40 font-normal text-sm">× avanti</span>
+    </div>
+    <div class="hidden md:flex items-center gap-6 text-sm font-medium text-white/60">
+      <a href="#overview" class="hover:text-white transition-colors">Overview</a>
+      <a href="#challenges" class="hover:text-white transition-colors">Challenges</a>
+      <a href="#secrets" class="hover:text-white transition-colors">Insights</a>
+      <a href="#solution" class="hover:text-white transition-colors">Solution</a>
+      <a href="#workflows" class="hover:text-white transition-colors">Workflows</a>
+      <a href="#timeline" class="hover:text-white transition-colors">Timeline</a>
+      <a href="#pricing" class="hover:text-white transition-colors">Pricing</a>
+    </div>
+    <a href="#accept" class="bg-white text-black px-5 py-2 rounded-full text-sm font-semibold hover:bg-red-50 transition-colors">Accept</a>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════
+     POLY HERO + GSAP 3-PHASE SCROLL (combined, 600vh)
+     ════════════════════════════════════════════════════════════ -->
+<section class="relative h-[850vh]" id="heroSection">
+  <div class="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden">
+
+    <!-- Table surface -->
+    <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at 50% 70%, #2A1810 0%, #140B08 60%, #0A0806 100%)"></div>
+    <div class="absolute inset-0 z-[1] pointer-events-none opacity-[0.03]" style="background-image:url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%221%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22200%22 height=%22200%22 filter=%22url(%23n)%22/%3E%3C/svg%3E')"></div>
+    <div class="absolute inset-0 z-[1] pointer-events-none" style="background:radial-gradient(circle, rgba(232,97,58,0.04) 0%, transparent 60%);top:30%;width:70vw;height:70vw;left:50%;transform:translate(-50%,-30%);border-radius:50%"></div>
+
+    <!-- Orbs -->
+    <div class="glow-orb w-80 h-80 md:w-[600px] md:h-[600px] bg-red-700 top-1/4 left-1/4" id="orb1"></div>
+    <div class="glow-orb w-72 h-72 md:w-[500px] md:h-[500px] bg-amber-700 bottom-1/4 right-1/4" id="orb2"></div>
+
+    <!-- Decorative leaves -->
+    <div class="absolute z-[1] pointer-events-none top-[10%] left-[4%] w-[130px] opacity-[0.12] -rotate-12"><svg viewBox="0 0 100 100" fill="none"><path d="M50 8C68 18 90 24 92 48C94 68 80 82 64 85C48 88 36 78 32 62C28 46 34 28 50 8Z" fill="#2D6A4F" opacity="0.6"/><path d="M50 8C62 14 82 40 84 56" stroke="#52B788" stroke-width="1.2" opacity="0.3"/></svg></div>
+    <div class="absolute z-[1] pointer-events-none bottom-[12%] right-[5%] w-[90px] opacity-[0.10] rotate-[30deg] scale-x-[-1]"><svg viewBox="0 0 100 100" fill="none"><path d="M50 8C68 18 90 24 92 48C94 68 80 82 64 85C48 88 36 78 32 62C28 46 34 28 50 8Z" fill="#40916C" opacity="0.5"/></svg></div>
+
+    <!-- ═══════════════════════════════════════
+         POLY HERO — Initial view (first ~20% of scroll)
+         ═══════════════════════════════════════ -->
+    <div class="absolute inset-0 z-10 flex flex-col items-center justify-center" id="polyHero">
+      <div class="text-center px-4 max-w-[840px]">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[rgba(212,163,115,0.1)] border border-[rgba(212,163,115,0.15)] text-[11px] font-medium text-[#d4a373] tracking-[0.04em] mb-6">✦ Avanti Restaurant × Vibeflow</div>
+        <h1 class="headline-primary" id="polyHeadline">
+          Restaurant Automation &<br/>
+          <span class="text-[#ef4444]">Sales Growth</span>
+          <span class="inline-block relative">
+            Masterplan
+            <svg class="absolute bottom-[-8px] left-[-3%] w-[106%] h-[20px] overflow-visible" viewBox="0 0 240 20" preserveAspectRatio="none">
+              <path d="M2,14 C36,6 72,18 108,10 C144,4 180,16 216,8 C234,4 240,6 240,6" stroke="#ef4444" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-dasharray="500" stroke-dashoffset="0"/>
+            </svg>
+          </span>
+        </h1>
+        <p class="text-description text-[#b8a89a] max-w-[580px] mx-auto leading-[1.75]">Vibeflow's 90-day proposal for Avanti Restaurant in Mymensingh — building a connected digital system that reduces leakage, grows direct orders, and turns every customer visit into a long-term relationship.</p>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <a href="#overview" class="btn-primary">Read Proposal ↓</a>
+          <a href="#accept" class="btn-secondary">Accept & Sign</a>
+        </div>
+      </div>
+
+      <!-- Device mockup -->
+      <div class="device-mockup-wrapper" id="polyDevice">
+        <div class="relative bg-gradient-to-b from-[#1a1a1a] to-[#0d0d0d] rounded-[14px] p-[14px_14px_0] shadow-[0_30px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06),0_0_50px_rgba(196,51,46,0.04)] border border-[rgba(255,255,255,0.05)]">
+          <div class="bg-[#120b08] rounded-[6px_6px_0_0] overflow-hidden p-4 min-h-[240px]">
+            <div class="flex gap-[6px] mb-3"><span class="w-[8px] h-[8px] rounded-full bg-[#FF5F56]"></span><span class="w-[8px] h-[8px] rounded-full bg-[#FFBD2E]"></span><span class="w-[8px] h-[8px] rounded-full bg-[#27C93F]"></span></div>
+            <div class="flex gap-3">
+              <div class="flex flex-col gap-[3px] w-[100px]">
+                <div class="h-[10px] rounded-[3px] bg-[rgba(255,255,255,0.05)] w-[70%]" style="background:rgba(196,51,46,0.3)"></div>
+                <div class="h-[10px] rounded-[3px] bg-[rgba(255,255,255,0.05)] w-[85%]"></div>
+                <div class="h-[10px] rounded-[3px] bg-[rgba(255,255,255,0.05)] w-[55%]"></div>
+              </div>
+              <div class="flex-1">
+                <div class="text-[11px] font-semibold text-[#ef4444] mb-2">Proposal Summary</div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div class="p-2 rounded-[6px] bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-center"><span class="block text-lg font-extrabold text-[#ef4444]">90</span><span class="text-[9px] text-[#8a7a6a] uppercase tracking-[0.06em]">Days</span></div>
+                  <div class="p-2 rounded-[6px] bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-center"><span class="block text-lg font-extrabold">3</span><span class="text-[9px] text-[#8a7a6a] uppercase tracking-[0.06em]">Phases</span></div>
+                  <div class="p-2 rounded-[6px] bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-center"><span class="block text-lg font-extrabold">3</span><span class="text-[9px] text-[#8a7a6a] uppercase tracking-[0.06em]">Plans</span></div>
+                  <div class="p-2 rounded-[6px] bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-center"><span class="block text-lg font-extrabold text-[#ef4444]">✓</span><span class="text-[9px] text-[#8a7a6a] uppercase tracking-[0.06em]">Direct</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="text-center mt-3 text-[11px] text-[#8a7a6a] italic font-['Playfair_Display',Georgia,serif]">"The Vibeflow dashboard — your restaurant's command center"</p>
+      </div>
+
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 text-white/30 text-[10px] uppercase tracking-[0.15em]">
+        <span>Scroll to explore</span>
+        <div class="w-[18px] h-[28px] rounded-[9px] border-2 border-white/30 flex justify-center pt-[5px]"><div class="w-[2px] h-[5px] rounded-[2px] bg-white/30"></div></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         GSAP PHASE 1: "Restaurant Automation"
+         ═══════════════════════════════════════ -->
+    <div class="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none opacity-0 overflow-hidden" id="phase1">
+      <div class="text-center px-4 flex-shrink-0 mb-3">
+        <h2 class="text-2xl md:text-4xl font-extrabold tracking-tight t-grad">Restaurant Automation</h2>
+      </div>
+
+      <div class="phase-cards">
+        <div class="phase-dash">
+          <!-- Row: 3 hub overview cards + 1 hub summary -->
+          <div class="phase-dash-row">
+            <!-- Hub 1: Menu Digitization -->
+            <div class="card-1-1 dash-hub glass-s border border-white/10">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 flex-shrink-0">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                </div>
+                <div class="hub-title">Menu Digitization</div>
+              </div>
+              <div class="hub-desc">Every item, price, and photo — live on your website. Customers see everything Avanti offers.</div>
+              <span class="hub-badge bg-red-500/10 text-red-400 border border-red-500/20">Online in days</span>
+            </div>
+            <!-- Hub 2: POS & Operations -->
+            <div class="card-1-2 dash-hub glass-s border border-white/10">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400 flex-shrink-0">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                </div>
+                <div class="hub-title">POS &amp; Operations</div>
+              </div>
+              <div class="hub-desc">Orders flow from website to kitchen. No manual entry. No mistakes.</div>
+              <span class="hub-badge bg-amber-500/10 text-amber-400 border border-amber-500/20">Real-time sync</span>
+            </div>
+            <!-- Hub 3: Automation Hub -->
+            <div class="card-1-3 dash-hub glass border border-white/10">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-red-500 to-amber-600 flex items-center justify-center text-white text-[10px] font-bold shadow-lg shadow-red-500/30 flex-shrink-0">AV</div>
+                <div class="hub-title">Automation Hub</div>
+              </div>
+              <div class="hub-desc">One dashboard to manage orders, menu updates, and customer analytics.</div>
+            </div>
+          </div>
+
+          <!-- Row: 4 technical metric cards (2+2) -->
+          <div class="phase-dash-row">
+            <!-- Detail 1-4: Order Flow -->
+            <div class="card-1-4 dash-detail glass border border-white/10">
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="text-[11px]">⚡</span>
+                <span class="detail-title">Order Flow</span>
+              </div>
+              <div class="detail-desc">Website to kitchen in seconds. No missed or delayed orders.</div>
+              <div class="flex gap-1 flex-wrap mt-1"><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">REST</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">WebSocket</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Queue</span></div>
+            </div>
+            <!-- Detail 1-5: Real-Time Sync -->
+            <div class="card-1-5 dash-detail glass border border-white/10">
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="text-[11px]">🔄</span>
+                <span class="detail-title">Real-Time Sync</span>
+              </div>
+              <div class="detail-desc">Menu and price changes update everywhere — website, app, POS — instantly.</div>
+              <div class="flex gap-1 flex-wrap mt-1"><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Webhook</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Polling</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">SSE</span></div>
+            </div>
+            <!-- Detail 1-6: Menu CMS -->
+            <div class="card-1-6 dash-detail glass border border-white/10">
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="text-[11px]">📋</span>
+                <span class="detail-title">Menu CMS</span>
+              </div>
+              <div class="detail-desc">Update categories, prices, photos from one place. Always current.</div>
+              <div class="flex gap-1 flex-wrap mt-1"><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Category Tree</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Versioning</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Preview</span></div>
+            </div>
+            <!-- Detail 1-7: Analytics -->
+            <div class="card-1-7 dash-detail glass border border-white/10">
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="text-[11px]">📊</span>
+                <span class="detail-title">Analytics</span>
+              </div>
+              <div class="detail-desc">See what sells, when, and to whom. Smarter restaurant decisions.</div>
+              <div class="flex gap-1 flex-wrap mt-1"><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Real-Time</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Dashboard</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Export</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         GSAP PHASE 2: "Sales Growth"
+         ═══════════════════════════════════════ -->
+    <div class="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none opacity-0 overflow-hidden" id="phase2">
+      <div class="text-center px-4 flex-shrink-0 mb-4">
+        <h2 class="text-2xl md:text-4xl lg:text-5xl font-extrabold tracking-tight t-grad">Sales Growth</h2>
+      </div>
+
+      <div class="phase-cards">
+        <div class="phase-dash">
+          <!-- Row: 3 hub overview cards -->
+          <div class="phase-dash-row">
+            <!-- Hub 2-1: Direct Orders -->
+            <div class="card-2-1 dash-hub glass-s border border-white/10">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 flex-shrink-0">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                </div>
+                <div class="hub-title">Direct Orders</div>
+              </div>
+              <div class="hub-desc">Customers order directly from Avanti. You keep every taka of margin.</div>
+              <span class="hub-badge bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">No commission</span>
+            </div>
+            <!-- Hub 2-2: Customer Reach -->
+            <div class="card-2-2 dash-hub glass-s border border-white/10">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 flex-shrink-0">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <div class="hub-title">Customer Reach</div>
+              </div>
+              <div class="hub-desc">New customers find Avanti on Google, Maps, and social media.</div>
+              <span class="hub-badge bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Multi-channel</span>
+            </div>
+            <!-- Hub 2-3: Growth Metrics -->
+            <div class="card-2-3 dash-hub glass border border-white/10">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-[10px] font-bold shadow-lg flex-shrink-0">📈</div>
+                <div class="hub-title">Growth Metrics</div>
+              </div>
+              <div class="hub-desc">Direct orders grow. Aggregator dependency shrinks. Repeat visits increase.</div>
+            </div>
+          </div>
+
+          <!-- Row: 4 technical metric cards -->
+          <div class="phase-dash-row">
+            <!-- Detail 2-4: Customer Profiles -->
+            <div class="card-2-4 dash-detail glass border border-white/10">
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="text-[11px]">👤</span>
+                <span class="detail-title">Customer Profiles</span>
+              </div>
+              <div class="detail-desc">Order history, preferences, contact — all saved. Know every customer.</div>
+              <div class="flex gap-1 flex-wrap mt-1"><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Segmentation</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Enrichment</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">GDPR</span></div>
+            </div>
+            <!-- Detail 2-5: Automations -->
+            <div class="card-2-5 dash-detail glass border border-white/10">
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="text-[11px]">✉️</span>
+                <span class="detail-title">Automations</span>
+              </div>
+              <div class="detail-desc">Automated SMS and email follow-ups. Reorder reminders, birthday offers.</div>
+              <div class="flex gap-1 flex-wrap mt-1"><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">SMS</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Email</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Triggers</span></div>
+            </div>
+            <!-- Detail 2-6: Local Discovery -->
+            <div class="card-2-6 dash-detail glass border border-white/10">
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="text-[11px]">🔍</span>
+                <span class="detail-title">Local Discovery</span>
+              </div>
+              <div class="detail-desc">Avanti appears in local searches. Google Maps integration for directions.</div>
+              <div class="flex gap-1 flex-wrap mt-1"><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Schema</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Maps</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Local</span></div>
+            </div>
+            <!-- Detail 2-7: Referral &amp; Loyalty -->
+            <div class="card-2-7 dash-detail glass border border-white/10">
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="text-[11px]">🎯</span>
+                <span class="detail-title">Referral &amp; Loyalty</span>
+              </div>
+              <div class="detail-desc">Reward regulars. Turn your best customers into your marketers.</div>
+              <div class="flex gap-1 flex-wrap mt-1"><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Points</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Rewards</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Referral</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         GSAP PHASE 3: "90-Day Masterplan"
+         ═══════════════════════════════════════ -->
+    <div class="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none opacity-0 overflow-hidden" id="phase3">
+      <div class="text-center px-4 flex-shrink-0 mb-4">
+        <h2 class="text-2xl md:text-4xl lg:text-5xl font-extrabold tracking-tight t-gold">90-Day Masterplan</h2>
+      </div>
+
+      <div class="phase-cards">
+        <div class="phase-dash">
+          <!-- Row: 3 hub overview cards -->
+          <div class="phase-dash-row">
+            <!-- Hub 3-1: Foundation -->
+            <div class="card-3-1 dash-hub glass-s border border-white/10">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 flex-shrink-0">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <div class="hub-title">Foundation</div>
+              </div>
+              <div class="hub-desc">Website live with full menu. Connected to POS. Social channels set up.</div>
+              <span class="hub-badge bg-red-500/10 text-red-400 border border-red-500/20">Days 1–20</span>
+            </div>
+            <!-- Hub 3-2: Order System -->
+            <div class="card-3-2 dash-hub glass-s border border-white/10">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400 flex-shrink-0">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <div class="hub-title">Order System</div>
+              </div>
+              <div class="hub-desc">Direct ordering active. Customer profiles building. Re-engagement tools running.</div>
+              <span class="hub-badge bg-amber-500/10 text-amber-400 border border-amber-500/20">Days 21–50</span>
+            </div>
+            <!-- Hub 3-3: Full Timeline -->
+            <div class="card-3-3 dash-hub glass border border-white/10">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white text-[10px] font-bold shadow-lg flex-shrink-0">🚀</div>
+                <div class="hub-title">Full Timeline</div>
+              </div>
+              <div class="hub-desc">Three phases. Everything live and running in 90 days.</div>
+            </div>
+          </div>
+
+          <!-- Row: 4 technical metric cards -->
+          <div class="phase-dash-row">
+            <!-- Detail 3-4: Deployment -->
+            <div class="card-3-4 dash-detail glass border border-white/10">
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="text-[11px]">☁️</span>
+                <span class="detail-title">Deployment</span>
+              </div>
+              <div class="detail-desc">Reliable infrastructure with fast load times. 24/7 availability.</div>
+              <div class="flex gap-1 flex-wrap mt-1"><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">CDN</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Auto-Scale</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Monitoring</span></div>
+            </div>
+            <!-- Detail 3-5: Integrations -->
+            <div class="card-3-5 dash-detail glass border border-white/10">
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="text-[11px]">🔌</span>
+                <span class="detail-title">Integrations</span>
+              </div>
+              <div class="detail-desc">Connects to POS, payments, SMS, and email. Everything you need.</div>
+              <div class="flex gap-1 flex-wrap mt-1"><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">POS</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Payments</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Analytics</span></div>
+            </div>
+            <!-- Detail 3-6: Milestones -->
+            <div class="card-3-6 dash-detail glass border border-white/10">
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="text-[11px]">🏁</span>
+                <span class="detail-title">Milestones</span>
+              </div>
+              <div class="detail-desc">Weekly check-ins with clear deliverables and approval at each stage.</div>
+              <div class="flex gap-1 flex-wrap mt-1"><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Weekly</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Verification</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Sign-Off</span></div>
+            </div>
+            <!-- Detail 3-7: Support -->
+            <div class="card-3-7 dash-detail glass border border-white/10">
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="text-[11px]">🛡️</span>
+                <span class="detail-title">Support</span>
+              </div>
+              <div class="detail-desc">Dedicated support channel. Fast response. Monthly performance reviews.</div>
+              <div class="flex gap-1 flex-wrap mt-1"><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">4h Response</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Dedicated</span><span class="px-1.5 py-[1px] rounded text-[7px] bg-white/5 border border-white/5 text-white/35">Monthly Review</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     STANDARD SECTIONS (below scroll hero)
+     ════════════════════════════════════════════════════════════ -->
+
+<!-- Overview -->
+<section id="overview" class="py-32 px-4 relative bg-[#0A0605]">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+      <div>
+        <div class="text-sm text-white/40 uppercase tracking-wider mb-3">01 // EXECUTIVE SUMMARY</div>
+        <h2 class="text-4xl md:text-5xl font-bold mb-4 t-grad">The 90-Day Growth Plan.</h2>
+        <p class="text-white/60 text-lg max-w-xl">Reach new customers, bring them back, and protect your margin — built for Avanti.</p>
+      </div>
+    </div>
+    <div class="info-grid-3">
+      <div class="info-card glass border border-white/10">
+        <div class="card-stat text-red-400">01</div>
+        <h3>Direct Orders &amp; Retention</h3>
+        <p>Bring customers directly to Avanti. No third-party platform. Full margin stays with you.</p>
+        <div class="info-tags"><span>Commission-free</span><span>Customer profiles</span><span>Direct margin</span></div>
+      </div>
+      <div class="info-card glass border border-white/10">
+        <div class="card-stat text-amber-400">02</div>
+        <h3>Connected Storefront</h3>
+        <p>Your menu, your brand, your orders — all in one seamless mobile-optimized experience.</p>
+        <div class="info-tags"><span>Mobile-first</span><span>Menu visible</span><span>Optimized UX</span></div>
+      </div>
+      <div class="info-card glass border border-white/10">
+        <div class="card-stat text-emerald-400">03</div>
+        <h3>Loyalty &amp; Re-engagement</h3>
+        <p>Turn first-time diners into regulars. Automated follow-ups, no manual effort.</p>
+        <div class="info-tags"><span>Follow-ups</span><span>Loyalty incentives</span><span>Automation</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Challenges -->
+<section id="challenges" class="py-32 px-4 relative bg-gradient-to-b from-transparent via-red-900/5 to-transparent">
+  <div class="max-w-6xl mx-auto relative z-10">
+    <div class="mb-16"><div class="text-sm text-white/40 uppercase tracking-wider mb-3">02 // CURRENT SITUATION</div><h2 class="text-4xl md:text-5xl font-bold mb-4 t-grad">What We Observed.</h2><p class="text-white/60 text-lg max-w-xl">Based on Avanti's digital presence, menu, reviews, and operating data.</p></div>
+    <div class="info-grid-2">
+      <div class="info-card glass border border-white/10">
+        <div class="card-badge bg-red-500/10 text-red-400 border border-red-500/20">ISOLATION</div>
+        <h3>Digital Presence Isolated</h3>
+        <p>Website, menu, social, and ordering each run independently. No unified flow.</p>
+        <div class="info-tags"><span>Website</span><span>Menu</span><span>Social</span><span>Ordering</span></div>
+      </div>
+      <div class="info-card glass border border-white/10">
+        <div class="card-badge bg-red-500/10 text-red-400 border border-red-500/20">LEAKAGE</div>
+        <h3>Aggregator Fee Leakage</h3>
+        <p>Every third-party order costs up to 30% in commissions. That's margin you could keep.</p>
+        <div class="info-tags"><span>Commissions</span><span>Revenue loss</span><span>Margin</span></div>
+      </div>
+      <div class="info-card glass border border-white/10">
+        <div class="card-badge bg-amber-500/10 text-amber-400 border border-amber-500/20">RETENTION</div>
+        <h3>Customer Retention Gap</h3>
+        <p>Past customers have no way to reorder. Their next visit is left entirely to chance.</p>
+        <div class="info-tags"><span>Reorder</span><span>Re-engagement</span><span>Lost revenue</span></div>
+      </div>
+      <div class="info-card glass border border-white/10">
+        <div class="card-badge bg-amber-500/10 text-amber-400 border border-amber-500/20">VISIBILITY</div>
+        <h3>Menu &amp; Pricing Visibility</h3>
+        <p>Customers can't see your full menu and prices online. They don't know what's available.</p>
+        <div class="info-tags"><span>Menu online</span><span>Pricing</span><span>Discovery</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Inside Secrets -->
+<section id="secrets" class="py-24 px-4 relative bg-gradient-to-b from-transparent via-red-900/5 to-transparent">
+  <div class="max-w-6xl mx-auto relative z-10">
+    <div class="text-center mb-12">
+      <div class="text-sm text-white/40 uppercase tracking-wider mb-3">INSIDE THE PLAN</div>
+      <h2 class="text-4xl md:text-5xl font-bold mb-4 t-gold">What Most Restaurants Don't See.</h2>
+      <p class="text-white/50 text-lg max-w-2xl mx-auto">The quiet logic behind the proposal — things Mymensingh restaurant owners rarely hear from agencies.</p>
+    </div>
+    <div class="info-grid-2">
+      <div class="info-card glass border border-white/10">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400 text-lg flex-shrink-0">💰</div>
+          <div><div class="font-semibold text-white text-sm">The Aggregator Trap</div></div>
+        </div>
+        <p>Most restaurants in Mymensingh lose 20–30% of every online order to aggregator commissions. This proposal fixes that by building your own ordering channel — so you keep every taka of margin.</p>
+      </div>
+      <div class="info-card glass border border-white/10">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 text-lg flex-shrink-0">📋</div>
+          <div><div class="font-semibold text-white text-sm">Your Menu Is Your Best Salesperson</div></div>
+        </div>
+        <p>The menu is the most under-used marketing asset in any restaurant. We put it everywhere — website, Google, Maps, WhatsApp — so it works for you 24/7, even when you're sleeping.</p>
+      </div>
+      <div class="info-card glass border border-white/10">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-lg flex-shrink-0">🔄</div>
+          <div><div class="font-semibold text-white text-sm">A Returning Customer Is Worth 5× More</div></div>
+        </div>
+        <p>A customer who comes back 3 times is worth over 5× more than a first-timer. Our system is built to make that happen automatically — no chasing, no phone calls, no spreadsheets.</p>
+      </div>
+      <div class="info-card glass border border-white/10">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 text-lg flex-shrink-0">🖥️</div>
+          <div><div class="font-semibold text-white text-sm">No Tech Team Required</div></div>
+        </div>
+        <p>You don't need an IT person or a tech team to run this. Everything we build works from a single dashboard. Update your menu, view orders, track customers — all from your phone.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Solution -->
+<section id="solution" class="py-32 px-4 relative bg-[#0A0605]">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16"><div class="text-sm text-white/40 uppercase tracking-wider mb-3">03 // OUR SOLUTION</div><h2 class="text-4xl md:text-5xl font-bold mb-4 t-grad">The Vibeflow System.</h2><p class="text-white/60 text-lg max-w-2xl mx-auto">A connected operating system for Avanti's menu, website, ordering, and customer relationships.</p></div>
+    <div class="info-grid-3">
+      <div class="info-card glass border border-white/10 text-center">
+        <div class="card-stat text-red-400">01</div>
+        <div class="card-stat-sub">Foundation Layer</div>
+        <h3>Unified Storefront</h3>
+        <p>A single website with your full menu, brand story, and ordering — optimized for mobile conversion.</p>
+        <div class="info-tags justify-center"><span>Website</span><span>Menu</span><span>Brand</span></div>
+      </div>
+      <div class="info-card glass border border-white/10 text-center">
+        <div class="card-stat text-amber-400">02</div>
+        <div class="card-stat-sub">Engagement Layer</div>
+        <h3>Direct Ordering</h3>
+        <p>Commission-free orders mean full profit on every sale. Customer profiles build with each order.</p>
+        <div class="info-tags justify-center"><span>Orders</span><span>Profiles</span><span>Margin</span></div>
+      </div>
+      <div class="info-card glass border border-white/10 text-center">
+        <div class="card-stat text-emerald-400">03</div>
+        <div class="card-stat-sub">Retention Layer</div>
+        <h3>Loyalty Engine</h3>
+        <p>Automated re-engagement and rewards that bring diners back without any manual effort.</p>
+        <div class="info-tags justify-center"><span>Automation</span><span>Incentives</span><span>Retention</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Workflows -->
+<section id="workflows" class="py-32 px-4 relative bg-[#0A0605]">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16">
+      <div class="text-sm text-white/40 uppercase tracking-wider mb-3">SYSTEMS & CHANNELS</div>
+      <h2 class="text-4xl md:text-5xl font-bold mb-4 t-grad">How Everything Connects.</h2>
+      <p class="text-white/60 text-lg max-w-2xl mx-auto">Six workflows that turn Avanti into a connected, automated restaurant.</p>
+    </div>
+    <div class="info-grid-3">
+      <div class="info-card glass border border-white/10 text-center">
+        <div class="card-stat text-red-400">📱</div>
+        <div class="card-stat-sub">Automated SMS</div>
+        <h3>Customer SMS System</h3>
+        <p>Order confirmations, promo alerts, and birthday offers sent automatically. A customer orders once — the system keeps the conversation going.</p>
+        <div class="info-tags justify-center"><span>Order confirm</span><span>Promos</span><span>Birthday</span></div>
+      </div>
+      <div class="info-card glass border border-white/10 text-center">
+        <div class="card-stat text-emerald-400">💬</div>
+        <div class="card-stat-sub">AI-Powered</div>
+        <h3>WhatsApp Ordering</h3>
+        <p>Customers browse your menu and order via WhatsApp. Vibeflow's AI inbox handles the conversation — no staff needed to reply.</p>
+        <div class="info-tags justify-center"><span>Menu browsing</span><span>AI inbox</span><span>Auto-reply</span></div>
+      </div>
+      <div class="info-card glass border border-white/10 text-center">
+        <div class="card-stat text-amber-400">📲</div>
+        <div class="card-stat-sub">Social to Sale</div>
+        <h3>Social Media Pipeline</h3>
+        <p>Facebook and Instagram posts connect to your ordering funnel. A post about today's special turns into direct orders within minutes.</p>
+        <div class="info-tags justify-center"><span>Facebook</span><span>Instagram</span><span>Order link</span></div>
+      </div>
+      <div class="info-card glass border border-white/10 text-center">
+        <div class="card-stat text-red-400">🗺️</div>
+        <div class="card-stat-sub">Local Discovery</div>
+        <h3>Google Maps & Local SEO</h3>
+        <p>Avanti appears when someone searches "best restaurant in Mymensingh." Full menu, ordering link, and directions — all on your Google listing.</p>
+        <div class="info-tags justify-center"><span>Search ranking</span><span>Maps listing</span><span>Menu online</span></div>
+      </div>
+      <div class="info-card glass border border-white/10 text-center">
+        <div class="card-stat text-amber-400">🌐</div>
+        <div class="card-stat-sub">Your Own Platform</div>
+        <h3>Direct Order Website</h3>
+        <p>Your own domain where customers browse the menu, place orders, pay online, and leave feedback — end-to-end, commission-free.</p>
+        <div class="info-tags justify-center"><span>Browse</span><span>Order</span><span>Pay</span><span>Feedback</span></div>
+      </div>
+      <div class="info-card glass border border-white/10 text-center">
+        <div class="card-stat text-emerald-400">💌</div>
+        <div class="card-stat-sub">Auto Follow-up</div>
+        <h3>Customer Follow-up</h3>
+        <p>After every visit: thank you message → special offer → reorder reminder. All automatic. Customers feel remembered without you lifting a finger.</p>
+        <div class="info-tags justify-center"><span>Thank you</span><span>Offer</span><span>Reminder</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Timeline -->
+<section id="timeline" class="py-32 px-4 relative bg-gradient-to-b from-transparent via-amber-900/5 to-transparent">
+  <div class="max-w-6xl mx-auto relative z-10">
+    <div class="text-center mb-16"><div class="text-sm text-white/40 uppercase tracking-wider mb-3">04 // ROLLOUT</div><h2 class="text-4xl md:text-5xl font-bold mb-4 t-grad">90-Day Implementation.</h2><p class="text-white/60 text-lg max-w-2xl mx-auto">Clear phases with measurable outcomes.</p></div>
+
+    <div class="mb-12 p-8 rounded-2xl glass-s border border-white/10 max-w-3xl mx-auto text-center">
+      <p class="text-white/75 text-base leading-relaxed"><span class="text-red-400 font-semibold">Days 1–20:</span> We get your website and full menu online so customers can find you. <span class="text-amber-400 font-semibold">Days 21–50:</span> We turn that into a live ordering system — customers place direct orders, you keep full margin. <span class="text-emerald-400 font-semibold">Days 51–90:</span> We activate loyalty programs and automations so customers come back without you having to chase them. <br/><span class="text-white/50 text-sm mt-4 block">By day 90, Avanti has a connected system running on its own.</span></p>
+    </div>
+
+    <div class="info-grid-3">
+      <div class="info-card glass border border-white/10 text-center">
+        <div class="card-badge bg-red-500/10 text-red-400 border border-red-500/20">PHASE 1</div>
+        <div class="card-stat text-red-400">01</div>
+        <div class="card-stat-sub">Days 1–20</div>
+        <h3>Foundation</h3>
+        <p>Connect assets. Build unified website with menu and ordering. Integrate social and location data.</p>
+        <div class="info-tags justify-center"><span>Connect assets</span><span>Website live</span><span>Social sync</span></div>
+      </div>
+      <div class="info-card glass border border-white/10 text-center">
+        <div class="card-badge bg-amber-500/10 text-amber-400 border border-amber-500/20">PHASE 2</div>
+        <div class="card-stat text-amber-400">02</div>
+        <div class="card-stat-sub">Days 21–50</div>
+        <h3>Order System</h3>
+        <p>Launch direct ordering. Build customer profiles. Deploy re-engagement tools.</p>
+        <div class="info-tags justify-center"><span>Direct ordering</span><span>Customer profiles</span><span>Re-engagement</span></div>
+      </div>
+      <div class="info-card glass border border-white/10 text-center">
+        <div class="card-badge bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">PHASE 3</div>
+        <div class="card-stat text-emerald-400">03</div>
+        <div class="card-stat-sub">Days 51–90</div>
+        <h3>Growth</h3>
+        <p>Activate loyalty programs. Automate follow-ups. Run the first direct campaigns.</p>
+        <div class="info-tags justify-center"><span>Loyalty live</span><span>Automations</span><span>Campaigns</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="py-32 px-4 relative bg-[#0A0605]">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16"><div class="text-sm text-white/40 uppercase tracking-wider mb-3">05 // INVESTMENT</div><h2 class="text-4xl md:text-5xl font-bold mb-4 t-grad">Fitted to Your Needs.</h2><p class="text-white/60 text-lg max-w-2xl mx-auto">Choose the plan that matches Avanti's stage.</p></div>
+    <div class="pricing-grid">
+      <div class="pricing-card glass border border-white/10">
+        <div class="text-sm text-white/40 uppercase tracking-wider mb-2">ESSENTIALS</div>
+        <div class="price">&#x9F3B;25K</div>
+        <div class="price-sub">per month &amp;middot; 3 months</div>
+        <div class="feature-row"><span class="text-emerald-400 font-bold">✓</span> Unified website with menu</div>
+        <div class="feature-row"><span class="text-emerald-400 font-bold">✓</span> Direct ordering integration</div>
+        <div class="feature-row"><span class="text-emerald-400 font-bold">✓</span> Customer profile system</div>
+        <a href="#accept" class="block w-full mt-6 py-3 bg-white/5 text-white rounded-xl text-sm font-semibold hover:bg-white/10 transition-colors border border-white/10">Select Plan</a>
+      </div>
+      <div class="pricing-card glass border border-red-500/30 popular">
+        <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-gradient-to-r from-red-500 to-amber-500 text-white text-xs font-medium">Popular</div>
+        <div class="text-sm text-red-400 uppercase tracking-wider mb-2">GROWTH</div>
+        <div class="price">&#x9F3B;45K</div>
+        <div class="price-sub">per month &amp;middot; 3 months</div>
+        <div class="feature-row"><span class="text-emerald-400 font-bold">✓</span> Everything in Essentials</div>
+        <div class="feature-row"><span class="text-emerald-400 font-bold">✓</span> Loyalty &amp; re-engagement</div>
+        <div class="feature-row"><span class="text-emerald-400 font-bold">✓</span> Automated SMS/email campaigns</div>
+        <a href="#accept" class="block w-full mt-6 py-3 bg-white text-black rounded-xl text-sm font-semibold hover:bg-white/90 transition-colors">Select Plan</a>
+      </div>
+      <div class="pricing-card glass border border-white/10">
+        <div class="text-sm text-white/40 uppercase tracking-wider mb-2">ENTERPRISE</div>
+        <div class="price">&#x9F3B;75K</div>
+        <div class="price-sub">per month &amp;middot; flexible</div>
+        <div class="feature-row"><span class="text-emerald-400 font-bold">✓</span> Everything in Growth</div>
+        <div class="feature-row"><span class="text-emerald-400 font-bold">✓</span> Dedicated account manager</div>
+        <div class="feature-row"><span class="text-emerald-400 font-bold">✓</span> POS integration &amp; custom builds</div>
+        <a href="#accept" class="block w-full mt-6 py-3 bg-white/5 text-white rounded-xl text-sm font-semibold hover:bg-white/10 transition-colors border border-white/10">Select Plan</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Q&A -->
+<section id="qa" class="py-32 px-4 relative bg-gradient-to-b from-transparent via-red-900/5 to-transparent">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-16"><div class="text-sm text-white/40 uppercase tracking-wider mb-3">06 // DISCUSSION</div><h2 class="text-4xl md:text-5xl font-bold mb-4 t-grad">Questions & Review.</h2><p class="text-white/60 text-lg">Open for both parties. Full transparency.</p></div>
+    <div class="space-y-4" id="qaFeed">
+      <div class="glass p-6 rounded-2xl border border-white/5"><div class="flex items-center gap-3 mb-3"><span class="px-3 py-1 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs font-medium">Vibeflow</span><span class="text-xs text-white/40">Lukas · 2 days ago</span></div><p class="text-white/80 text-sm italic mb-3">"Start with a menu audit before the website build?"</p><div class="p-3 rounded-xl bg-white/5 border-l-2 border-red-400 text-sm text-white/60"><strong class="text-red-400">Avanti:</strong> Yes, include it.</div></div>
+      <div class="glass p-6 rounded-2xl border border-white/5"><div class="flex items-center gap-3 mb-3"><span class="px-3 py-1 rounded-full bg-gradient-to-r from-red-500 to-amber-500 text-white text-xs font-medium">Avanti</span><span class="text-xs text-white/40">Management · 1 day ago</span></div><p class="text-white/80 text-sm italic mb-3">"Does ordering work with our current POS?"</p><div class="p-3 rounded-xl bg-white/5 border-l-2 border-amber-400 text-sm text-white/60"><strong class="text-amber-400">Vibeflow:</strong> Growth & Enterprise include POS integration.</div></div>
+    </div>
+    <div class="glass p-8 rounded-3xl border border-white/5 mt-8">
+      <h3 class="text-xl font-semibold mb-3">Ask a Question</h3>
+      <p class="text-white/50 text-sm mb-6">Visible to both parties. Always transparent.</p>
+      <form onsubmit="submitQ(event)">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><input type="text" placeholder="Your Name" id="qName" required class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-red-500/50 transition-colors"/><select id="qParty" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white/60 text-sm focus:outline-none focus:border-red-500/50 transition-colors"><option value="Avanti">Avanti (Client)</option><option value="Vibeflow">Vibeflow (Partner)</option></select></div>
+        <select id="qSection" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white/60 text-sm focus:outline-none focus:border-red-500/50 transition-colors mb-4"><option value="">Which section?</option><option value="Overview">Overview</option><option value="Challenges">Challenges</option><option value="Solution">Solution</option><option value="Timeline">Timeline</option><option value="Pricing">Pricing</option></select>
+        <textarea placeholder="Your question or comment..." id="qText" required class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-red-500/50 transition-colors resize-none min-h-[80px] mb-4"></textarea>
+        <button type="submit" class="px-6 py-3 bg-white text-black rounded-xl text-sm font-semibold hover:bg-white/90 transition-colors">Submit</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Accept -->
+<section id="accept" class="py-32 px-4 relative overflow-hidden bg-[#0A0605]">
+  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-red-900/10 to-transparent"></div>
+  <div class="max-w-4xl mx-auto text-center relative z-10">
+    <h2 class="text-5xl md:text-7xl font-bold mb-8 t-grad tracking-tight">Ready to begin?</h2>
+    <p class="text-white/60 text-xl mb-10 max-w-2xl mx-auto">Accept this proposal and we'll schedule your kickoff within 48 hours.</p>
+    <button onclick="doAccept()" class="group relative px-10 py-4 bg-white text-black font-semibold rounded-full text-lg hover:scale-105 transition-transform duration-300 overflow-hidden shadow-2xl shadow-white/10"><span class="relative z-10">✓ Accept & Begin</span><div class="absolute inset-0 bg-gradient-to-r from-red-400 to-amber-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div></button>
+    <div id="acceptedMsg" class="hidden mt-8 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-semibold">✓ Accepted — We'll be in touch within 48 hours.</div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="border-t border-white/5 py-12 px-4 bg-[#0A0605]">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+    <div class="text-xl font-bold t-grad tracking-tight flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-red-400"></div>vibeflow <span class="text-white/30 font-normal text-sm ml-1">× avanti</span></div>
+    <div class="text-white/40 text-sm">Built for restaurant owners in Bangladesh</div>
+  </div>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ── Set initial states ──
+gsap.set("#phase1", { opacity: 0 });
+gsap.set("#phase2", { opacity: 0 });
+gsap.set("#phase3", { opacity: 0 });
+
+// Phase 1 cards — row 1 (overview) fly in, row 2 (technical) fade up
+gsap.set([".card-1-1", ".card-1-2", ".card-1-3"], { opacity: 0, y: 40, scale: 0.92 });
+gsap.set([".card-1-4", ".card-1-5", ".card-1-6", ".card-1-7"], { opacity: 0, y: 30 });
+
+// Phase 2 cards
+gsap.set([".card-2-1", ".card-2-2", ".card-2-3"], { opacity: 0, y: 40, scale: 0.92 });
+gsap.set([".card-2-4", ".card-2-5", ".card-2-6", ".card-2-7"], { opacity: 0, y: 30 });
+
+// Phase 3 cards
+gsap.set([".card-3-1", ".card-3-2", ".card-3-3"], { opacity: 0, y: 40, scale: 0.92 });
+gsap.set([".card-3-4", ".card-3-5", ".card-3-6", ".card-3-7"], { opacity: 0, y: 30 });
+
+// ── Master timeline (850vh total) ──
+// Phase layout:
+//   0%–16% (0-136vh): POLY HERO visible
+//  16%–24%: Poly hero fades out
+//  24%–46%: Phase 1 — row 1 overview then row 2 technical
+//  46%–68%: Phase 2
+//  68%–90%: Phase 3
+//  90%–100%: Final hold
+
+const tl = gsap.timeline({
+  scrollTrigger: {
+    trigger: "#heroSection",
+    start: "top top",
+    end: "bottom bottom",
+    scrub: 2
+  }
+});
+
+// --- POLY HERO FADE OUT (16%–24%) ---
+tl.to("#polyHero", { opacity: 0, duration: 8, ease: "power2.inOut" })
+  .to("#polyDevice", { y: -80, opacity: 0, scale: 0.95, duration: 6, ease: "power2.inOut" }, "<")
+  .to("#polyHeadline", { opacity: 0, duration: 5, ease: "power2.inOut" }, "<");
+
+// --- PHASE 1: "Restaurant Automation" (24%–46%) ---
+tl.to("#phase1", { opacity: 1, duration: 2, ease: "power2.out" })
+  // Row 1: overview cards fly in
+  .to(".card-1-1", { opacity: 1, y: 0, scale: 1, duration: 5, ease: "power3.out" }, "<3")
+  .to(".card-1-2", { opacity: 1, y: 0, scale: 1, duration: 5, ease: "power3.out" }, "<")
+  .to(".card-1-3", { opacity: 1, y: 0, scale: 1, duration: 5, ease: "power3.out" }, "<")
+  // Row 2: technical cards fade up (slightly delayed)
+  .to(".card-1-4", { opacity: 1, y: 0, duration: 4, ease: "power2.out" }, "<5")
+  .to(".card-1-5", { opacity: 1, y: 0, duration: 4, ease: "power2.out" }, "<")
+  .to(".card-1-6", { opacity: 1, y: 0, duration: 4, ease: "power2.out" }, "<")
+  .to(".card-1-7", { opacity: 1, y: 0, duration: 4, ease: "power2.out" }, "<");
+
+// --- PHASE 1 → PHASE 2 TRANSITION ---
+tl.to("#phase1", { opacity: 0, duration: 3, ease: "power2.inOut" })
+  .to(".card-1-1", { opacity: 0, y: -20, duration: 2, ease: "power2.inOut" }, "<")
+  .to(".card-1-2", { opacity: 0, y: -20, duration: 2, ease: "power2.inOut" }, "<")
+  .to(".card-1-3", { opacity: 0, y: -20, duration: 2, ease: "power2.inOut" }, "<")
+  .to(".card-1-4", { opacity: 0, y: -15, duration: 2, ease: "power2.inOut" }, "<")
+  .to(".card-1-5", { opacity: 0, y: -15, duration: 2, ease: "power2.inOut" }, "<")
+  .to(".card-1-6", { opacity: 0, y: -15, duration: 2, ease: "power2.inOut" }, "<")
+  .to(".card-1-7", { opacity: 0, y: -15, duration: 2, ease: "power2.inOut" }, "<");
+
+// --- PHASE 2: "Sales Growth" (46%–68%) ---
+tl.to("#phase2", { opacity: 1, duration: 2, ease: "power2.out" })
+  .to(".card-2-1", { opacity: 1, y: 0, scale: 1, duration: 5, ease: "power3.out" }, "<3")
+  .to(".card-2-2", { opacity: 1, y: 0, scale: 1, duration: 5, ease: "power3.out" }, "<")
+  .to(".card-2-3", { opacity: 1, y: 0, scale: 1, duration: 5, ease: "power3.out" }, "<")
+  .to(".card-2-4", { opacity: 1, y: 0, duration: 4, ease: "power2.out" }, "<5")
+  .to(".card-2-5", { opacity: 1, y: 0, duration: 4, ease: "power2.out" }, "<")
+  .to(".card-2-6", { opacity: 1, y: 0, duration: 4, ease: "power2.out" }, "<")
+  .to(".card-2-7", { opacity: 1, y: 0, duration: 4, ease: "power2.out" }, "<");
+
+// --- PHASE 2 → PHASE 3 TRANSITION ---
+tl.to("#phase2", { opacity: 0, duration: 3, ease: "power2.inOut" })
+  .to(".card-2-1", { opacity: 0, y: -20, duration: 2, ease: "power2.inOut" }, "<")
+  .to(".card-2-2", { opacity: 0, y: -20, duration: 2, ease: "power2.inOut" }, "<")
+  .to(".card-2-3", { opacity: 0, y: -20, duration: 2, ease: "power2.inOut" }, "<")
+  .to(".card-2-4", { opacity: 0, y: -15, duration: 2, ease: "power2.inOut" }, "<")
+  .to(".card-2-5", { opacity: 0, y: -15, duration: 2, ease: "power2.inOut" }, "<")
+  .to(".card-2-6", { opacity: 0, y: -15, duration: 2, ease: "power2.inOut" }, "<")
+  .to(".card-2-7", { opacity: 0, y: -15, duration: 2, ease: "power2.inOut" }, "<");
+
+// --- PHASE 3: "90-Day Masterplan" (68%–90%) ---
+tl.to("#phase3", { opacity: 1, duration: 2, ease: "power2.out" })
+  .to(".card-3-1", { opacity: 1, y: 0, scale: 1, duration: 5, ease: "power3.out" }, "<3")
+  .to(".card-3-2", { opacity: 1, y: 0, scale: 1, duration: 5, ease: "power3.out" }, "<")
+  .to(".card-3-3", { opacity: 1, y: 0, scale: 1, duration: 5, ease: "power3.out" }, "<")
+  .to(".card-3-4", { opacity: 1, y: 0, duration: 4, ease: "power2.out" }, "<5")
+  .to(".card-3-5", { opacity: 1, y: 0, duration: 4, ease: "power2.out" }, "<")
+  .to(".card-3-6", { opacity: 1, y: 0, duration: 4, ease: "power2.out" }, "<")
+  .to(".card-3-7", { opacity: 1, y: 0, duration: 4, ease: "power2.out" }, "<");
+
+// ── Orbs parallax ──
+gsap.to(".glow-orb", {
+  scrollTrigger: { trigger: "#heroSection", start: "top top", end: "bottom bottom", scrub: 2 },
+  y: 120, rotation: 25, ease: "none"
+});
+
+// ── Standard section scroll reveals ──
+gsap.utils.toArray('.info-card').forEach((c, i) => {
+  gsap.from(c, { scrollTrigger: { trigger: c, start: "top 85%" }, y: 50, opacity: 0, duration: 0.8, delay: i * 0.1, ease: "power3.out" });
+});
+gsap.utils.toArray('.pricing-card').forEach((c, i) => {
+  gsap.from(c, { scrollTrigger: { trigger: c, start: "top 85%" }, y: 60, opacity: 0, duration: 0.8, delay: i * 0.15, ease: "power3.out" });
+});
+
+// ── Progress bar ──
+window.addEventListener('scroll', () => {
+  const p = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+  document.getElementById('progressBar').style.width = Math.min(p, 100) + '%';
+});
+
+// ── Theme ──
+let theme = localStorage.getItem('theme') || 'dark';
+document.documentElement.setAttribute('data-theme', theme);
+document.getElementById('themeBtn').textContent = theme === 'dark' ? '🌙' : '☀️';
+function toggleTheme(){ theme = theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('theme', theme); location.reload(); }
+
+// ── Accept ──
+function doAccept(){ document.querySelector('#accept .group')?.classList.add('hidden'); document.getElementById('acceptedMsg').classList.remove('hidden'); localStorage.setItem('avantiAccepted', 'true'); }
+if(localStorage.getItem('avantiAccepted') === 'true'){ document.querySelector('#accept .group')?.classList.add('hidden'); document.getElementById('acceptedMsg').classList.remove('hidden'); }
+
+// ── Q&A ──
+function submitQ(e){
+  e.preventDefault();
+  const n = document.getElementById('qName').value.trim(), p = document.getElementById('qParty').value, s = document.getElementById('qSection').value, t = document.getElementById('qText').value.trim();
+  if(!n || !t) return alert('Name and question required.');
+  const badge = p === 'Vibeflow' ? 'bg-gradient-to-r from-emerald-500 to-green-600' : 'bg-gradient-to-r from-red-500 to-amber-500';
+  const d = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const el = document.createElement('div');
+  el.className = 'glass p-6 rounded-2xl border border-white/5';
+  el.innerHTML = `<div class="flex items-center gap-3 mb-3"><span class="px-3 py-1 rounded-full ${badge} text-white text-xs font-medium">${p}</span><span class="text-xs text-white/40">${n} · ${d}</span>${s ? `<span class="text-xs text-white/30 ml-auto">${s}</span>` : ''}</div><p class="text-white/80 text-sm italic mb-3">"${t}"</p><div class="p-3 rounded-xl bg-white/5 border-l-2 border-white/20 text-sm text-white/40"><em>Awaiting response.</em></div>`;
+  document.getElementById('qaFeed').prepend(el);
+  document.getElementById('qText').value = '';
+  const qa = JSON.parse(localStorage.getItem('avantiQA') || '[]');
+  qa.unshift({ n, p, s, t, d });
+  localStorage.setItem('avantiQA', JSON.stringify(qa));
+}
+</script>
+</body>
+</html>
