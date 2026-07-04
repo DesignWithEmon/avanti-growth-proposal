@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dish Details - Avanti Restaurant</title>
+    
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;600;700&family=Playfair+Display+SC:wght@400;700&family=Playfair+Display:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    
+    <!-- Leaflet CSS & JS for Live Location -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./style.css">
+    
+    <style>
+        /* Header CSS copies */
+        #main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(6, 7, 8, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-border, rgba(255,255,255,0.05));
+            transition: background 0.3s ease;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: var(--container-width, 1200px);
+            margin: 0 auto;
+            padding: 0 20px;
+            height: var(--header-height, 80px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1001;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-family: var(--font-heading, 'Outfit', sans-serif);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-text-main, #f1f2f6);
+        }
+
+        .logo-text .logo-accent {
+            color: var(--color-primary, #dfb15b);
+        }
+
+        .animated-nav {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin: 0;
+            padding: 6px;
+            list-style: none;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 100px;
+        }
+
+        .animated-nav .nav-item {
+            position: relative;
+            z-index: 10;
+            display: block;
+            cursor: pointer;
+            padding: 8px 16px;
+            font-family: var(--font-body, 'Inter', sans-serif);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--color-text-main, #f1f2f6);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: color 0.2s ease;
+            border-radius: 100px;
+        }
+
+        .animated-nav .nav-item:hover,
+        .animated-nav .nav-item.active {
+            color: #fff;
+        }
+
+        .nav-cursor {
+            position: absolute;
+            top: 6px;
+            left: 0;
+            height: calc(100% - 12px);
+            background: var(--color-primary, #dfb15b);
+            border-radius: 100px;
+            pointer-events: none;
+            transition: left 0.35s cubic-bezier(0.25, 0.8, 0.25, 1),
+                        width 0.35s cubic-bezier(0.25, 0.8, 0.25, 1),
+                        opacity 0.25s ease;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .nav-cursor.visible {
+            opacity: 1;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1001;
+        }
+
+        .lang-toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            color: var(--color-text-muted, #9ba3af);
+            cursor: pointer;
+            font-family: var(--font-body, 'Inter', sans-serif);
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .lang-toggle-btn:hover {
+            border-color: var(--color-primary, #dfb15b);
+            color: var(--color-primary, #dfb15b);
+        }
+
+        .lang-text-en.active, .lang-text-bn.active {
+            color: var(--color-primary, #dfb15b);
+        }
+
+        .lang-divider {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-cta {
+            padding: 12px 24px;
+            background: var(--color-primary, #dfb15b);
+            color: #000 !important;
+            border-radius: 100px;
+            font-family: var(--font-body, 'Inter', sans-serif);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .nav-cta:hover {
+            background: var(--color-primary-hover, #c5a880);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(223, 177, 91, 0.3);
+        }
+
+        .mobile-nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 1001;
+        }
+
+        .mobile-nav-toggle .bar {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--color-text-main, #f1f2f6);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-toggle.active .bar:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .mobile-nav-toggle.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+        .mobile-nav-toggle.active .bar:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        .mobile-nav-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(6, 7, 8, 0.97);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-nav-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .mobile-nav-overlay a {
+            font-family: var(--font-heading, 'Outfit', sans-serif);
+            font-size: 1.8rem;
+            color: var(--color-text-main, #f1f2f6);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .mobile-nav-overlay a:hover {
+            color: var(--color-primary, #dfb15b);
+        }
+
+        @media (max-width: 900px) {
+            .animated-nav {
+                display: none;
+            }
+            .nav-actions .nav-cta {
+                display: none;
+            }
+            .mobile-nav-toggle {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Background Shapes -->
+    <div class="bg-shapes">
+        <div class="bg-shape bg-shape-1"></div>
+        <div class="bg-shape bg-shape-2"></div>
+        <div class="bg-shape bg-shape-3"></div>
+        <div class="bg-shape bg-shape-4"></div>
+        <div class="bg-shape bg-shape-5"></div>
+    </div>
+
+    <!-- Header navigation -->
+    <header id="main-header">
+        <div class="container header-container">
+            <!-- Logo -->
+            <a href="/" class="logo">
+                <img src="./assets/logo.png" alt="Avanti Logo">
+            </a>
+
+            <!-- Animated Navigation -->
+            <nav id="navbar">
+                <ul class="animated-nav" id="animatedNav">
+                    <li class="nav-cursor" id="navCursor"></li>
+                    <li><a href="/" class="nav-item" data-href="home">Home</a></li>
+                    <li><a href="/about" class="nav-item" data-href="about">About</a></li>
+                    <li><a href="/menu" class="nav-item" data-href="menu">Menu</a></li>
+                    <li><a href="/chef-specials" class="nav-item" data-href="chef-specials">Specials</a></li>
+                    <li><a href="/#gallery" class="nav-item" data-href="gallery">Gallery</a></li>
+                    <li><a href="/contact" class="nav-item" data-href="contact">Contact</a></li>
+                </ul>
+            </nav>
+
+            <!-- Nav Actions -->
+            <div class="nav-actions">
+                <button id="lang-toggle" class="lang-toggle-btn" aria-label="Toggle language">
+                    <span class="lang-text-en active">EN</span>
+                    <span class="lang-divider">/</span>
+                    <span class="lang-text-bn">বাং</span>
+                </button>
+                <a href="/contact" class="nav-cta">Book Table</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <div class="mobile-bottom-nav-inner">
+        <a href="index.html">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </a>
+        <a href="menu.html" class="active">
+            <i class="fa-solid fa-book-open"></i>
+            <span>Menu</span>
+        </a>
+        <a href="/chef-specials">
+            <i class="fa-solid fa-star"></i>
+            <span>Specials</span>
+        </a>
+        <a href="/about">
+            <i class="fa-solid fa-user"></i>
+            <span>About</span>
+        </a>
+        <a href="index.html#reserve">
+            <i class="fa-solid fa-comment-dots"></i>
+            <span>Contact</span>
+        </a>
+            </div>
+    </nav>
+
+    <!-- Dish Details Section -->
+    <section class="menu-section" style="padding-top: 12rem; min-height: 85vh; background-image: radial-gradient(circle at 50% 30%, rgba(223, 177, 91, 0.03) 0%, transparent 70%);">
+        <div class="container">
+            <!-- Back navigation link -->
+            <div style="margin-bottom: 3rem; display: flex; align-items: center; gap: 8px;">
+                <a href="/menu" class="nav-link back-to-menu-link" style="color: var(--color-primary); font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-arrow-left"></i> <span id="back-to-menu-txt">Back to Menu</span>
+                </a>
+            </div>
+
+            <!-- Main Dish Details Wrapper (Populated Dynamically) -->
+            <div id="dish-details-wrapper" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 50px; align-items: start;">
+                <!-- Left: Image Column -->
+                <div class="scroll-reveal" id="dish-image-col" style="position: relative;">
+                    <div class="about-image-card placeholder-img" style="height: 380px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.02); border-color: rgba(255,255,255,0.05);">
+                        <i class="fa-solid fa-utensils" style="font-size: 5rem; color: rgba(223,177,91,0.15);"></i>
+                        <div class="card-glow" style="opacity: 0.05;"></div>
+                    </div>
+                </div>
+
+                <!-- Right: Description Info Column -->
+                <div class="scroll-reveal" id="dish-info-col">
+                    <div id="dish-meta-tags" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1rem;">
+                        <!-- Dynamically filled tags -->
+                    </div>
+
+                    <h1 class="hero-title" id="dish-title" style="font-size: clamp(2rem, 4vw, 3rem); line-height: 1.2; margin-bottom: 1.5rem; letter-spacing: 0.5px;">Loading Item...</h1>
+                    
+                    <!-- Price block -->
+                    <div style="margin-bottom: 2rem; display: flex; align-items: center; gap: 15px;">
+                        <span id="price-label-txt" style="font-size: 1.2rem; color: var(--color-text-muted); font-weight: 300;">Price:</span>
+                        <span id="dish-price" style="font-size: 2.2rem; font-family: var(--font-heading); color: var(--color-primary); font-weight: 700;">৳0</span>
+                    </div>
+
+                    <!-- Description content -->
+                    <div class="about-text" id="dish-description" style="line-height: 1.8; margin-bottom: 2.5rem; font-size: 1.05rem;">
+                        Loading description details...
+                    </div>
+
+                    <!-- Ordering interaction button -->
+                    <div style="display: flex; gap: 15px; align-items: center; margin-top: 1rem;">
+                        <button type="button" id="dish-add-to-cart-btn" class="btn btn-primary btn-add-to-cart" style="padding: 1rem 2.5rem; font-size: 1rem; border-radius: var(--border-radius-sm); cursor: pointer; height: 54px; min-width: 220px; display: inline-flex; align-items: center; justify-content: center; gap: 10px;">
+                            <i class="fa-solid fa-cart-plus"></i> <span id="add-to-cart-btn-txt">Add to Cart</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other Specials Recommendations Row -->
+            <div style="margin-top: 8rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 5rem;">
+                <div class="scroll-reveal" style="margin-bottom: 3.5rem;">
+                    <h5 class="section-subtitle" id="recommended-subtitle">Recommended</h5>
+                    <h2 class="section-title" id="recommended-title" style="font-size: 2rem;">Chef's Signature Specials</h2>
+                    <div class="section-divider"></div>
+                </div>
+
+                <!-- Dynamically populated specials grid -->
+                <div class="menu-grid scroll-reveal" id="recommendations-grid">
+                    <!-- Cards populated via JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="container footer-container">
+            <div class="footer-brand-col">
+                <a href="/" class="logo">
+                    <img src="./assets/logo.png" alt="Avanti Logo" style="height: 48px; width: auto; margin-right: 10px;">
+                </a>
+                <p class="brand-tagline">Serving authentic Italian pizzas, gourmet set meals, and fresh fast food with progressive culinary craft since 2012.</p>
+            </div>
+            <div class="footer-links-col">
+                <h4>Sitemap</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About Philosophy</a></li>
+                    <li><a href="/menu">Chef's Menu</a></li>
+                    <li><a href="/chef-specials">Chef Specials</a></li>
+                    <li><a href="/#gallery">Visual Gallery</a></li>
+                </ul>
+            </div>
+            <div class="footer-newsletter-col">
+                <h4>Join Our Club</h4>
+                <p>Subscribe to receive updates on chef tastings, pizza discounts, and seasonal menus.</p>
+                <form class="footer-subscribe-form" id="subscribe-form">
+                    <input type="email" placeholder="Your Email Address" required>
+                    <button type="submit" aria-label="Subscribe"><i class="fa-solid fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="container footer-bottom-container">
+                <p class="copyright">&copy; Copyright 2026 Avanti Restaurant. All Rights Reserved.</p>
+                <p class="designer">Developed with Passion. Redesigned with Minimal Excellence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Cart Button -->
+    <div id="floating-cart" class="floating-cart">
+        <div class="cart-icon-wrapper">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span id="cart-badge" class="cart-badge">0</span>
+        </div>
+    </div>
+
+    <!-- Slide-out Cart Sidebar Drawer -->
+    <div id="cart-drawer" class="cart-drawer">
+        <div class="cart-drawer-header">
+            <h3><i class="fa-solid fa-cart-shopping"></i> Your Cart</h3>
+            <button id="close-cart-drawer" class="close-cart-btn" aria-label="Close Cart"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="cart-drawer-body">
+            <div id="cart-items-list" class="cart-items-list">
+                <div class="empty-cart-message">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                    <p>Your cart is empty.</p>
+                    <a href="/menu" class="btn btn-primary btn-sm close-cart-on-click">Explore Menu</a>
+                </div>
+            </div>
+
+            <div id="cart-summary" class="cart-summary" style="display: none;">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="cart-subtotal">৳0</span>
+                </div>
+                <div class="summary-row">
+                    <span id="delivery-label">Delivery Fee:</span>
+                    <span id="cart-delivery">৳60</span>
+                </div>
+                <div class="summary-row grand-total">
+                    <span>Grand Total:</span>
+                    <span id="cart-total">৳0</span>
+                </div>
+                <button id="go-to-checkout-btn" class="btn btn-primary btn-block">Proceed to Checkout</button>
+            </div>
+
+            <div id="checkout-form-container" class="checkout-form-container" style="display: none;">
+                <div class="checkout-header">
+                    <h4><button type="button" id="back-to-cart-btn" class="back-btn"><i class="fa-solid fa-arrow-left"></i></button> Delivery Details</h4>
+                </div>
+                <form id="checkout-form" class="checkout-form" novalidate>
+                    <div class="form-group">
+                        <label for="checkout-name">Full Name</label>
+                        <input type="text" id="checkout-name" name="name" placeholder="John Doe" required>
+                        <span class="error-msg">Name is required (min 2 chars)</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="checkout-phone">Phone Number</label>
+                        <input type="tel" id="checkout-phone" name="phone" placeholder="01755-559933" required>
+                        <span class="error-msg">Please enter a valid BD phone number</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Order Type</label>
+                        <div class="delivery-toggle-container">
+                            <button type="button" class="delivery-toggle-btn active" data-value="Delivery">Delivery</button>
+                            <button type="button" class="delivery-toggle-btn" data-value="Takeaway">Takeaway</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="address-group">
+                        <label for="checkout-address">Delivery Address</label>
+                                                <!-- Live Location Map -->
+                        <div style="margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background: var(--bg-card);">
+                            <div id="checkout-map" style="height: 200px; width: 100%; z-index: 1;"></div>
+                            <button type="button" id="locate-me-btn" style="width: 100%; padding: 10px; background: rgba(223, 177, 91, 0.1); color: var(--gold); border: none; border-top: 1px solid var(--border-color); cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.9rem; transition: all 0.3s;">
+                                📍 <span class="lbl-locate-me">Locate Me (Live GPS)</span>
+                            </button>
+                        </div>
+                        <input type="hidden" id="checkout-lat" name="lat">
+                        <input type="hidden" id="checkout-lng" name="lng">
+
+                        <textarea id="checkout-address" name="address" rows="3" placeholder="25, TN Roy Road, Amlapara, Mymensingh" required></textarea>
+                        <span class="error-msg">Delivery address is required</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="checkout-notes">Special Instructions (Optional)</label>
+                        <textarea id="checkout-notes" name="notes" rows="2" placeholder="e.g. Make it extra spicy, call before delivery..."></textarea>
+                    </div>
+
+                    <button type="submit" id="place-order-btn" class="btn btn-primary btn-block">
+                        <i class="fa-brands fa-whatsapp"></i> Place Order via WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background overlay -->
+    <div id="cart-overlay" class="cart-overlay"></div>
+
+    <!-- Order Success Confirmation Modal -->
+    <div id="order-success-modal" class="order-success-modal">
+        <div class="success-modal-content">
+            <div class="success-icon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h2>Order Placed Successfully!</h2>
+            <p>Your order has been recorded in our system. You are being redirected to WhatsApp to send the order details to the kitchen.</p>
+            <div id="order-summary-details" class="order-summary-details"></div>
+            <div class="success-actions">
+                <a id="whatsapp-manual-btn" href="#" target="_blank" class="btn btn-primary btn-block"><i class="fa-brands fa-whatsapp"></i> Send message manually</a>
+                <button type="button" id="close-success-modal" class="btn btn-secondary btn-block">Return to Store</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Lightbox Modal -->
+    <div id="lightbox-modal" class="lightbox-modal">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img" alt="Enlarged food item view">
+        <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+
+    <!-- Booking Confirmation Modal -->
+    <div id="booking-modal" class="booking-modal">
+        <div class="booking-modal-content">
+            <div class="booking-modal-header">
+                <i class="fa-regular fa-circle-check success-icon"></i>
+                <h2>Reservation Requested</h2>
+            </div>
+            <div class="booking-modal-body" id="booking-modal-details"></div>
+            <div class="booking-modal-footer">
+                <button class="btn btn-primary" id="close-booking-modal">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Smoke Background Canvas -->
+    <canvas id="smoke-bg-canvas" class="smoke-bg-canvas"></canvas>
+
+    <!-- Global JS Config & Scripts -->
+    <script type="text/javascript">
+        const AVANTI_APP = {
+            theme_uri: '.',
+            ajax_url: '/api/order',
+            reservation_nonce: '',
+            order_nonce: '',
+            delivery_charge: 60
+        };
+    </script>
+    <script src="./menu-data.js"></script>
+    <script src="./script.js"></script>
+    <script src="./assets/js/smoke-bg.js"></script>
+    
+    <!-- Dynamic Router and Translation Script for dish.html -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Translation Dictionaries for the Dynamic Components
+        const dishTranslations = {
+            en: {
+                back_to_menu: "Back to Menu",
+                price: "Price:",
+                recommended_subtitle: "Recommended",
+                recommended_title: "Chef's Signature Specials",
+                no_rec: "No recommendations found.",
+                add_to_cart: "Add to Cart",
+                call_to_order: "Call to Order",
+                unavailable: "Unavailable",
+                view_details: "View Details"
+            },
+            bn: {
+                back_to_menu: "মেনুতে ফিরে যান",
+                price: "মূল্য:",
+                recommended_subtitle: "প্রস্তাবিত",
+                recommended_title: "শেফের সিগনেচার স্পেশাল",
+                no_rec: "কোনো প্রস্তাবিত আইটেম পাওয়া যায়নি।",
+                add_to_cart: "কার্টে যোগ করুন",
+                call_to_order: "অর্ডার করতে কল করুন",
+                unavailable: "অপ্রাপ্য",
+                view_details: "বিস্তারিত দেখুন"
+            }
+        };
+
+        const banglaCategoryTranslations = {
+            'Starter': 'স্টার্টার',
+            'Fast Food & Sandwith': 'ফাস্ট ফুড ও স্যান্ডউইচ',
+            'Keto Meal': 'কিটো মিল',
+            'Salad': 'সালাদ',
+            'Soup': 'সুপ',
+            'Noodles & Chow Mein': 'নুডলস ও চাওমিন',
+            'Rice': 'ভাত ও রাইস',
+            'Chicken': 'চিকেন আইটেম',
+            'Beef & Mutton': 'গরু ও খাসির মাংস',
+            'Sea Food': 'সী ফুড',
+            'Vegetable': 'সবজি',
+            'Pasta': 'পাস্তা',
+            'Premium Burger': 'প্রিমিয়াম বার্গার',
+            'Pizza': 'পিজ্জা',
+            'Kids & Snacks': 'কিডস ও স্ন্যাক্স',
+            'Platters': 'প্ল্যাটার্স',
+            'Hot Coffee': 'গরম কফি',
+            'Over Iced Latte': 'আইসড ল্যাটে',
+            'Smoothies': 'স্মুদি',
+            'Lemonade': 'লেমনেড',
+            'Cold Coffee Freppe': 'কোল্ড কফি ফ্র্যাপে',
+            'Moctail': 'মকটেল',
+            'Juice': 'তাজা জুস',
+            'Lassi': 'লাচ্ছি',
+            'Milk Shake': 'মিল্কশেক',
+            'Ice-Cream': 'আইসক্রিম',
+            'Dessert': 'ডেজার্ট'
+        };
+
+        const banglaTerms = {
+            'Chicken': 'চিকেন',
+            'Mutton': 'খাসি',
+            'Rice': 'রাইস',
+            'Prawn': 'চিংড়ি',
+            'Fish': 'মাছ',
+            'Vegetable': 'সবজি',
+            'Chowmein': 'চাওমিন',
+            'Pasta': 'পাস্তা',
+            'Pizza': 'পিজ্জা',
+            'Quater': 'কোয়ার্টার',
+            'Half': 'হাফ',
+            'Full': 'ফুল',
+            '1:1': '১:১',
+            '1:2': '১:২',
+            '1:3': '১:৩',
+            '1:4': '১:৪',
+            '1:5': '১:৫',
+            '1:6': '১:৬',
+            '4 pcs': '৪ পিস',
+            '4 Pcs': '৪ পিস',
+            '6 Pcs': '৬ পিস',
+            '8 Pcs': '৮ পিস',
+            '2 Pcs': '২ পিস',
+            '8 Pic': '৮ পিস',
+            'Medium': 'মিডিয়াম',
+            'Large': 'লার্জ'
+        };
+
+        function translateDigits(str) {
+            if (!str) return '';
+            const digits = {'0':'০', '1':'১', '2':'২', '3':'৩', '4':'৪', '5':'৫', '6':'৬', '7':'৭', '8':'৮', '9':'৯'};
+            return str.toString().replace(/[0-9]/g, match => digits[match]);
+        }
+
+        // Helper to format price
+        function formatPrice(priceStr, lang) {
+            if (!priceStr) return '';
+            priceStr = priceStr.trim();
+            if (priceStr.toUpperCase() === 'MRP') {
+                return 'MRP';
+            }
+            if (priceStr.includes('-')) {
+                const parts = priceStr.split('-').map(p => `৳${p.trim()}`);
+                const res = parts.join(' - ');
+                return lang === 'bn' ? translateDigits(res) : res;
+            }
+            const formatted = `৳${priceStr}`;
+            return lang === 'bn' ? translateDigits(formatted) : formatted;
+        }
+
+        // Get signature high-res images for the 4 Chef Specials
+        function getSignatureImage(id) {
+            const numericId = parseInt(id);
+            if (numericId === 99 || numericId === 100) return './assets/special_pizza.png';
+            if (numericId === 110) return './assets/special_meal.png';
+            if (numericId === 106) return './assets/bbq_meal.png';
+            if (numericId === 108) return './assets/chicken_boustead.png';
+            return null;
+        }
+
+        // Fallback icon based on category/name
+        function getFallbackIconClass(category, name) {
+            const catLower = (category || '').toLowerCase();
+            const nameLower = (name || '').toLowerCase();
+            
+            if (catLower.includes('breakfast')) return 'fa-egg';
+            if (nameLower.includes('rice') || nameLower.includes('biryani') || nameLower.includes('platter')) return 'fa-bowl-rice';
+            if (catLower.includes('kabab') || catLower.includes('grill') || catLower.includes('barbecue') || nameLower.includes('bbq') || nameLower.includes('chap')) return 'fa-fire-burner';
+            if (nameLower.includes('fish') || nameLower.includes('prawn') || nameLower.includes('sea food')) return 'fa-fish';
+            if (catLower.includes('soup') || nameLower.includes('soup')) return 'fa-bowl-food';
+            if (catLower.includes('salad') || nameLower.includes('salad')) return 'fa-leaf';
+            if (nameLower.includes('burger') || nameLower.includes('sandwich')) return 'fa-burger';
+            if (nameLower.includes('pizza') || nameLower.includes('pasta') || nameLower.includes('italian')) return 'fa-pizza-slice';
+            if (catLower.includes('coffee') || nameLower.includes('tea') || nameLower.includes('latte')) return 'fa-mug-hot';
+            if (catLower.includes('drink') || catLower.includes('juice') || catLower.includes('lassi') || catLower.includes('chiller') || catLower.includes('shake')) return 'fa-glass-water';
+            if (catLower.includes('dessert') || nameLower.includes('ice cream') || nameLower.includes('sweet')) return 'fa-ice-cream';
+            
+            return 'fa-utensils';
+        }
+
+        // Find item in MENU_DATA using name-based slug comparison
+        function findItemBySlug(slug) {
+            if (typeof MENU_DATA === 'undefined') return null;
+            return MENU_DATA.find(item => {
+                const itemSlug = item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                return itemSlug === slug;
+            });
+        }
+
+        // Render Item details in DOM
+        function renderDish(item) {
+            const imgPath = item.image ? item.image : getSignatureImage(item.id);
+            const imgCol = document.getElementById('dish-image-col');
+            
+            if (imgPath) {
+                imgCol.innerHTML = `
+                    <div class="about-image-card" style="border-color: rgba(223, 177, 91, 0.25);">
+                        <img src="${imgPath}" alt="${item.name}" class="about-img" style="width: 100%; object-fit: cover;">
+                        <div class="card-glow" style="opacity: 0.12;"></div>
+                    </div>
+                `;
+            } else {
+                const icon = getFallbackIconClass(item.category, item.name);
+                imgCol.innerHTML = `
+                    <div class="about-image-card placeholder-img" style="height: 380px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.02); border-color: rgba(255,255,255,0.05);">
+                        <i class="fa-solid ${icon}" style="font-size: 5rem; color: rgba(223,177,91,0.15);"></i>
+                        <div class="card-glow" style="opacity: 0.05;"></div>
+                    </div>
+                `;
+            }
+
+            // Set Title & Description
+            document.getElementById('dish-title').textContent = item.name;
+            document.title = `${item.name} - Avanti Restaurant`;
+
+            const descEl = document.getElementById('dish-description');
+            if (item.description && item.description.trim()) {
+                descEl.textContent = item.description;
+            } else {
+                descEl.textContent = "Experience the exceptional quality and taste of Avanti's prepared dishes. Made daily with fresh ingredients, local spices, and refined culinary expertise.";
+            }
+
+            // Configure Cart button
+            const addBtn = document.getElementById('dish-add-to-cart-btn');
+            
+            const isMRP = (item.price || '').trim().toUpperCase() === 'MRP';
+            const hasPrice = item.price && item.price.trim() !== '';
+            let cleanPrice = '';
+
+            if (isMRP) {
+                addBtn.disabled = true;
+                addBtn.className = 'btn btn-secondary';
+            } else if (!hasPrice) {
+                addBtn.disabled = true;
+                addBtn.className = 'btn btn-secondary';
+            } else {
+                addBtn.disabled = false;
+                addBtn.className = 'btn btn-primary btn-add-to-cart';
+                if (item.price.includes('-')) {
+                    cleanPrice = item.price.split('-')[0].trim();
+                } else {
+                    cleanPrice = item.price.trim();
+                }
+            }
+
+            addBtn.setAttribute('data-id', item.id);
+            addBtn.setAttribute('data-name', item.name);
+            addBtn.setAttribute('data-price', cleanPrice);
+        }
+
+        // Render Recommended Specials Row (limit to 3, excluding current item)
+        function renderRecommendations(currentItem) {
+            const grid = document.getElementById('recommendations-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            // Filter for featured items that are not the current item
+            let recs = MENU_DATA.filter(item => item.featured && item.id !== currentItem.id);
+            
+            // If we don't have enough featured, add some random items from same category
+            if (recs.length < 3) {
+                const extras = MENU_DATA.filter(item => item.category === currentItem.category && item.id !== currentItem.id && !recs.some(r => r.id === item.id));
+                recs = recs.concat(extras);
+            }
+
+            recs = recs.slice(0, 3);
+
+            if (recs.length === 0) {
+                const lang = localStorage.getItem('avanti_selectedLang') || 'en';
+                grid.innerHTML = `<p style="color: var(--color-text-muted);">${dishTranslations[lang].no_rec}</p>`;
+                return;
+            }
+
+            recs.forEach(item => {
+                const imgPath = item.image ? item.image : getSignatureImage(item.id);
+                const itemSlug = item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                const dishUrl = `/dish/${itemSlug}`;
+
+                let imgHtml = '';
+                if (imgPath) {
+                    imgHtml = `
+                        <div class="menu-item-img-container" onclick="location.href='${dishUrl}'">
+                            <img src="${imgPath}" alt="${item.name}" class="menu-item-img" loading="lazy">
+                            <div class="img-overlay">
+                                <span class="overlay-text"><i class="fa-solid fa-eye"></i> View Details</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    const icon = getFallbackIconClass(item.category, item.name);
+                    imgHtml = `
+                        <div class="menu-item-img-container placeholder-img" onclick="location.href='${dishUrl}'">
+                            <i class="fa-solid ${icon} custom-card-bg-icon"></i>
+                            <div class="img-overlay">
+                                <span class="overlay-text"><i class="fa-solid fa-eye"></i> View Details</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Button setup
+                const isMRP = (item.price || '').trim().toUpperCase() === 'MRP';
+                const hasPrice = item.price && item.price.trim() !== '';
+                let btnText = 'Add to Cart';
+                let btnDisabled = '';
+                let cleanPrice = '';
+
+                if (isMRP) {
+                    btnText = 'Call to Order';
+                    btnDisabled = 'disabled';
+                } else if (!hasPrice) {
+                    btnText = 'Unavailable';
+                    btnDisabled = 'disabled';
+                } else {
+                    if (item.price.includes('-')) {
+                        cleanPrice = item.price.split('-')[0].trim();
+                    } else {
+                        cleanPrice = item.price.trim();
+                    }
+                }
+
+                const card = document.createElement('div');
+                card.className = 'menu-item-card';
+                card.innerHTML = `
+                    ${imgHtml}
+                    <div class="menu-item-info">
+                        <div class="menu-item-header">
+                            <h3 class="menu-item-title"><a href="${dishUrl}">${item.name}</a></h3>
+                            <span class="menu-item-price" data-orig-price="${item.price}">${formatPrice(item.price, 'en')}</span>
+                        </div>
+                        <p class="menu-item-desc">${item.description ? item.description : "Experience Avanti's exceptional taste."}</p>
+                        <div class="menu-item-meta" style="margin-bottom: 1.5rem;">
+                            <span class="tag tag-category-label" data-category="${item.category}"><i class="fa-solid fa-tags"></i> ${item.category}</span>
+                            ${item.quantity ? `<span class="tag tag-quantity-label" data-quantity="${item.quantity}"><i class="fa-solid fa-weight-hanging"></i> ${item.quantity}</span>` : ''}
+                        </div>
+                        <div style="display: flex; gap: 10px; width: 100%; margin-top: auto;">
+                            <a href="${dishUrl}" class="btn btn-secondary view-details-btn-lbl" style="flex-grow: 1; padding: 0.6rem; font-size: 0.8rem; border-radius: var(--border-radius-sm); height: 44px; display: inline-flex; align-items: center; justify-content: center;">View Details</a>
+                            <button type="button" class="btn-add-to-cart btn btn-primary add-to-cart-btn-lbl" ${btnDisabled} data-id="${item.id}" data-name="${item.name}" data-price="${cleanPrice}" style="flex-grow: 1.5; padding: 0.6rem; font-size: 0.8rem; border-radius: var(--border-radius-sm); height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; box-shadow: none;">
+                                <i class="fa-solid fa-cart-plus"></i> ${btnText}
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Apply translations based on current language
+        function translateDishPage(item) {
+            const lang = localStorage.getItem('avanti_selectedLang') || 'en';
+            const t = dishTranslations[lang];
+
+            // 1. Text labels
+            document.getElementById('back-to-menu-txt').textContent = t.back_to_menu;
+            document.getElementById('price-label-txt').textContent = t.price;
+            document.getElementById('recommended-subtitle').textContent = t.recommended_subtitle;
+            document.getElementById('recommended-title').textContent = t.recommended_title;
+
+            // 2. Main add to cart button
+            const addBtn = document.getElementById('dish-add-to-cart-btn');
+            const isMRP = (item.price || '').trim().toUpperCase() === 'MRP';
+            const hasPrice = item.price && item.price.trim() !== '';
+            
+            if (addBtn) {
+                const btnLabelSpan = document.getElementById('add-to-cart-btn-txt');
+                if (isMRP) {
+                    btnLabelSpan.textContent = t.call_to_order;
+                    addBtn.innerHTML = `<i class="fa-solid fa-phone"></i> <span id="add-to-cart-btn-txt">${t.call_to_order}</span>`;
+                } else if (!hasPrice) {
+                    btnLabelSpan.textContent = t.unavailable;
+                    addBtn.innerHTML = `<span id="add-to-cart-btn-txt">${t.unavailable}</span>`;
+                } else {
+                    addBtn.innerHTML = `<i class="fa-solid fa-cart-plus"></i> <span id="add-to-cart-btn-txt">${t.add_to_cart}</span>`;
+                }
+            }
+
+            // Price Translation
+            document.getElementById('dish-price').textContent = formatPrice(item.price, lang);
+
+            // Tags Translation
+            const tagsContainer = document.getElementById('dish-meta-tags');
+            tagsContainer.innerHTML = '';
+            
+            const displayCat = lang === 'bn' ? (banglaCategoryTranslations[item.category] || item.category) : item.category;
+            tagsContainer.innerHTML += `<span class="tag" style="background: var(--color-primary-light); color: var(--color-primary); font-size: 0.8rem; font-weight: 600;"><i class="fa-solid fa-tags"></i> ${displayCat}</span>`;
+            
+            if (item.quantity) {
+                const displayQty = lang === 'bn' ? (banglaTerms[item.quantity] || translateDigits(item.quantity)) : item.quantity;
+                tagsContainer.innerHTML += `<span class="tag" style="background: rgba(255,255,255,0.04); color: var(--color-text-main); font-size: 0.8rem;"><i class="fa-solid fa-weight-hanging"></i> ${displayQty}</span>`;
+            }
+            if (item.subCategory) {
+                const displaySub = lang === 'bn' ? (banglaTerms[item.subCategory] || item.subCategory) : item.subCategory;
+                tagsContainer.innerHTML += `<span class="tag" style="background: rgba(255,255,255,0.04); color: var(--color-text-muted); font-size: 0.8rem;"><i class="fa-solid fa-circle-info"></i> ${displaySub}</span>`;
+            }
+
+            // Translate Recommended Grid items
+            const recCards = document.querySelectorAll('#recommendations-grid .menu-item-card');
+            recCards.forEach(card => {
+                // Price
+                const priceSpan = card.querySelector('.menu-item-price');
+                if (priceSpan) {
+                    const origPrice = priceSpan.getAttribute('data-orig-price');
+                    priceSpan.textContent = formatPrice(origPrice, lang);
+                }
+
+                // Category Tag
+                const catTag = card.querySelector('.tag-category-label');
+                if (catTag) {
+                    const catVal = catTag.getAttribute('data-category');
+                    const displayCatVal = lang === 'bn' ? (banglaCategoryTranslations[catVal] || catVal) : catVal;
+                    catTag.innerHTML = `<i class="fa-solid fa-tags"></i> ${displayCatVal}`;
+                }
+
+                // Quantity Tag
+                const qtyTag = card.querySelector('.tag-quantity-label');
+                if (qtyTag) {
+                    const qtyVal = qtyTag.getAttribute('data-quantity');
+                    const displayQtyVal = lang === 'bn' ? (banglaTerms[qtyVal] || translateDigits(qtyVal)) : qtyVal;
+                    qtyTag.innerHTML = `<i class="fa-solid fa-weight-hanging"></i> ${displayQtyVal}`;
+                }
+
+                // View details button
+                const viewBtn = card.querySelector('.view-details-btn-lbl');
+                if (viewBtn) {
+                    viewBtn.textContent = t.view_details;
+                }
+
+                // Add to cart button
+                const recAddBtn = card.querySelector('.add-to-cart-btn-lbl');
+                if (recAddBtn) {
+                    const isRecMRP = (recAddBtn.getAttribute('data-price') === '0' || !recAddBtn.getAttribute('data-price')); // Or look up matching item
+                    if (recAddBtn.disabled) {
+                        recAddBtn.innerHTML = `<i class="fa-solid fa-phone"></i> ${t.call_to_order}`;
+                    } else {
+                        recAddBtn.innerHTML = `<i class="fa-solid fa-cart-plus"></i> ${t.add_to_cart}`;
+                    }
+                }
+            });
+        }
+
+        // Router Initiation
+        const urlParams = new URLSearchParams(window.location.search);
+        const slug = urlParams.get('slug');
+
+        if (slug) {
+            const currentItem = findItemBySlug(slug);
+            if (currentItem) {
+                renderDish(currentItem);
+                renderRecommendations(currentItem);
+                
+                // Set initial translations
+                translateDishPage(currentItem);
+
+                // Listen to language updates
+                const toggle = document.getElementById('lang-toggle');
+                if (toggle) {
+                    toggle.addEventListener('click', () => {
+                        setTimeout(() => {
+                            translateDishPage(currentItem);
+                        }, 50);
+                    });
+                }
+            } else {
+                document.getElementById('dish-title').textContent = "Dish Not Found";
+                document.getElementById('dish-description').textContent = "The item you requested could not be found. Please return to the menu.";
+                const addBtn = document.getElementById('dish-add-to-cart-btn');
+                if (addBtn) addBtn.style.display = 'none';
+            }
+        } else {
+            document.getElementById('dish-title').textContent = "No Dish Selected";
+            document.getElementById('dish-description').textContent = "No menu item slug was specified. Please browse our menu list.";
+            const addBtn = document.getElementById('dish-add-to-cart-btn');
+            if (addBtn) addBtn.style.display = 'none';
+        }
+    });
+    </script>
+</body>
+</html>

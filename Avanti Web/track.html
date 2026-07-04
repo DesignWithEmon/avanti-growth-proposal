@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Order - Avanti</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #070709;
+            --bg-card: rgba(255,255,255,0.03);
+            --border-color: rgba(255,255,255,0.08);
+            --gold: #dfb15b;
+            --text-main: #f1f2f6;
+            --text-muted: #9ba3af;
+            --green: #10b981;
+            --yellow: #f59e0b;
+            --purple: #a855f7;
+            --red: #ef4444;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(0,0,0,0.5);
+        }
+
+        header h1 {
+            font-family: 'Outfit', sans-serif;
+            color: var(--gold);
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        header a {
+            text-decoration: none;
+            color: var(--gold);
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .order-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .order-header h2 {
+            font-family: 'Outfit', sans-serif;
+            margin: 0 0 10px 0;
+            font-size: 1.8rem;
+        }
+
+        .order-header p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        /* Progress Tracker */
+        .tracker {
+            position: relative;
+            margin: 40px 0;
+        }
+
+        .tracker::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 20px;
+            width: 2px;
+            background: var(--border-color);
+            z-index: 1;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+            opacity: 0.4;
+            transition: all 0.3s ease;
+        }
+
+        .step:last-child {
+            margin-bottom: 0;
+        }
+
+        .step.active {
+            opacity: 1;
+        }
+
+        .step.active .icon {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(223, 177, 91, 0.3);
+        }
+
+        .icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-dark);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-right: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .icon {
+            border-color: var(--gold);
+            background: rgba(223, 177, 91, 0.1);
+        }
+
+        .step.done .icon {
+            border-color: var(--green);
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--green);
+        }
+
+        .step.cancelled .icon {
+            border-color: var(--red);
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--red);
+        }
+
+        .step-content h4 {
+            margin: 0 0 5px 0;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+        }
+
+        .step-content p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Order Details */
+        .details-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .details-list li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .details-list li.total {
+            border-top: 1px dashed var(--border-color);
+            padding-top: 12px;
+            margin-top: 12px;
+            font-weight: 600;
+            color: var(--gold);
+            font-size: 1.1rem;
+        }
+
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            border-top-color: var(--gold);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .btn-home {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            text-align: center;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid var(--border-color);
+        }
+        .btn-home:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1><a href="/">Avanti</a></h1>
+    </header>
+
+    <div class="container">
+        
+        <div class="card" id="loading-card" style="text-align: center; padding: 60px 20px;">
+            <div class="loader"></div>
+            <p style="margin-top: 20px; color: var(--text-muted);">Finding your order...</p>
+        </div>
+
+        <div class="card" id="error-card" style="display: none; text-align: center; padding: 60px 20px;">
+            <div style="font-size: 3rem; margin-bottom: 10px;">😕</div>
+            <h3 style="margin: 0 0 10px 0; color: var(--red);">Order Not Found</h3>
+            <p style="color: var(--text-muted);">Please check your Order ID or contact the restaurant.</p>
+        </div>
+
+        <div id="tracking-content" style="display: none;">
+            <div class="order-header">
+                <h2>Order #<span id="display-id"></span></h2>
+                <p>Status: <strong id="display-status" style="color: var(--gold);">Pending</strong></p>
+                <p style="font-size: 0.8rem; margin-top:5px;" id="display-type"></p>
+            </div>
+
+            <div class="card">
+                <h3 style="margin: 0 0 20px 0; font-family: 'Outfit', sans-serif; font-size:1.2rem;">Live Tracker</h3>
+                <div class="tracker" id="tracker-container">
+                    <!-- Steps injected by JS -->
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin: 0 0 20px 0; font-family: 'Outfit', sans-serif; font-size:1.2rem;">Order Details</h3>
+                <ul class="details-list" id="items-list">
+                    <!-- Items injected by JS -->
+                </ul>
+            </div>
+            
+            <a href="/" class="btn-home">Back to Menu</a>
+        </div>
+
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('id');
+
+        if (!orderId) {
+            document.getElementById('loading-card').style.display = 'none';
+            document.getElementById('error-card').style.display = 'block';
+        } else {
+            fetchOrder();
+            setInterval(fetchOrder, 5000);
+        }
+
+        async function fetchOrder() {
+            try {
+                const res = await fetch(`/api/orders?action=track&id=${orderId}`);
+                const result = await res.json();
+
+                document.getElementById('loading-card').style.display = 'none';
+
+                if (result.success) {
+                    document.getElementById('error-card').style.display = 'none';
+                    document.getElementById('tracking-content').style.display = 'block';
+                    renderTracking(result.data);
+                } else {
+                    document.getElementById('tracking-content').style.display = 'none';
+                    document.getElementById('error-card').style.display = 'block';
+                }
+            } catch (err) {
+                console.error("Tracking Error:", err);
+            }
+        }
+
+        function renderTracking(order) {
+            document.getElementById('display-id').innerText = order.id;
+            document.getElementById('display-status').innerText = order.status;
+            document.getElementById('display-type').innerText = order.deliveryType === 'Takeaway' ? '🏃‍♂️ Takeaway' : '🛵 Home Delivery';
+            
+            // Set Color based on status
+            const statusEl = document.getElementById('display-status');
+            if(order.status === 'Pending') statusEl.style.color = 'var(--red)';
+            if(order.status === 'Preparing') statusEl.style.color = 'var(--yellow)';
+            if(order.status === 'Delivering') statusEl.style.color = 'var(--purple)';
+            if(order.status === 'Completed') statusEl.style.color = 'var(--green)';
+            if(order.status === 'Cancelled') statusEl.style.color = 'var(--text-muted)';
+
+            // Build Tracker Steps
+            const tracker = document.getElementById('tracker-container');
+            let stepsHtml = '';
+            
+            const isDelivery = order.deliveryType === 'Delivery';
+            
+            // Step logic based on status
+            let s1 = '', s2 = '', s3 = '', s4 = '';
+            
+            if (order.status === 'Cancelled') {
+                stepsHtml = `
+                    <div class="step active cancelled">
+                        <div class="icon">❌</div>
+                        <div class="step-content">
+                            <h4>Order Cancelled</h4>
+                            <p>This order has been cancelled.</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Pending
+                if(order.status === 'Pending') s1 = 'active';
+                else s1 = 'done';
+
+                // Preparing
+                if(order.status === 'Preparing') s2 = 'active';
+                else if (order.status === 'Delivering' || order.status === 'Completed') s2 = 'done';
+                
+                // Delivering (Only for delivery)
+                if (isDelivery) {
+                    if(order.status === 'Delivering') s3 = 'active';
+                    else if (order.status === 'Completed') s3 = 'done';
+                }
+
+                // Completed
+                if(order.status === 'Completed') s4 = 'done active';
+
+                stepsHtml += `
+                    <div class="step ${s1}">
+                        <div class="icon">${s1 === 'done' ? '✓' : '📝'}</div>
+                        <div class="step-content">
+                            <h4>Order Placed</h4>
+                            <p>Waiting for restaurant to confirm.</p>
+                        </div>
+                    </div>
+                    <div class="step ${s2}">
+                        <div class="icon">${s2 === 'done' ? '✓' : '👨‍🍳'}</div>
+                        <div class="step-content">
+                            <h4>Preparing</h4>
+                            <p>Chef is cooking your delicious food.</p>
+                        </div>
+                    </div>
+                `;
+
+                if (isDelivery) {
+                    stepsHtml += `
+                        <div class="step ${s3}">
+                            <div class="icon">${s3 === 'done' ? '✓' : '🛵'}</div>
+                            <div class="step-content">
+                                <h4>Out for Delivery</h4>
+                                <p>Rider is on the way to you.</p>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                stepsHtml += `
+                    <div class="step ${s4}">
+                        <div class="icon">${s4.includes('done') ? '✓' : '🎉'}</div>
+                        <div class="step-content">
+                            <h4>Completed</h4>
+                            <p>${isDelivery ? 'Enjoy your meal!' : 'Ready for pickup!'}</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            tracker.innerHTML = stepsHtml;
+
+            // Build Items list
+            let itemsHtml = '';
+            order.items.forEach(item => {
+                itemsHtml += `<li><span>${item.quantity}x ${item.name}</span> <span>৳${item.quantity * item.price}</span></li>`;
+            });
+            const deliveryFee = order.total - order.items.reduce((acc, curr) => acc + (curr.quantity * curr.price), 0);
+            if(deliveryFee > 0) {
+                itemsHtml += `<li><span>Delivery Fee</span> <span>৳${deliveryFee}</span></li>`;
+            }
+            itemsHtml += `<li class="total"><span>Total</span> <span>৳${order.total}</span></li>`;
+            
+            document.getElementById('items-list').innerHTML = itemsHtml;
+        }
+    </script>
+</body>
+</html>

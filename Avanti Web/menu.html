@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Menu - Avanti Restaurant</title>
+    
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;600;700&family=Playfair+Display+SC:wght@400;700&family=Playfair+Display:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Leaflet CSS & JS for Live Location -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./style.css">
+    
+    <style>
+        /* Header CSS copies */
+        #main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(6, 7, 8, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-border, rgba(255,255,255,0.05));
+            transition: background 0.3s ease;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: var(--container-width, 1200px);
+            margin: 0 auto;
+            padding: 0 20px;
+            height: var(--header-height, 80px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1001;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-family: var(--font-heading, 'Outfit', sans-serif);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-text-main, #f1f2f6);
+        }
+
+        .logo-text .logo-accent {
+            color: var(--color-primary, #dfb15b);
+        }
+
+        .animated-nav {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin: 0;
+            padding: 6px;
+            list-style: none;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 100px;
+        }
+
+        .animated-nav .nav-item {
+            position: relative;
+            z-index: 10;
+            display: block;
+            cursor: pointer;
+            padding: 8px 16px;
+            font-family: var(--font-body, 'Inter', sans-serif);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--color-text-main, #f1f2f6);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: color 0.2s ease;
+            border-radius: 100px;
+        }
+
+        .animated-nav .nav-item:hover,
+        .animated-nav .nav-item.active {
+            color: #fff;
+        }
+
+        .nav-cursor {
+            position: absolute;
+            top: 6px;
+            left: 0;
+            height: calc(100% - 12px);
+            background: var(--color-primary, #dfb15b);
+            border-radius: 100px;
+            pointer-events: none;
+            transition: left 0.35s cubic-bezier(0.25, 0.8, 0.25, 1),
+                        width 0.35s cubic-bezier(0.25, 0.8, 0.25, 1),
+                        opacity 0.25s ease;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .nav-cursor.visible {
+            opacity: 1;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1001;
+        }
+
+        .lang-toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            color: var(--color-text-muted, #9ba3af);
+            cursor: pointer;
+            font-family: var(--font-body, 'Inter', sans-serif);
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .lang-toggle-btn:hover {
+            border-color: var(--color-primary, #dfb15b);
+            color: var(--color-primary, #dfb15b);
+        }
+
+        .lang-text-en.active, .lang-text-bn.active {
+            color: var(--color-primary, #dfb15b);
+        }
+
+        .lang-divider {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-cta {
+            padding: 12px 24px;
+            background: var(--color-primary, #dfb15b);
+            color: #000 !important;
+            border-radius: 100px;
+            font-family: var(--font-body, 'Inter', sans-serif);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .nav-cta:hover {
+            background: var(--color-primary-hover, #c5a880);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(223, 177, 91, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Floating Background Shapes -->
+    <div class="bg-shapes">
+        <div class="bg-shape bg-shape-1"></div>
+        <div class="bg-shape bg-shape-2"></div>
+        <div class="bg-shape bg-shape-3"></div>
+        <div class="bg-shape bg-shape-4"></div>
+        <div class="bg-shape bg-shape-5"></div>
+    </div>
+
+    <!-- Header navigation -->
+    <header id="main-header">
+        <div class="container header-container">
+            <!-- Logo -->
+            <a href="/" class="logo">
+                <img src="./assets/logo.png" alt="Avanti Logo">
+            </a>
+
+            <!-- Animated Navigation -->
+            <nav id="navbar">
+                <ul class="animated-nav" id="animatedNav">
+                    <li class="nav-cursor" id="navCursor"></li>
+                    <li><a href="/" class="nav-item" data-href="home">Home</a></li>
+                    <li><a href="/about" class="nav-item" data-href="about">About</a></li>
+                    <li><a href="/menu" class="nav-item active" data-href="menu">Menu</a></li>
+                    <li><a href="/chef-specials" class="nav-item" data-href="chef-specials">Specials</a></li>
+                    <li><a href="/#gallery" class="nav-item" data-href="gallery">Gallery</a></li>
+                    <li><a href="/contact" class="nav-item" data-href="contact">Contact</a></li>
+                </ul>
+            </nav>
+
+            <!-- Nav Actions -->
+            <div class="nav-actions">
+                <button id="lang-toggle" class="lang-toggle-btn" aria-label="Toggle language">
+                    <span class="lang-text-en active">EN</span>
+                    <span class="lang-divider">/</span>
+                    <span class="lang-text-bn">বাং</span>
+                </button>
+                <a href="/reservation" class="nav-cta">Book Table</a>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <div class="mobile-bottom-nav-inner">
+        <a href="index.html">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </a>
+        <a href="menu.html" class="active">
+            <i class="fa-solid fa-book-open"></i>
+            <span>Menu</span>
+        </a>
+        <a href="/chef-specials">
+            <i class="fa-solid fa-star"></i>
+            <span>Specials</span>
+        </a>
+        <a href="/about">
+            <i class="fa-solid fa-user"></i>
+            <span>About</span>
+        </a>
+        <a href="index.html#reserve">
+            <i class="fa-solid fa-comment-dots"></i>
+            <span>Contact</span>
+        </a>
+            </div>
+    </nav>
+
+    <!-- Menu Section -->
+    <section id="menu" class="menu-section" style="padding-top: 12rem;">
+        <div class="container menu-container">
+            <div class="text-center scroll-reveal">
+                <h5 class="section-subtitle">The Culinary List</h5>
+                <h2 class="section-title">Savor Our Authentic Masterpieces</h2>
+                <div class="section-divider center"></div>
+                <p class="section-desc max-w-600">Explore Avanti's extensive menu in Mymensingh, featuring authentic Italian pizza, creamy pasta, gourmet set meals, and fresh custom drinks.</p>
+            </div>
+            
+            <!-- Live Search Bar -->
+            <div class="search-wrapper scroll-reveal" style="max-width: 700px; margin: 2rem auto 2rem auto; display: flex; gap: 10px; background: rgba(255,255,255,0.02); border: 1px solid var(--color-border); padding: 6px 12px; border-radius: var(--border-radius-sm); align-items: center;">
+                <i class="fa-solid fa-magnifying-glass" style="color: var(--color-primary); font-size: 1.1rem;"></i>
+                <input type="text" id="menu-search-input" placeholder="Search dishes by name or description..." style="width: 100%; border: none; outline: none; background: transparent; padding: 8px 4px; color: var(--color-text-main);">
+                <button type="button" id="clear-search-btn" style="display: none; color: var(--color-text-muted); cursor: pointer; background: none; border: none;"><i class="fa-solid fa-circle-xmark"></i></button>
+            </div>
+
+            <!-- Menu Tabs -->
+            <div class="menu-tabs-wrapper scroll-reveal">
+                <div class="menu-tabs" id="menu-tabs-container">
+                    <button class="tab-btn active" data-category="all">All Items</button>
+                    <button class="tab-btn" data-category="starter"><i class="fa-solid fa-leaf"></i> Starters</button>
+                    <button class="tab-btn" data-category="soup"><i class="fa-solid fa-bowl-food"></i> Soup & Noodles</button>
+                    <button class="tab-btn" data-category="pizza"><i class="fa-solid fa-pizza-slice"></i> Pizza & Burger</button>
+                    <button class="tab-btn" data-category="main"><i class="fa-solid fa-drumstick-bite"></i> Main Course</button>
+                    <button class="tab-btn" data-category="platters"><i class="fa-solid fa-plate-wheat"></i> Platters</button>
+                    <button class="tab-btn" data-category="drinks"><i class="fa-solid fa-mug-hot"></i> Drinks & Desserts</button>
+                </div>
+            </div>
+
+            <!-- Menu Grid (Populated dynamically via script.js) -->
+            <div class="menu-grid scroll-reveal" id="menu-grid">
+                <!-- Dynamic cards will be rendered here -->
+            </div>
+            
+            <div class="text-center scroll-reveal load-more-container" style="margin-top: 3rem;">
+                <button class="btn btn-secondary" id="load-more-btn">Load All Dishes</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="container footer-container">
+            <div class="footer-brand-col">
+                <a href="/" class="logo">
+                    <img src="./assets/logo.png" alt="Avanti Logo" style="height: 48px; width: auto; margin-right: 10px;">
+                </a>
+                <p class="brand-tagline">Serving authentic Italian pizzas, gourmet set meals, and fresh fast food with progressive culinary craft since 2012.</p>
+            </div>
+            <div class="footer-links-col">
+                <h4>Sitemap</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About Philosophy</a></li>
+                    <li><a href="/menu">Chef's Menu</a></li>
+                    <li><a href="/chef-specials">Chef Specials</a></li>
+                    <li><a href="/#gallery">Visual Gallery</a></li>
+                </ul>
+            </div>
+            <div class="footer-newsletter-col">
+                <h4>Join Our Club</h4>
+                <p>Subscribe to receive updates on chef tastings, pizza discounts, and seasonal menus.</p>
+                <form class="footer-subscribe-form" id="subscribe-form">
+                    <input type="email" placeholder="Your Email Address" required>
+                    <button type="submit" aria-label="Subscribe"><i class="fa-solid fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="container footer-bottom-container">
+                <p class="copyright">&copy; Copyright 2026 Avanti Restaurant. All Rights Reserved.</p>
+                <p class="designer">Developed with Passion. Redesigned with Minimal Excellence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Cart Button -->
+    <div id="floating-cart" class="floating-cart">
+        <div class="cart-icon-wrapper">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span id="cart-badge" class="cart-badge">0</span>
+        </div>
+    </div>
+
+    <!-- Slide-out Cart Sidebar Drawer -->
+    <div id="cart-drawer" class="cart-drawer">
+        <div class="cart-drawer-header">
+            <h3><i class="fa-solid fa-cart-shopping"></i> Your Cart</h3>
+            <button id="close-cart-drawer" class="close-cart-btn" aria-label="Close Cart"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="cart-drawer-body">
+            <div id="cart-items-list" class="cart-items-list">
+                <div class="empty-cart-message">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                    <p>Your cart is empty.</p>
+                    <a href="/menu" class="btn btn-primary btn-sm close-cart-on-click">Explore Menu</a>
+                </div>
+            </div>
+
+            <div id="cart-summary" class="cart-summary" style="display: none;">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="cart-subtotal">৳0</span>
+                </div>
+                <div class="summary-row">
+                    <span id="delivery-label">Delivery Fee:</span>
+                    <span id="cart-delivery">৳60</span>
+                </div>
+                <div class="summary-row grand-total">
+                    <span>Grand Total:</span>
+                    <span id="cart-total">৳0</span>
+                </div>
+                <button id="go-to-checkout-btn" class="btn btn-primary btn-block">Proceed to Checkout</button>
+            </div>
+
+            <div id="checkout-form-container" class="checkout-form-container" style="display: none;">
+                <div class="checkout-header">
+                    <h4><button type="button" id="back-to-cart-btn" class="back-btn"><i class="fa-solid fa-arrow-left"></i></button> Delivery Details</h4>
+                </div>
+                <form id="checkout-form" class="checkout-form" novalidate>
+                    <div class="form-group">
+                        <label for="checkout-name">Full Name</label>
+                        <input type="text" id="checkout-name" name="name" placeholder="John Doe" required>
+                        <span class="error-msg">Name is required (min 2 chars)</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="checkout-phone">Phone Number</label>
+                        <input type="tel" id="checkout-phone" name="phone" placeholder="01755-559933" required>
+                        <span class="error-msg">Please enter a valid BD phone number</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Order Type</label>
+                        <div class="delivery-toggle-container">
+                            <button type="button" class="delivery-toggle-btn active" data-value="Delivery">Delivery</button>
+                            <button type="button" class="delivery-toggle-btn" data-value="Takeaway">Takeaway</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="address-group">
+                        <label for="checkout-address">Delivery Address</label>
+                        
+                        <!-- Live Location Map -->
+                        <div style="margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background: var(--bg-card);">
+                            <div id="checkout-map" style="height: 200px; width: 100%; z-index: 1;"></div>
+                            <button type="button" id="locate-me-btn" style="width: 100%; padding: 10px; background: rgba(223, 177, 91, 0.1); color: var(--gold); border: none; border-top: 1px solid var(--border-color); cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.9rem; transition: all 0.3s;">
+                                📍 <span class="lbl-locate-me">Locate Me (Live GPS)</span>
+                            </button>
+                        </div>
+                        <input type="hidden" id="checkout-lat" name="lat">
+                        <input type="hidden" id="checkout-lng" name="lng">
+
+                        <textarea id="checkout-address" name="address" rows="3" placeholder="25, TN Roy Road, Amlapara, Mymensingh" required></textarea>
+                        <span class="error-msg">Delivery address is required</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="checkout-notes">Special Instructions (Optional)</label>
+                        <textarea id="checkout-notes" name="notes" rows="2" placeholder="e.g. Make it extra spicy, call before delivery..."></textarea>
+                    </div>
+
+                    <button type="submit" id="place-order-btn" class="btn btn-primary btn-block">
+                        <i class="fa-brands fa-whatsapp"></i> Place Order via WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background overlay -->
+    <div id="cart-overlay" class="cart-overlay"></div>
+
+    <!-- Order Success Confirmation Modal -->
+    <div id="order-success-modal" class="order-success-modal">
+        <div class="success-modal-content">
+            <div class="success-icon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h2>Order Placed Successfully!</h2>
+            <p>Your order has been recorded in our system. You are being redirected to WhatsApp to send the order details to the kitchen.</p>
+            <div id="order-summary-details" class="order-summary-details"></div>
+            <div class="success-actions">
+                <a id="whatsapp-manual-btn" href="#" target="_blank" class="btn btn-primary btn-block"><i class="fa-brands fa-whatsapp"></i> Send message manually</a>
+                <button type="button" id="close-success-modal" class="btn btn-secondary btn-block">Return to Store</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Lightbox Modal -->
+    <div id="lightbox-modal" class="lightbox-modal">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img" alt="Enlarged food item view">
+        <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+
+    <!-- Booking Confirmation Modal -->
+    <div id="booking-modal" class="booking-modal">
+        <div class="booking-modal-content">
+            <div class="booking-modal-header">
+                <i class="fa-regular fa-circle-check success-icon"></i>
+                <h2>Reservation Requested</h2>
+            </div>
+            <div class="booking-modal-body" id="booking-modal-details"></div>
+            <div class="booking-modal-footer">
+                <button class="btn btn-primary" id="close-booking-modal">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Smoke Background Canvas -->
+    <canvas id="smoke-bg-canvas" class="smoke-bg-canvas"></canvas>
+
+    <!-- Global JS Config & Scripts -->
+    <script type="text/javascript">
+        const AVANTI_APP = {
+            theme_uri: '.',
+            ajax_url: '/api/order',
+            reservation_nonce: '',
+            order_nonce: '',
+            delivery_charge: 60
+        };
+    </script>
+    <script src="./menu-data.js"></script>
+    <script src="./script.js"></script>
+    <script src="./assets/js/smoke-bg.js"></script>
+    
+    <!-- Animated Nav Cursor JS -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const nav = document.getElementById('animatedNav');
+        const cursor = document.getElementById('navCursor');
+        const items = nav ? nav.querySelectorAll('.nav-item') : [];
+        
+        function updateCursor(el) {
+            if (!el || !cursor) return;
+            const rect = el.getBoundingClientRect();
+            const navRect = nav.getBoundingClientRect();
+            cursor.style.left = (rect.left - navRect.left) + 'px';
+            cursor.style.width = rect.width + 'px';
+            cursor.style.opacity = '1';
+            cursor.classList.add('visible');
+        }
+
+        let activeItem = null;
+        items.forEach(item => {
+            if (item.classList.contains('active')) {
+                activeItem = item;
+            }
+        });
+        if (activeItem) {
+            setTimeout(() => updateCursor(activeItem), 100);
+        }
+
+        items.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                updateCursor(this);
+            });
+        });
+
+        if (nav) {
+            nav.addEventListener('mouseleave', function() {
+                if (activeItem) {
+                    updateCursor(activeItem);
+                } else {
+                    cursor.style.opacity = '0';
+                    cursor.classList.remove('visible');
+                }
+            });
+        }
+
+        items.forEach(item => {
+            item.addEventListener('click', function() {
+                items.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                activeItem = this;
+                updateCursor(this);
+            });
+        });
+
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (activeItem) updateCursor(activeItem);
+            }, 100);
+        });
+
+        const toggleBtn = document.getElementById('mobileNavToggle');
+        const overlay = document.getElementById('mobileNavOverlay');
+
+        if (toggleBtn && overlay) {
+            toggleBtn.addEventListener('click', function() {
+                this.classList.toggle('active');
+                overlay.classList.toggle('active');
+                document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : '';
+            });
+
+            overlay.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    toggleBtn.classList.remove('active');
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+        }
+    });
+    </script>
+</body>
+</html>

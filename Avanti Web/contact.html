@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Avanti Restaurant</title>
+    
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;600;700&family=Playfair+Display+SC:wght@400;700&family=Playfair+Display:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./style.css">
+    
+    <style>
+        /* Animated Nav Header Styles */
+        #main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(6, 7, 8, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-border, rgba(255,255,255,0.05));
+            transition: background 0.3s ease;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: var(--container-width, 1200px);
+            margin: 0 auto;
+            padding: 0 20px;
+            height: var(--header-height, 80px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1001;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-family: var(--font-heading, 'Outfit', sans-serif);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-text-main, #f1f2f6);
+        }
+
+        .logo-text .logo-accent {
+            color: var(--color-primary, #dfb15b);
+        }
+
+        .animated-nav {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin: 0;
+            padding: 6px;
+            list-style: none;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 100px;
+        }
+
+        .animated-nav .nav-item {
+            position: relative;
+            z-index: 10;
+            display: block;
+            cursor: pointer;
+            padding: 8px 16px;
+            font-family: var(--font-body, 'Inter', sans-serif);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--color-text-main, #f1f2f6);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: color 0.2s ease;
+            border-radius: 100px;
+        }
+
+        .animated-nav .nav-item:hover,
+        .animated-nav .nav-item.active {
+            color: #fff;
+        }
+
+        .nav-cursor {
+            position: absolute;
+            top: 6px;
+            left: 0;
+            height: calc(100% - 12px);
+            background: var(--color-primary, #dfb15b);
+            border-radius: 100px;
+            pointer-events: none;
+            transition: left 0.35s cubic-bezier(0.25, 0.8, 0.25, 1),
+                        width 0.35s cubic-bezier(0.25, 0.8, 0.25, 1),
+                        opacity 0.25s ease;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .nav-cursor.visible {
+            opacity: 1;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1001;
+        }
+
+        .lang-toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            color: var(--color-text-muted, #9ba3af);
+            cursor: pointer;
+            font-family: var(--font-body, 'Inter', sans-serif);
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .lang-toggle-btn:hover {
+            border-color: var(--color-primary, #dfb15b);
+            color: var(--color-primary, #dfb15b);
+        }
+
+        .lang-text-en.active, .lang-text-bn.active {
+            color: var(--color-primary, #dfb15b);
+        }
+
+        .lang-divider {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-cta {
+            padding: 12px 24px;
+            background: var(--color-primary, #dfb15b);
+            color: #000 !important;
+            border-radius: 100px;
+            font-family: var(--font-body, 'Inter', sans-serif);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .nav-cta:hover {
+            background: var(--color-primary-hover, #c5a880);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(223, 177, 91, 0.3);
+        }
+
+        .mobile-nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 1001;
+        }
+
+        .mobile-nav-toggle .bar {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--color-text-main, #f1f2f6);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-toggle.active .bar:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .mobile-nav-toggle.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+        .mobile-nav-toggle.active .bar:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        .mobile-nav-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(6, 7, 8, 0.97);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-nav-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .mobile-nav-overlay a {
+            font-family: var(--font-heading, 'Outfit', sans-serif);
+            font-size: 1.8rem;
+            color: var(--color-text-main, #f1f2f6);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .mobile-nav-overlay a:hover {
+            color: var(--color-primary, #dfb15b);
+        }
+
+        @media (max-width: 900px) {
+            .animated-nav {
+                display: none;
+            }
+            .nav-actions .nav-cta {
+                display: none;
+            }
+            .mobile-nav-toggle {
+                display: flex;
+            }
+        }
+        .page-header {
+            padding-top: 180px;
+            padding-bottom: 80px;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(6,7,8,0.2) 0%, rgba(6,7,8,1) 100%);
+            position: relative;
+            z-index: 2;
+        }
+
+        .promax-title {
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            color: #ffffff;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .promax-desc {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--color-text-muted);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .contact-layout {
+            display: flex;
+            gap: 4rem;
+            margin-top: 5rem;
+            margin-bottom: 5rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-info-col {
+            flex: 1;
+            min-width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-form-col {
+            flex: 1.5;
+            min-width: 350px;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur-heavy);
+            -webkit-backdrop-filter: var(--glass-blur-heavy);
+            border: 1px solid var(--glass-border);
+            padding: 4rem;
+            border-radius: var(--border-radius-xl);
+            box-shadow: var(--shadow-gold-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Glass shimmer effect behind the form */
+        .contact-form-col::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: var(--glass-shimmer);
+            transform: rotate(30deg);
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .info-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            padding: 2.5rem;
+            border-radius: var(--border-radius-lg);
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .info-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--color-primary-glow);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .info-card i {
+            font-size: 2.5rem;
+            color: var(--color-primary);
+            background: var(--color-primary-luminous);
+            padding: 20px;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(223, 177, 91, 0.1);
+        }
+
+        .info-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-text-main);
+        }
+
+        .info-card p {
+            color: var(--color-text-muted);
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--color-primary);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--border-radius-md);
+            color: white;
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 25px rgba(223, 177, 91, 0.3);
+            background: rgba(0, 0, 0, 0.6);
+            transform: scale(1.02);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1.2rem;
+            font-size: 1.2rem;
+            border-radius: var(--border-radius-md);
+            border: none;
+            position: relative;
+            z-index: 2;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .map-section {
+            width: 100%;
+            border-radius: var(--border-radius-xl);
+            overflow: hidden;
+            height: 500px;
+            border: 2px solid var(--color-primary-glow);
+            margin-bottom: 8rem;
+            position: relative;
+            z-index: 2;
+            box-shadow: var(--shadow-gold-lg);
+            transition: transform 0.5s ease;
+        }
+
+        .map-section:hover {
+            transform: translateY(-10px);
+            border-color: var(--color-primary);
+        }
+
+        @media (max-width: 900px) {
+            .contact-form-col {
+                padding: 2.5rem;
+            }
+            .contact-layout {
+                flex-direction: column;
+                gap: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Background Shapes -->
+    <div class="bg-shapes">
+        <div class="bg-shape bg-shape-1"></div>
+        <div class="bg-shape bg-shape-2"></div>
+        <div class="bg-shape bg-shape-3"></div>
+        <div class="bg-shape bg-shape-4"></div>
+        <div class="bg-shape bg-shape-5"></div>
+    </div>
+
+    <!-- Header navigation -->
+    <header id="main-header">
+        <div class="container header-container">
+            <!-- Logo -->
+            <a href="/" class="logo" id="logo-link">
+                <img src="./assets/logo.png" alt="Avanti Logo">
+            </a>
+
+            <!-- Animated Navigation -->
+            <nav id="navbar">
+                <ul class="animated-nav" id="animatedNav">
+                    <li class="nav-cursor" id="navCursor"></li>
+                    <li><a href="/#home" class="nav-item" data-href="home">Home</a></li>
+                    <li><a href="/about" class="nav-item" data-href="about">About</a></li>
+                    <li><a href="/#menu" class="nav-item" data-href="menu">Menu</a></li>
+                    <li><a href="/chef-specials" class="nav-item" data-href="chef-specials">Specials</a></li>
+                    <li><a href="gallery.html" class="nav-item">Gallery</a></li>
+                    <li><a href="contact.html" class="nav-item active">Contact</a></li>
+                </ul>
+            </nav>
+
+            <!-- Nav Actions -->
+            <div class="nav-actions">
+                <button id="lang-toggle" class="lang-toggle-btn" aria-label="Toggle language">
+                    <span class="lang-text-en active">EN</span>
+                    <span class="lang-divider">/</span>
+                    <span class="lang-text-bn">বাং</span>
+                </button>
+                <a href="/reservation" class="nav-cta">Book Table</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <div class="mobile-bottom-nav-inner">
+        <a href="index.html">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </a>
+        <a href="menu.html" class="active">
+            <i class="fa-solid fa-book-open"></i>
+            <span>Menu</span>
+        </a>
+        <a href="/chef-specials">
+            <i class="fa-solid fa-star"></i>
+            <span>Specials</span>
+        </a>
+        <a href="/about">
+            <i class="fa-solid fa-user"></i>
+            <span>About</span>
+        </a>
+        <a href="index.html#reserve">
+            <i class="fa-solid fa-comment-dots"></i>
+            <span>Contact</span>
+        </a>
+            </div>
+    </nav>
+
+    <!-- Page Content -->
+    <main style="position: relative; z-index: 2;">
+        <section class="page-header scroll-reveal">
+            <h1 class="promax-title">GET IN<br><span class="text-gradient">TOUCH</span></h1>
+            <p class="promax-desc">Reach out for reservations, private events, or general inquiries</p>
+        </section>
+
+        <section class="container scroll-reveal">
+            <div class="contact-layout">
+                <div class="contact-info-col">
+                    <div class="info-card">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <div>
+                            <h3>Visit Us</h3>
+                            <p>11, Abul Mansur Road<br>Mymensingh, Bangladesh</p>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <h3>Call Us</h3>
+                            <p>+880 1829-325393<br>Available 11:00 AM - 11:00 PM</p>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <i class="fas fa-envelope-open-text"></i>
+                        <div>
+                            <h3>Email Us</h3>
+                            <p>info@avanti.com<br>support@avanti.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form-col">
+                    <h3 class="section-title" style="margin-bottom: 2rem; position: relative; z-index: 2;">Send a Message</h3>
+                    <form id="contact-form" onsubmit="event.preventDefault(); alert('Message sent successfully! We will get back to you soon.');">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="john@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" placeholder="Reservation Inquiry" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" rows="5" placeholder="How can we help you?" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-submit">Send Message</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="map-section scroll-reveal">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3623.5415715568326!2d90.40348747605929!3d24.74263645065842!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x37564fb0289a9f23%3A0xc3b8a364be141c2d!2sAbul%20Mansur%20Rd%2C%20Mymensingh!5e0!3m2!1sen!2sbd!4v1717325514603!5m2!1sen!2sbd" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="container footer-container">
+            <div class="footer-brand-col">
+                <a href="#home" class="logo">
+                    <img src="./assets/logo.png" alt="Avanti Logo" style="height: 48px; width: auto; margin-right: 10px;">
+                </a>
+                <p class="brand-tagline">Serving authentic Italian pizzas, gourmet set meals, and fresh fast food with progressive culinary craft since 2012.</p>
+            </div>
+            <div class="footer-links-col">
+                <h4>Sitemap</h4>
+                <ul>
+                    <li><a href="/#home">Home</a></li>
+                    <li><a href="/about">About Philosophy</a></li>
+                    <li><a href="/#menu">Chef's Menu</a></li>
+                    <li><a href="/chef-specials">Chef Specials</a></li>
+                    <li><a href="gallery.html">Visual Gallery</a></li>
+                    <li><a href="dashboard.html" style="color: var(--color-primary);">Admin Dashboard <i class="fas fa-lock" style="font-size: 0.8em; margin-left: 3px;"></i></a></li>
+                </ul>
+            </div>
+            <div class="footer-newsletter-col">
+                <h4>Join Our Club</h4>
+                <p>Subscribe to receive updates on chef tastings, pizza discounts, and seasonal menus.</p>
+                <form class="footer-subscribe-form" id="subscribe-form">
+                    <input type="email" placeholder="Your Email Address" required>
+                    <button type="submit" aria-label="Subscribe"><i class="fa-solid fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="container footer-bottom-container">
+                <p class="copyright">&copy; Copyright 2026 Avanti Restaurant. All Rights Reserved.</p>
+                <p class="designer">Developed with Passion. Redesigned with Minimal Excellence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Global JS Config & Scripts -->
+    <script src="./script.js"></script>
+    <script src="./assets/js/smoke-bg.js"></script>
+    
+    <!-- Animated Nav Cursor JS -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Run scroll reveal manually since we don't load the full index JS layout engine for scrolling
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+        // Background shapes initial visibility fix
+        const bgShapes = document.querySelector('.bg-shapes');
+        if (bgShapes) {
+            bgShapes.style.display = 'block';
+            bgShapes.style.opacity = '1';
+        }
+
+        const nav = document.getElementById('animatedNav');
+        const cursor = document.getElementById('navCursor');
+        const items = nav ? nav.querySelectorAll('.nav-item') : [];
+        
+        function updateCursor(el) {
+            if (!el || !cursor) return;
+            const rect = el.getBoundingClientRect();
+            const navRect = nav.getBoundingClientRect();
+            cursor.style.left = (rect.left - navRect.left) + 'px';
+            cursor.style.width = rect.width + 'px';
+            cursor.style.opacity = '1';
+            cursor.classList.add('visible');
+        }
+
+        let activeItem = null;
+        items.forEach(item => {
+            if (item.classList.contains('active')) {
+                activeItem = item;
+            }
+        });
+        if (activeItem) {
+            setTimeout(() => updateCursor(activeItem), 100);
+        }
+
+        items.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                updateCursor(this);
+            });
+        });
+
+        if (nav) {
+            nav.addEventListener('mouseleave', function() {
+                if (activeItem) {
+                    updateCursor(activeItem);
+                } else {
+                    cursor.style.opacity = '0';
+                    cursor.classList.remove('visible');
+                }
+            });
+        }
+
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (activeItem) updateCursor(activeItem);
+            }, 100);
+        });
+
+        const toggleBtn = document.getElementById('mobileNavToggle');
+        const overlay = document.getElementById('mobileNavOverlay');
+
+        if (toggleBtn && overlay) {
+            toggleBtn.addEventListener('click', function() {
+                this.classList.toggle('active');
+                overlay.classList.toggle('active');
+                document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : '';
+            });
+
+            overlay.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    toggleBtn.classList.remove('active');
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+        }
+    });
+    </script>
+</body>
+</html>

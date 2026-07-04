@@ -1,0 +1,9 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/dish/:slug",
+      "destination": "/dish.html?slug=:slug"
+    }
+  ]
+}

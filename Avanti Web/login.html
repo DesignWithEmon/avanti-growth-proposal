@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avanti - Admin Login</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #070709;
+            --gold: #dfb15b;
+            --gold-hover: #c5a880;
+            --text-main: #f1f2f6;
+            --text-muted: #9ba3af;
+            --border-color: rgba(255,255,255,0.08);
+            --bg-card: rgba(255,255,255,0.03);
+            --red: #ef4444;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Subtle Background Gradient */
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(223, 177, 91, 0.05), transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(223, 177, 91, 0.03), transparent 40%);
+            z-index: 0;
+        }
+
+        .login-container {
+            background: rgba(15, 15, 18, 0.7);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-area {
+            margin-bottom: 30px;
+        }
+
+        .logo-area img {
+            height: 60px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            margin: 0 0 5px 0;
+            color: var(--text-main);
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin: 0 0 30px 0;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        input[type="password"] {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px 14px 14px 45px;
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: all 0.3s;
+        }
+
+        input[type="password"]:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(223, 177, 91, 0.1);
+        }
+
+        .btn-login {
+            background: var(--gold);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            width: 100%;
+            padding: 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-login:hover {
+            background: var(--gold-hover);
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: var(--red);
+            font-size: 0.85rem;
+            margin-top: 10px;
+            display: none;
+            animation: shake 0.4s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="logo-area">
+            <img src="./assets/logo.png" alt="Avanti Logo">
+            <h1>Operator Portal</h1>
+            <p class="subtitle">Secure Admin Access</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="password" placeholder="Enter Admin Password" required autocomplete="current-password">
+            </div>
+            
+            <button type="submit" class="btn-login">
+                <span>Login to Dashboard</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            
+            <div class="error-message" id="errorMessage">
+                <i class="fa-solid fa-circle-exclamation"></i> Incorrect password. Try again.
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Check if already logged in
+        if (localStorage.getItem('avanti_admin_auth') === 'true') {
+            window.location.href = 'dashboard.html';
+        }
+
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            
+            // ADMIN PASSWORD
+            if (password === 'Avanti@Admin') {
+                localStorage.setItem('avanti_admin_auth', 'true');
+                window.location.href = 'dashboard.html';
+            } else {
+                errorMessage.style.display = 'block';
+                // Trigger reflow for animation restart
+                errorMessage.style.animation = 'none';
+                errorMessage.offsetHeight; 
+                errorMessage.style.animation = null; 
+            }
+        });
+    </script>
+</body>
+</html>

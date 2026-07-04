@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avanti - Operator Portal Login</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #070709;
+            --bg-card: rgba(255,255,255,0.03);
+            --border-color: rgba(255,255,255,0.08);
+            --gold: #dfb15b;
+            --gold-hover: #c5a880;
+            --text-main: #f1f2f6;
+            --text-muted: #9ba3af;
+            --red: #ef4444;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .auth-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .auth-container h2 {
+            font-family: 'Outfit', sans-serif;
+            color: var(--gold);
+            margin: 0 0 10px 0;
+            font-size: 1.8rem;
+        }
+
+        .auth-container p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--gold);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--gold);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background: var(--gold-hover);
+            transform: translateY(-1px);
+        }
+
+        .toggle-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: color 0.3s;
+        }
+
+        .toggle-link:hover {
+            color: var(--text-main);
+        }
+
+        .error-msg {
+            color: var(--red);
+            font-size: 0.85rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Setup default admin message */
+        .default-admin-notice {
+            background: rgba(223, 177, 91, 0.1);
+            border: 1px solid rgba(223, 177, 91, 0.2);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.8rem;
+            color: var(--gold);
+            text-align: left;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="auth-container" id="auth-box">
+        <h2 id="auth-title">Operator Login</h2>
+        <p id="auth-subtitle">Access the Avanti Restaurant dashboard.</p>
+
+        <div class="default-admin-notice" id="admin-notice">
+            <strong>Default Admin Setup:</strong><br>
+            Email: admin@avanti.com<br>
+            Password: 123456
+        </div>
+
+        <div class="error-msg" id="auth-error">Invalid credentials.</div>
+
+        <form id="auth-form" onsubmit="handleAuth(event)">
+            <div class="form-group" id="name-group" style="display: none;">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="John Doe">
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="admin@avanti.com" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-submit" id="submit-btn">Login</button>
+        </form>
+
+        <span class="toggle-link" id="toggle-auth" onclick="toggleMode()">Need an account? Sign up here.</span>
+    </div>
+
+    <script>
+        // Setup Default Admin if it doesn't exist
+        let users = JSON.parse(localStorage.getItem('avanti_users')) || [];
+        if (!users.find(u => u.email === 'admin@avanti.com')) {
+            users.push({
+                name: 'Admin',
+                email: 'admin@avanti.com',
+                password: '123456' // In production, never store plain text passwords!
+            });
+            localStorage.setItem('avanti_users', JSON.stringify(users));
+        }
+
+        let isLoginMode = true;
+
+        function toggleMode() {
+            isLoginMode = !isLoginMode;
+            
+            const title = document.getElementById('auth-title');
+            const subtitle = document.getElementById('auth-subtitle');
+            const submitBtn = document.getElementById('submit-btn');
+            const toggleLink = document.getElementById('toggle-auth');
+            const nameGroup = document.getElementById('name-group');
+            const adminNotice = document.getElementById('admin-notice');
+            const errorMsg = document.getElementById('auth-error');
+
+            errorMsg.style.display = 'none';
+
+            if (isLoginMode) {
+                title.innerText = 'Operator Login';
+                subtitle.innerText = 'Access the Avanti Restaurant dashboard.';
+                submitBtn.innerText = 'Login';
+                toggleLink.innerText = 'Need an account? Sign up here.';
+                nameGroup.style.display = 'none';
+                document.getElementById('name').removeAttribute('required');
+                adminNotice.style.display = 'block';
+            } else {
+                title.innerText = 'Create Account';
+                subtitle.innerText = 'Sign up to manage the restaurant.';
+                submitBtn.innerText = 'Sign Up';
+                toggleLink.innerText = 'Already have an account? Login here.';
+                nameGroup.style.display = 'block';
+                document.getElementById('name').setAttribute('required', 'true');
+                adminNotice.style.display = 'none';
+            }
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('auth-error');
+            
+            let allUsers = JSON.parse(localStorage.getItem('avanti_users')) || [];
+
+            if (isLoginMode) {
+                // Handle Login
+                const user = allUsers.find(u => u.email === email && u.password === password);
+                
+                if (user) {
+                    // Success
+                    localStorage.setItem('avanti_admin_auth', 'true');
+                    localStorage.setItem('avanti_current_user', user.name || user.email);
+                    window.location.href = 'dashboard.html';
+                } else {
+                    // Fail
+                    errorMsg.innerText = 'Invalid email or password.';
+                    errorMsg.style.display = 'block';
+                }
+            } else {
+                // Handle Signup
+                const name = document.getElementById('name').value.trim();
+                
+                // Check if exists
+                if (allUsers.find(u => u.email === email)) {
+                    errorMsg.innerText = 'Account with this email already exists.';
+                    errorMsg.style.display = 'block';
+                    return;
+                }
+
+                allUsers.push({ name, email, password });
+                localStorage.setItem('avanti_users', JSON.stringify(allUsers));
+                
+                // Auto login after signup
+                localStorage.setItem('avanti_admin_auth', 'true');
+                localStorage.setItem('avanti_current_user', name);
+                window.location.href = 'dashboard.html';
+            }
+        }
+    </script>
+</body>
+</html>
