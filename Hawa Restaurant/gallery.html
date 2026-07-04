@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery & Scanned Menu | Hawa Restaurant & Party Centre</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+<body>
+
+  <!-- Animated Aurora Background -->
+  <div class="aurora-background">
+    <div class="aurora-base"></div>
+    <div class="aurora-wave aurora-wave-1"></div>
+    <div class="aurora-wave aurora-wave-2"></div>
+    <div class="aurora-wave aurora-wave-3"></div>
+    <div class="aurora-wave aurora-wave-4"></div>
+    <div class="aurora-overlay"></div>
+  </div>
+
+  <!-- Navigation Header -->
+  <header id="main-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand">
+        <object data="assets/logo.svg" type="image/svg+xml" class="brand-logo" id="logo-obj"></object>
+        <span class="brand-name gold-gradient-text">HAWA</span>
+      </a>
+      
+      <button class="menu-toggle" id="nav-toggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html" class="nav-link lang-text" data-key="nav-home">Home</a></li>
+        <li><a href="menu.html" class="nav-link lang-text" data-key="nav-menu">Menu</a></li>
+        <li><a href="booking.html" class="nav-link lang-text" data-key="nav-res">Reservations</a></li>
+        <li><a href="gallery.html" class="nav-link active lang-text" data-key="nav-gal">Gallery</a></li>
+        <li><a href="contact.html" class="nav-link lang-text" data-key="nav-con">Contact</a></li>
+      </ul>
+      
+      <div class="header-actions">
+        <button class="lang-toggle-btn" id="lang-toggle-btn">BN</button>
+        <a href="booking.html" class="nav-btn lang-text" data-key="btn-book">Book Table</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Floating Tubelight Navbar -->
+  <nav class="tubelight-navbar">
+    <div class="tubelight-nav-container">
+      <a href="index.html" class="tubelight-nav-link">
+        <span class="nav-text lang-text" data-key="nav-home">Home</span>
+        <span class="nav-icon"><i class="fas fa-home"></i></span>
+        <div class="nav-lamp"></div>
+      </a>
+      <a href="menu.html" class="tubelight-nav-link">
+        <span class="nav-text lang-text" data-key="nav-menu">Menu</span>
+        <span class="nav-icon"><i class="fas fa-utensils"></i></span>
+        <div class="nav-lamp"></div>
+      </a>
+      <a href="booking.html" class="tubelight-nav-link">
+        <span class="nav-text lang-text" data-key="nav-res">Reservations</span>
+        <span class="nav-icon"><i class="fas fa-calendar-alt"></i></span>
+        <div class="nav-lamp"></div>
+      </a>
+      <a href="gallery.html" class="tubelight-nav-link active">
+        <span class="nav-text lang-text" data-key="nav-gal">Gallery</span>
+        <span class="nav-icon"><i class="fas fa-images"></i></span>
+        <div class="nav-lamp"></div>
+      </a>
+      <a href="contact.html" class="tubelight-nav-link">
+        <span class="nav-text lang-text" data-key="nav-con">Contact</span>
+        <span class="nav-icon"><i class="fas fa-envelope"></i></span>
+        <div class="nav-lamp"></div>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Banner -->
+  <section class="subpage-banner">
+    <div class="container">
+      <h1 class="subpage-title gold-gradient-text lang-text" data-key="gallery-title">Photo Gallery</h1>
+      <p class="subpage-subtitle lang-text" data-key="gallery-subtitle">Browse through our restaurant's scanned printed menu pages and preview our premium dining ambience.</p>
+    </div>
+  </section>
+
+  <!-- Gallery Tabs -->
+  <section class="container" style="padding: 50px 0 100px;">
+    <div class="gallery-tabs">
+      <button class="gallery-tab-btn active lang-text" id="tab-scanned-btn" data-key="tab-scanned">Printed Menu Sheets</button>
+      <button class="gallery-tab-btn lang-text" id="tab-photo-btn" data-key="tab-ambience">Restaurant Ambience</button>
+    </div>
+
+    <!-- Scanned Menu Section -->
+    <div id="scanned-menu-section">
+      <div class="menu-slideshow-container">
+        <!-- Slides 1 to 16 -->
+        <!-- We will generate slide markup for 1 to 16 -->
+        <div class="menu-slide">
+          <img src="Hawa menu/1.jpg" alt="Menu Cover Page">
+        </div>
+        <div class="menu-slide">
+          <img src="Hawa menu/2.jpg" alt="Menu Page 1">
+        </div>
+        <div class="menu-slide">
+          <img src="Hawa menu/3.jpg" alt="Menu Page 2">
+        </div>
+        <div class="menu-slide">
+          <img src="Hawa menu/4.jpg" alt="Menu Page 3">
+        </div>
+        <div class="menu-slide">
+          <img src="Hawa menu/5.jpg" alt="Menu Page 4">
+        </div>
+        <div class="menu-slide">
+          <img src="Hawa menu/6.jpg" alt="Menu Page 5">
+        </div>
+        <div class="menu-slide">
+          <img src="Hawa menu/7.jpg" alt="Menu Page 6">
+        </div>
+        <div class="menu-slide">
+          <img src="Hawa menu/8.jpg" alt="Menu Page 7">
+        </div>
+        <div class="menu-slide">
+          <img src="Hawa menu/9.jpg" alt="Menu Page 8">
+        </div>
+        <div class="menu-slide">
+          <img src="Hawa menu/10.jpg" alt="Menu Page 9">
+        </div>
+        <div class="menu-slide">
+          <img src="Hawa menu/11.jpg" alt="Menu Page 10">
+        </div>
+        <div class="menu-slide">
+          <img src="Hawa menu/12.jpg" alt="Menu Page 11">
+        </div>
+        <div class="menu-slide">
+          <img src="Hawa menu/13.jpg" alt="Menu Page 12">
+        </div>
+        <div class="menu-slide">
+          <img src="Hawa menu/14.jpg" alt="Menu Page 13">
+        </div>
+        <div class="menu-slide">
+          <img src="Hawa menu/15.jpg" alt="Menu Page 14">
+        </div>
+        <div class="menu-slide">
+          <img src="Hawa menu/16.jpg" alt="Menu Page 15">
+        </div>
+        
+        <!-- Controls -->
+        <button class="slide-nav slide-prev" id="slide-prev-btn"><i class="fas fa-chevron-left"></i></button>
+        <button class="slide-nav slide-next" id="slide-next-btn"><i class="fas fa-chevron-right"></i></button>
+      </div>
+
+      <div class="slide-counter" id="slide-counter">Page 1 of 16</div>
+
+      <!-- Thumbnail Container -->
+      <div class="thumbnail-container container" id="thumbnail-container">
+        <!-- Generated via JS -->
+      </div>
+    </div>
+
+    <!-- Ambience Grid Section -->
+    <div id="ambience-photo-section" style="display: none;">
+      <div class="photo-grid">
+        <div class="photo-item" data-src="assets/hawa_interior.png">
+          <img src="assets/hawa_interior.png" alt="Grand Dining Room">
+          <div class="photo-overlay">
+            <span class="photo-title">Grand Dining Room</span>
+          </div>
+        </div>
+        <div class="photo-item" data-src="assets/hawa_hero_steak.png">
+          <img src="assets/hawa_hero_steak.png" alt="Signature Steak Presentation">
+          <div class="photo-overlay">
+            <span class="photo-title">Signature Sizzling Steak</span>
+          </div>
+        </div>
+        <div class="photo-item" data-src="Hawa menu/1.jpg">
+          <img src="Hawa menu/1.jpg" alt="Hawa Menu Cover Branding">
+          <div class="photo-overlay">
+            <span class="photo-title">Official Menu Branding</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo Lightbox Modal -->
+  <div class="lightbox-modal" id="lightbox-modal">
+    <span class="lightbox-close" id="lightbox-close-btn">&times;</span>
+    <img src="" alt="Zoomed view" class="lightbox-content" id="lightbox-img">
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="brand">
+          <object data="assets/logo.svg" type="image/svg+xml" class="brand-logo"></object>
+          <span class="brand-name gold-gradient-text">HAWA</span>
+        </div>
+        <p class="footer-desc">One of the largest and most trusted restaurants in Mymensingh, open 24/7 for your convenience. Experience the perfect venue for premium dining and events.</p>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com/hawatheplace/" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      
+      <div>
+        <h3 class="footer-heading">Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="menu.html" class="footer-link">Menu</a></li>
+          <li><a href="booking.html" class="footer-link">Reservations</a></li>
+          <li><a href="gallery.html" class="footer-link">Gallery</a></li>
+          <li><a href="contact.html" class="footer-link">Contact</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h3 class="footer-heading">Contact Details</h3>
+        <div class="footer-info">
+          <div class="info-item">
+            <span class="info-icon"><i class="fas fa-map-marker-alt"></i></span>
+            <span>Near Dhaka bypass, Maskanda Road, Mymensingh.</span>
+          </div>
+          <div class="info-item">
+            <span class="info-icon"><i class="fas fa-phone-alt"></i></span>
+            <span>01705-036161 (Hotline)<br>01705-096161 (Reservation)</span>
+          </div>
+          <div class="info-item">
+            <span class="info-icon"><i class="fas fa-envelope"></i></span>
+            <span>hawatheplace@gmail.com</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Hawa Restaurant & Party Centre. All Rights Reserved.</p>
+      <p>Developed with Passion · <a href="/admin/kitchen" style="color:var(--color-text-muted);font-size:11px;">👨‍🍳 Kitchen</a> · <a href="/admin/login.html" style="color:var(--color-text-muted);font-size:11px;">⚙️ Dashboard</a></p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="main.js"></script>
+</body>
+</html>

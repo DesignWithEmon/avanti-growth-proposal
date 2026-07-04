@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Menu | Hawa Restaurant & Party Centre</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Animated Aurora Background -->
+  <div class="aurora-background">
+    <div class="aurora-base"></div>
+    <div class="aurora-wave aurora-wave-1"></div>
+    <div class="aurora-wave aurora-wave-2"></div>
+    <div class="aurora-wave aurora-wave-3"></div>
+    <div class="aurora-wave aurora-wave-4"></div>
+    <div class="aurora-overlay"></div>
+  </div>
+
+  <!-- Navigation Header -->
+  <header id="main-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand">
+        <object data="assets/logo.svg" type="image/svg+xml" class="brand-logo" id="logo-obj"></object>
+        <span class="brand-name gold-gradient-text">HAWA</span>
+      </a>
+      
+      <button class="menu-toggle" id="nav-toggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html" class="nav-link lang-text" data-key="nav-home">Home</a></li>
+        <li><a href="menu.html" class="nav-link active lang-text" data-key="nav-menu">Menu</a></li>
+        <li><a href="booking.html" class="nav-link lang-text" data-key="nav-res">Reservations</a></li>
+        <li><a href="gallery.html" class="nav-link lang-text" data-key="nav-gal">Gallery</a></li>
+        <li><a href="contact.html" class="nav-link lang-text" data-key="nav-con">Contact</a></li>
+      </ul>
+      
+      <div class="header-actions">
+        <button class="lang-toggle-btn" id="lang-toggle-btn">BN</button>
+        <a href="booking.html" class="nav-btn lang-text" data-key="btn-book">Book Table</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Floating Tubelight Navbar -->
+  <nav class="tubelight-navbar">
+    <div class="tubelight-nav-container">
+      <a href="index.html" class="tubelight-nav-link">
+        <span class="nav-text lang-text" data-key="nav-home">Home</span>
+        <span class="nav-icon"><i class="fas fa-home"></i></span>
+        <div class="nav-lamp"></div>
+      </a>
+      <a href="menu.html" class="tubelight-nav-link active">
+        <span class="nav-text lang-text" data-key="nav-menu">Menu</span>
+        <span class="nav-icon"><i class="fas fa-utensils"></i></span>
+        <div class="nav-lamp"></div>
+      </a>
+      <a href="booking.html" class="tubelight-nav-link">
+        <span class="nav-text lang-text" data-key="nav-res">Reservations</span>
+        <span class="nav-icon"><i class="fas fa-calendar-alt"></i></span>
+        <div class="nav-lamp"></div>
+      </a>
+      <a href="gallery.html" class="tubelight-nav-link">
+        <span class="nav-text lang-text" data-key="nav-gal">Gallery</span>
+        <span class="nav-icon"><i class="fas fa-images"></i></span>
+        <div class="nav-lamp"></div>
+      </a>
+      <a href="contact.html" class="tubelight-nav-link">
+        <span class="nav-text lang-text" data-key="nav-con">Contact</span>
+        <span class="nav-icon"><i class="fas fa-envelope"></i></span>
+        <div class="nav-lamp"></div>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Banner -->
+  <section class="subpage-banner">
+    <div class="container">
+      <h1 class="subpage-title gold-gradient-text lang-text" data-key="menu-title">Our Food Menu</h1>
+      <p class="subpage-subtitle lang-text" data-key="menu-subtitle">Embark on a culinary journey through our rich local recipes, contemporary fast food delights, and Asian fusion classics.</p>
+    </div>
+  </section>
+
+  <!-- Menu Section -->
+  <section class="container" style="padding: 60px 0 100px;">
+    <div class="menu-layout-grid">
+      <!-- Sidebar Filters -->
+      <aside class="menu-sidebar">
+        <!-- Search -->
+        <div class="search-box">
+          <span class="search-icon"><i class="fas fa-search"></i></span>
+          <input type="text" class="search-input lang-text" id="search-input" data-key="search-placeholder" placeholder="Search delicious dishes...">
+        </div>
+        
+        <!-- Categories -->
+        <ul class="category-list">
+          <li><button class="category-btn active lang-text" data-cat="all" data-key="cat-all">All Categories</button></li>
+          <li><button class="category-btn lang-text" data-cat="appetizers" data-key="cat-appetizers">Appetizers & Starters</button></li>
+          <li><button class="category-btn lang-text" data-cat="soups-nachos" data-key="cat-soups-nachos">Soups & Nachos</button></li>
+          <li><button class="category-btn lang-text" data-cat="fast-food" data-key="cat-fast-food">Fast Food (Burger, Pizza)</button></li>
+          <li><button class="category-btn lang-text" data-cat="chinese-fusion" data-key="cat-chinese-fusion">Chinese & Fusion</button></li>
+          <li><button class="category-btn lang-text" data-cat="bengali-cuisine" data-key="cat-bengali-cuisine">Bengali Cuisine</button></li>
+          <li><button class="category-btn lang-text" data-cat="desserts-drinks" data-key="cat-desserts-drinks">Desserts & Drinks</button></li>
+        </ul>
+      </aside>
+      
+      <!-- Food Items Grid -->
+      <main>
+        <div class="menu-items-grid" id="menu-items-grid">
+          <!-- Dynamic rendering via JS -->
+        </div>
+      </main>
+    </div>
+  </section>
+
+  <!-- Floating Cart Summary Drawer -->
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <h2 class="cart-title"><span class="lang-text" data-key="cart-title">Order Summary</span> <span id="cart-count-title">(0)</span></h2>
+      <button class="cart-close" id="cart-close-btn">&times;</button>
+    </div>
+    
+    <div class="cart-items" id="cart-items-container">
+      <!-- Cart items rendered via JS -->
+    </div>
+    
+    <div class="cart-footer">
+      <div class="cart-summary-row">
+        <span class="lang-text" data-key="cart-subtotal-lbl">Subtotal</span>
+        <span id="cart-subtotal">৳ 0/-</span>
+      </div>
+      <div class="cart-summary-row">
+        <span class="lang-text" data-key="cart-vat-lbl">VAT (15%)</span>
+        <span id="cart-vat">৳ 0/-</span>
+      </div>
+      <div class="cart-summary-row total">
+        <span class="lang-text" data-key="cart-total-lbl">Estimated Bill</span>
+        <span id="cart-total">৳ 0/-</span>
+      </div>
+      <button class="cart-checkout-btn" id="cart-checkout-btn"><i class="fas fa-paper-plane"></i> <span class="lang-text" data-key="cart-checkout-lbl">Place Order</span></button>
+    </div>
+  </div>
+
+  <!-- Floating Cart Button Toggle -->
+  <button class="cart-floating-btn" id="cart-float-btn" style="display: none;">
+    <i class="fas fa-shopping-cart"></i>
+    <span class="cart-badge" id="cart-badge-count">0</span>
+  </button>
+
+  <!-- Order Modal -->
+  <div class="order-overlay" id="order-overlay">
+    <div class="order-modal premium-card">
+      <button class="order-modal-close" id="order-modal-close">&times;</button>
+      <div class="order-modal-icon"><i class="fas fa-shopping-cart"></i></div>
+      <h2 class="order-modal-title gold-gradient-text lang-text" data-key="order-modal-title">Place Your Order</h2>
+      <p style="color:var(--color-text-muted);font-size:13px;text-align:center;margin-bottom:24px;" class="lang-text" data-key="order-modal-subtitle">Enter your details and we'll start preparing your food right away.</p>
+      <form id="order-form">
+        <div class="form-group">
+          <label class="form-label lang-text" data-key="lbl-name">Full Name</label>
+          <input type="text" class="form-control lang-text" data-key="ph-name" placeholder="E.g., Tanvir Ahmed" required id="order-name">
+        </div>
+        <div class="form-group">
+          <label class="form-label lang-text" data-key="lbl-phone">Phone Number</label>
+          <input type="tel" class="form-control lang-text" data-key="ph-phone" placeholder="E.g., 01705-XXXXXX" required id="order-phone">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Order Type</label>
+          <select class="form-control" required id="order-type">
+            <option value="Dine-in">🍽️ Dine-in</option>
+            <option value="Takeaway">🥡 Takeaway</option>
+            <option value="Delivery">🛵 Delivery</option>
+          </select>
+        </div>
+        <div class="form-group" id="order-location-group" style="display:none;">
+          <label class="form-label">Delivery Location</label>
+          <textarea class="form-control" placeholder="Enter your full address for delivery..." id="order-location" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Payment Method</label>
+          <select class="form-control" required id="order-payment">
+            <option value="Cash">💵 Cash on Delivery</option>
+            <option value="bKash">📱 bKash</option>
+            <option value="Nagad">📱 Nagad</option>
+          </select>
+        </div>
+        <div id="payment-instructions" style="display:none;background:rgba(197,168,128,0.05);border:1px solid var(--border-gold);border-radius:8px;padding:12px;margin-bottom:16px;">
+          <p style="color:var(--color-primary-gold);font-size:13px;font-weight:600;margin-bottom:6px;">📱 Send payment to:</p>
+          <p style="color:#fff;font-size:16px;font-weight:700;margin-bottom:4px;" id="payment-number">01705-036161</p>
+          <p style="color:var(--color-text-muted);font-size:11px;margin-bottom:10px;">bKash / Nagad (Personal)</p>
+          <label class="form-label">Transaction ID (last 4 digits)</label>
+          <input type="text" class="form-control" placeholder="E.g., 7X8K" id="order-trxid" style="text-transform:uppercase;">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Special Notes</label>
+          <textarea class="form-control" placeholder="Any special requests, allergies, etc." id="order-notes" rows="2"></textarea>
+        </div>
+        <button type="submit" class="btn btn-solid" style="width:100%;" id="order-submit-btn">
+          <i class="fas fa-paper-plane"></i> <span class="lang-text" data-key="btn-place-order">Place Order</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="brand">
+          <object data="assets/logo.svg" type="image/svg+xml" class="brand-logo"></object>
+          <span class="brand-name gold-gradient-text">HAWA</span>
+        </div>
+        <p class="footer-desc">One of the largest and most trusted restaurants in Mymensingh, open 24/7 for your convenience. Experience the perfect venue for premium dining and events.</p>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com/hawatheplace/" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      
+      <div>
+        <h3 class="footer-heading">Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="menu.html" class="footer-link">Menu</a></li>
+          <li><a href="booking.html" class="footer-link">Reservations</a></li>
+          <li><a href="gallery.html" class="footer-link">Gallery</a></li>
+          <li><a href="contact.html" class="footer-link">Contact</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h3 class="footer-heading">Contact Details</h3>
+        <div class="footer-info">
+          <div class="info-item">
+            <span class="info-icon"><i class="fas fa-map-marker-alt"></i></span>
+            <span>Near Dhaka bypass, Maskanda Road, Mymensingh.</span>
+          </div>
+          <div class="info-item">
+            <span class="info-icon"><i class="fas fa-phone-alt"></i></span>
+            <span>01705-036161 (Hotline)<br>01705-096161 (Reservation)</span>
+          </div>
+          <div class="info-item">
+            <span class="info-icon"><i class="fas fa-envelope"></i></span>
+            <span>hawatheplace@gmail.com</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Hawa Restaurant & Party Centre. All Rights Reserved.</p>
+      <p>Developed with Passion · <a href="/admin/kitchen" style="color:var(--color-text-muted);font-size:11px;">👨‍🍳 Kitchen</a> · <a href="/admin/login.html" style="color:var(--color-text-muted);font-size:11px;">⚙️ Dashboard</a></p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="menu-data.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

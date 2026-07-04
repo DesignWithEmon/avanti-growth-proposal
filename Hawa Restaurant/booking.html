@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservations | Hawa Restaurant & Party Centre</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+<body>
+
+  <!-- Animated Aurora Background -->
+  <div class="aurora-background">
+    <div class="aurora-base"></div>
+    <div class="aurora-wave aurora-wave-1"></div>
+    <div class="aurora-wave aurora-wave-2"></div>
+    <div class="aurora-wave aurora-wave-3"></div>
+    <div class="aurora-wave aurora-wave-4"></div>
+    <div class="aurora-overlay"></div>
+  </div>
+
+  <!-- Navigation Header -->
+  <header id="main-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand">
+        <object data="assets/logo.svg" type="image/svg+xml" class="brand-logo" id="logo-obj"></object>
+        <span class="brand-name gold-gradient-text">HAWA</span>
+      </a>
+      
+      <button class="menu-toggle" id="nav-toggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html" class="nav-link lang-text" data-key="nav-home">Home</a></li>
+        <li><a href="menu.html" class="nav-link lang-text" data-key="nav-menu">Menu</a></li>
+        <li><a href="booking.html" class="nav-link active lang-text" data-key="nav-res">Reservations</a></li>
+        <li><a href="gallery.html" class="nav-link lang-text" data-key="nav-gal">Gallery</a></li>
+        <li><a href="contact.html" class="nav-link lang-text" data-key="nav-con">Contact</a></li>
+      </ul>
+      
+      <div class="header-actions">
+        <button class="lang-toggle-btn" id="lang-toggle-btn">BN</button>
+        <a href="booking.html" class="nav-btn lang-text" data-key="btn-book">Book Table</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Floating Tubelight Navbar -->
+  <nav class="tubelight-navbar">
+    <div class="tubelight-nav-container">
+      <a href="index.html" class="tubelight-nav-link">
+        <span class="nav-text lang-text" data-key="nav-home">Home</span>
+        <span class="nav-icon"><i class="fas fa-home"></i></span>
+        <div class="nav-lamp"></div>
+      </a>
+      <a href="menu.html" class="tubelight-nav-link">
+        <span class="nav-text lang-text" data-key="nav-menu">Menu</span>
+        <span class="nav-icon"><i class="fas fa-utensils"></i></span>
+        <div class="nav-lamp"></div>
+      </a>
+      <a href="booking.html" class="tubelight-nav-link active">
+        <span class="nav-text lang-text" data-key="nav-res">Reservations</span>
+        <span class="nav-icon"><i class="fas fa-calendar-alt"></i></span>
+        <div class="nav-lamp"></div>
+      </a>
+      <a href="gallery.html" class="tubelight-nav-link">
+        <span class="nav-text lang-text" data-key="nav-gal">Gallery</span>
+        <span class="nav-icon"><i class="fas fa-images"></i></span>
+        <div class="nav-lamp"></div>
+      </a>
+      <a href="contact.html" class="tubelight-nav-link">
+        <span class="nav-text lang-text" data-key="nav-con">Contact</span>
+        <span class="nav-icon"><i class="fas fa-envelope"></i></span>
+        <div class="nav-lamp"></div>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Banner -->
+  <section class="subpage-banner">
+    <div class="container">
+      <h1 class="subpage-title gold-gradient-text lang-text" data-key="booking-title">Bookings & Reservations</h1>
+      <p class="subpage-subtitle lang-text" data-key="booking-subtitle">Secure your fine dining table or reserve Mymensingh's largest Party Centre for your memorable private events.</p>
+    </div>
+  </section>
+
+  <!-- Reservation Section -->
+  <section class="container" style="padding: 40px 0 100px;">
+    <div class="booking-box premium-card">
+      <div class="booking-tabs">
+        <button class="booking-tab-btn active lang-text" id="tab-table-btn" data-key="tab-dining">Book Dining Table</button>
+        <button class="booking-tab-btn lang-text" id="tab-event-btn" data-key="tab-party">Book Party Centre Hall</button>
+      </div>
+
+      <!-- Table Reservation Form -->
+      <form id="table-booking-form">
+        <div class="form-group-row">
+          <div class="form-group">
+            <label class="form-label lang-text" data-key="lbl-name">Full Name</label>
+            <input type="text" class="form-control lang-text" data-key="ph-name" placeholder="E.g., Tanvir Ahmed" required id="table-name">
+          </div>
+          <div class="form-group">
+            <label class="form-label lang-text" data-key="lbl-phone">Phone Number</label>
+            <input type="tel" class="form-control lang-text" data-key="ph-phone" placeholder="E.g., 01705-XXXXXX" required id="table-phone">
+          </div>
+        </div>
+
+        <div class="form-group-row">
+          <div class="form-group">
+            <label class="form-label lang-text" data-key="lbl-date">Reservation Date</label>
+            <input type="date" class="form-control" required id="table-date">
+          </div>
+          <div class="form-group">
+            <label class="form-label lang-text" data-key="lbl-time">Preferred Time</label>
+            <select class="form-control" required id="table-time">
+              <option value="" disabled selected>Select dining hour</option>
+              <optgroup label="Lunch">
+                <option value="12:30 PM">12:30 PM</option>
+                <option value="01:30 PM">01:30 PM</option>
+                <option value="02:30 PM">02:30 PM</option>
+                <option value="03:30 PM">03:30 PM</option>
+              </optgroup>
+              <optgroup label="Dinner">
+                <option value="07:30 PM">07:30 PM</option>
+                <option value="08:30 PM">08:30 PM</option>
+                <option value="09:30 PM">09:30 PM</option>
+                <option value="10:30 PM">10:30 PM</option>
+              </optgroup>
+              <optgroup label="Late Night (24/7 Service)">
+                <option value="12:00 AM">12:00 AM</option>
+                <option value="02:00 AM">02:00 AM</option>
+                <option value="04:00 AM">04:00 AM</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group-row">
+          <div class="form-group">
+            <label class="form-label lang-text" data-key="lbl-guests">Number of Guests</label>
+            <select class="form-control" required id="table-guests">
+              <option value="2 Guests">2 Guests</option>
+              <option value="3 Guests">3 Guests</option>
+              <option value="4 Guests">4 Guests</option>
+              <option value="6 Guests">6 Guests</option>
+              <option value="8 Guests">8 Guests</option>
+              <option value="10+ Guests">10+ Guests (Large table)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label lang-text" data-key="lbl-area">Seating Area Preference</label>
+            <select class="form-control" id="table-area">
+              <option value="Standard Dining Hall">Standard Dining Hall</option>
+              <option value="Window Side Area">Window Side Area</option>
+              <option value="VIP Family Room">VIP Family Room</option>
+              <option value="Party Hall Corner">Party Hall Corner</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label lang-text" data-key="lbl-notes">Special Requests / Notes</label>
+          <textarea class="form-control lang-text" data-key="ph-notes" placeholder="E.g., anniversary decoration, baby high chair needed, dietary restrictions..." id="table-notes"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-solid lang-text" data-key="btn-book-now" style="width: 100%; margin-top: 15px;">Book Table Now</button>
+      </form>
+
+      <!-- Event Reservation Form -->
+      <form id="event-booking-form" style="display: none;">
+        <div class="form-group-row">
+          <div class="form-group">
+            <label class="form-label lang-text" data-key="lbl-host">Host Name / Org</label>
+            <input type="text" class="form-control lang-text" data-key="ph-host" placeholder="E.g., Rahim Group" required id="event-name">
+          </div>
+          <div class="form-group">
+            <label class="form-label lang-text" data-key="lbl-phone">Contact Phone</label>
+            <input type="tel" class="form-control lang-text" data-key="ph-phone" placeholder="E.g., 01705-XXXXXX" required id="event-phone">
+          </div>
+        </div>
+
+        <div class="form-group-row">
+          <div class="form-group">
+            <label class="form-label lang-text" data-key="lbl-date">Event Date</label>
+            <input type="date" class="form-control" required id="event-date">
+          </div>
+          <div class="form-group">
+            <label class="form-label lang-text" data-key="lbl-event-type">Event Type</label>
+            <select class="form-control" required id="event-type">
+              <option value="" disabled selected>Select event category</option>
+              <option value="Birthday Party">Birthday Party</option>
+              <option value="Marriage Anniversary">Marriage Anniversary</option>
+              <option value="Corporate Meeting">Corporate Meeting</option>
+              <option value="Family Re-union">Family Re-union</option>
+              <option value="Cultural Program">Cultural Program</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group-row">
+          <div class="form-group">
+            <label class="form-label lang-text" data-key="lbl-event-guests">Estimated Guest Range</label>
+            <select class="form-control" required id="event-guests">
+              <option value="20-50 Guests">20 - 50 Guests</option>
+              <option value="50-100 Guests">50 - 100 Guests</option>
+              <option value="100-150 Guests">100 - 150 Guests</option>
+              <option value="150-200 Guests">150 - 200 Guests (Full Hall)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label lang-text" data-key="lbl-event-package">Food Package</label>
+            <select class="form-control" required id="event-package">
+              <option value="Silver Package (৳ 600/head)">Silver Package (৳ 600/head)</option>
+              <option value="Gold Package (৳ 900/head)">Gold Package (৳ 900/head)</option>
+              <option value="Diamond Package (৳ 1200/head)">Diamond Package (৳ 1200/head)</option>
+              <option value="Custom Al-a-Carte Menu">Custom Al-a-Carte Menu</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label lang-text" data-key="lbl-event-notes">Setup Requirements / Additional Requests</label>
+          <textarea class="form-control lang-text" data-key="ph-event-notes" placeholder="E.g., sound system required, projector setup, specific stage decoration colors, flowers..." id="event-notes"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-solid lang-text" data-key="btn-event-submit" style="width: 100%; margin-top: 15px;">Send Event Booking Request</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Reservation Confirmation Overlay -->
+  <div class="confirm-overlay" id="confirm-overlay">
+    <div class="confirm-card premium-card">
+      <div class="confirm-icon"><i class="far fa-check-circle"></i></div>
+      <h2 class="confirm-title gold-gradient-text lang-text" data-key="confirm-modal-title">Reservation Successful!</h2>
+      <p class="lang-text" data-key="confirm-modal-desc" style="color: var(--color-text-muted); font-size: 14px;">Your reservation details have been locked in. We have sent a confirmation SMS to your phone.</p>
+      
+      <div class="confirm-details" id="confirm-details-container">
+        <!-- Rendered dynamically -->
+      </div>
+      
+      <button class="btn btn-solid lang-text" data-key="btn-close-modal" id="confirm-close-btn" style="width: 100%;">Okay, Thank you</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="brand">
+          <object data="assets/logo.svg" type="image/svg+xml" class="brand-logo"></object>
+          <span class="brand-name gold-gradient-text">HAWA</span>
+        </div>
+        <p class="footer-desc">One of the largest and most trusted restaurants in Mymensingh, open 24/7 for your convenience. Experience the perfect venue for premium dining and events.</p>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com/hawatheplace/" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      
+      <div>
+        <h3 class="footer-heading">Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="menu.html" class="footer-link">Menu</a></li>
+          <li><a href="booking.html" class="footer-link">Reservations</a></li>
+          <li><a href="gallery.html" class="footer-link">Gallery</a></li>
+          <li><a href="contact.html" class="footer-link">Contact</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h3 class="footer-heading">Contact Details</h3>
+        <div class="footer-info">
+          <div class="info-item">
+            <span class="info-icon"><i class="fas fa-map-marker-alt"></i></span>
+            <span>Near Dhaka bypass, Maskanda Road, Mymensingh.</span>
+          </div>
+          <div class="info-item">
+            <span class="info-icon"><i class="fas fa-phone-alt"></i></span>
+            <span>01705-036161 (Hotline)<br>01705-096161 (Reservation)</span>
+          </div>
+          <div class="info-item">
+            <span class="info-icon"><i class="fas fa-envelope"></i></span>
+            <span>hawatheplace@gmail.com</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Hawa Restaurant & Party Centre. All Rights Reserved.</p>
+      <p>Developed with Passion · <a href="/admin/kitchen" style="color:var(--color-text-muted);font-size:11px;">👨‍🍳 Kitchen</a> · <a href="/admin/login.html" style="color:var(--color-text-muted);font-size:11px;">⚙️ Dashboard</a></p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="main.js"></script>
+</body>
+</html>

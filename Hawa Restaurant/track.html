@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Order | Hawa Restaurant</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: radial-gradient(ellipse at center, #0f0f0f 0%, #070707 70%); }
+    .track-container { width: 100%; max-width: 500px; padding: 20px; }
+    .track-card { background: var(--color-card-glass); backdrop-filter: blur(12px); border: 1px solid var(--color-border-gold); border-radius: 16px; padding: 40px 32px; text-align: center; }
+    .track-icon { font-size: 48px; color: var(--color-primary-gold); margin-bottom: 20px; }
+    .track-title { font-family: var(--font-serif); font-size: 32px; margin-bottom: 8px; }
+    .track-subtitle { color: var(--color-text-muted); font-size: 14px; margin-bottom: 32px; }
+    .form-group { text-align: left; margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-muted); margin-bottom: 6px; }
+    .form-group input { width: 100%; padding: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--color-border-gold); border-radius: 8px; color: #fff; font-size: 16px; font-family: var(--font-sans); text-align: center; letter-spacing: 0.05em; }
+    .form-group input:focus { outline: none; border-color: var(--color-primary-gold); }
+    .btn-track { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--color-primary-gold), #b8946a); border: none; border-radius: 8px; color: #070707; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; }
+    .btn-track:hover { box-shadow: 0 4px 20px rgba(197,168,128,0.3); }
+    #result { display: none; margin-top: 24px; }
+    .order-card { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; text-align: left; }
+    .order-card .oid { color: var(--color-primary-gold); font-weight: 700; font-size: 15px; }
+    .order-card .meta { color: var(--color-text-muted); font-size: 12px; margin: 4px 0 12px; }
+    .status-badge { display: inline-block; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .s-new { background: rgba(96,165,250,0.15); color: #60a5fa; }
+    .s-confirmed { background: rgba(74,222,128,0.15); color: #4ade80; }
+    .s-preparing { background: rgba(250,204,21,0.15); color: #facc15; }
+    .s-ready { background: rgba(74,222,128,0.2); color: #4ade80; }
+    .s-delivered { background: rgba(197,168,128,0.2); color: var(--color-primary-gold); }
+    .s-cancelled { background: rgba(239,68,68,0.15); color: #ef4444; }
+    .track-steps { display: flex; align-items: center; justify-content: space-between; margin: 20px 0; }
+    .step { text-align: center; flex: 1; }
+    .step-dot { width: 28px; height: 28px; border-radius: 50%; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+    .step-dot.active { background: rgba(197,168,128,0.25); color: var(--color-primary-gold); }
+    .step-dot.inactive { background: rgba(197,168,128,0.06); color: var(--color-text-muted); }
+    .step-line { height: 2px; flex: 1; background: var(--color-border-gold); margin-top: -20px; }
+    .step-line.active { background: var(--color-primary-gold); }
+    .step-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .step-label.active { color: var(--color-primary-gold); }
+    .step-label.inactive { color: var(--color-text-muted); }
+    .items-list { margin: 12px 0; border-top: 1px solid var(--color-border-gold); padding-top: 12px; }
+    .item-row { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; color: var(--color-text-muted); }
+    .total-row { display: flex; justify-content: space-between; font-size: 16px; font-weight: 700; padding-top: 10px; border-top: 1px solid var(--color-border-gold); margin-top: 8px; }
+    .error-msg { color: #ef4444; font-size: 13px; margin-top: 8px; display: none; }
+    .back-link { display: inline-block; margin-top: 24px; color: var(--color-text-muted); font-size: 13px; text-decoration: none; }
+    .back-link:hover { color: var(--color-primary-gold); }
+  </style>
+</head>
+<body>
+  <div class="track-container">
+    <div class="track-card">
+      <div class="track-icon"><i class="fas fa-search-location"></i></div>
+      <h1 class="track-title gold-gradient-text">Track Your Order</h1>
+      <p class="track-subtitle">Enter your Order ID or Phone Number to check status</p>
+
+      <form id="track-form">
+        <div class="form-group">
+          <label>Order ID or Phone Number</label>
+          <input type="text" id="track-input" placeholder="HWA-ORD-0001 or 01705-XXXXXX" required autofocus>
+        </div>
+        <button type="submit" class="btn-track"><i class="fas fa-search"></i> Track Order</button>
+        <p class="error-msg" id="track-error">Order not found. Check your Order ID or phone number.</p>
+      </form>
+
+      <div id="result"></div>
+      <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
+      <span style="margin:0 8px;color:var(--color-text-muted);font-size:11px;">·</span>
+      <a href="/admin/kitchen" class="back-link">👨‍🍳 Kitchen</a>
+    </div>
+  </div>
+
+  <script>
+    const API = window.location.origin;
+    let trackInterval = null, currentOrderId = null;
+    const steps = [{k:'new',l:'Received',i:'fa-check'},{k:'confirmed',l:'Confirmed',i:'fa-clipboard-check'},{k:'preparing',l:'Preparing',i:'fa-fire'},{k:'ready',l:'Ready',i:'fa-bell'},{k:'delivered',l:'Done',i:'fa-box'}];
+
+    function renderOrder(order) {
+      const idx = steps.findIndex(s => s.k === order.status);
+      const done = ['ready','delivered','cancelled'].includes(order.status);
+      let stepsHTML = '';
+      if (order.status === 'cancelled') {
+        stepsHTML = '<p style="color:#ef4444;text-align:center;padding:10px;">❌ Cancelled</p>';
+      } else {
+        steps.forEach((s, i) => {
+          const active = i <= idx;
+          if (i > 0) stepsHTML += `<div class="step-line ${active ? 'active' : ''}"></div>`;
+          stepsHTML += `<div class="step"><div class="step-dot ${active ? 'active' : 'inactive'}"><i class="fas ${s.i}"></i></div><span class="step-label ${active ? 'active' : 'inactive'}">${s.l}</span></div>`;
+        });
+      }
+      const payment = order.payment || {};
+      const by = order.statusBy === 'kitchen' ? ' · <span style="color:#fbbf24;">👨‍🍳 Kitchen</span>' : '';
+      document.getElementById('result').innerHTML = `<div class="order-card">
+        <div class="oid">#${order.id}</div>
+        <div class="meta">${new Date(order.createdAt).toLocaleString()} · ${order.orderType||'Dine-in'} · <span class="status-badge s-${order.status}">${order.status}</span>${by}</div>
+        ${order.name ? `<div class="meta" style="color:#fff;">👤 ${order.name} · 📱 ${order.phone}</div>` : ''}
+        ${payment.method !== 'Cash' ? `<div class="meta">💳 ${payment.method}${payment.trxId ? ' · TrxID: '+payment.trxId : ''}</div>` : ''}
+        <div class="track-steps">${stepsHTML}</div>
+        <div class="items-list">${(order.items||[]).map(i => `<div class="item-row"><span>${i.name} x${i.qty||1}</span><span>৳ ${i.price*(i.qty||1)}</span></div>`).join('')}</div>
+        <div class="total-row"><span>Total</span><span style="color:var(--color-primary-gold);">৳ ${order.total}/-</span></div>
+        ${order.notes ? `<p style="color:var(--color-text-muted);font-size:12px;margin-top:10px;">📝 ${order.notes}</p>` : ''}
+        ${done ? '' : '<p style="color:var(--color-text-muted);font-size:11px;text-align:center;margin-top:10px;"><i class="fas fa-sync-alt fa-spin"></i> Live updating...</p>'}
+        ${done ? '<p style="color:#4ade80;font-size:13px;text-align:center;margin-top:10px;">✅ Tracking complete</p>' : ''}
+      </div>`;
+      if (done && trackInterval) { clearInterval(trackInterval); trackInterval = null; }
+    }
+
+    async function lookupOrder(q) {
+      const res = await fetch(`${API}/api/orders?limit=100`);
+      const data = await res.json();
+      return (data.orders || []).find(o => o.id === q || o.phone === q.replace(/^0/,'880') || o.phone === '0' + q.replace(/^880/,''));
+    }
+
+    document.getElementById('track-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (trackInterval) { clearInterval(trackInterval); trackInterval = null; }
+      const q = document.getElementById('track-input').value.trim().toUpperCase();
+      const errEl = document.getElementById('track-error');
+      const resultEl = document.getElementById('result');
+      errEl.style.display = 'none'; resultEl.style.display = 'none';
+      resultEl.innerHTML = '<p style="color:var(--color-text-muted);"><i class="fas fa-spinner fa-spin"></i> Searching...</p>';
+      resultEl.style.display = 'block';
+
+      try {
+        const order = await lookupOrder(q);
+        if (!order) { errEl.style.display = 'block'; resultEl.style.display = 'none'; return; }
+        currentOrderId = order.id;
+        renderOrder(order);
+        if (!['ready','delivered','cancelled'].includes(order.status)) {
+          trackInterval = setInterval(async () => {
+            const o = await lookupOrder(currentOrderId);
+            if (o) renderOrder(o);
+          }, 5000);
+        }
+      } catch(err) {
+        resultEl.innerHTML = '<p style="color:#ef4444;">Connection error. Try again.</p>';
+      }
+    });
+
+    // Auto-fill from URL hash
+    if (window.location.hash) {
+      document.getElementById('track-input').value = window.location.hash.replace('#','');
+      document.getElementById('track-form').dispatchEvent(new Event('submit'));
+    }
+  </script>
+</body>
+</html>

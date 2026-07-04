@@ -1,0 +1,8 @@
+{
+  "name": "hawa-api",
+  "version": "1.0.0",
+  "description": "Hawa Restaurant Serverless API",
+  "dependencies": {
+    "cors": "^2.8.5"
+  }
+}
