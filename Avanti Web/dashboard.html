@@ -203,6 +203,19 @@
             font-size: 0.85rem;
             color: var(--text-muted);
         }
+        .stat-card h3 {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+        .stat-card .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+        #stmt-stats-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
 
         /* Actions */
         .actions {
@@ -300,8 +313,8 @@
             .analytics-section {
                 grid-template-columns: 1fr;
             }
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
+            .stats-grid, #stmt-stats-grid {
+                grid-template-columns: 1fr 1fr !important;
                 gap: 10px;
             }
             .stat-card {
@@ -327,7 +340,7 @@
                 gap: 10px;
             }
             .toolbar > div {
-                flex-direction: column;
+                flex-direction: column !important;
                 align-items: stretch !important;
             }
             .toolbar input, .toolbar select {
@@ -434,7 +447,7 @@
                 <button class="btn-print" onclick="exportCSV()"><i class="fa-solid fa-file-csv"></i> Download CSV</button>
             </div>
 
-            <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 20px;">
+            <div id="stmt-stats-grid" class="stats-grid" style="margin-bottom: 20px;">
                 <div class="stat-card">
                     <h3>Total Revenue</h3>
                     <p class="value" id="stmt-revenue">৳0</p>
