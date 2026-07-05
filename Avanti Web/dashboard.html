@@ -288,14 +288,24 @@
 
         /* Mobile Adjustments */
         @media (max-width: 768px) {
+            body { overflow-x: hidden; }
+            .container { padding: 0 10px; margin: 20px auto; }
             header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 15px;
-                padding: 15px 20px;
+                gap: 10px;
+                padding: 15px;
             }
+            header h1 { font-size: 1.3rem; }
             .analytics-section {
                 grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .stat-card {
+                padding: 15px;
             }
             .tabs-nav {
                 flex-wrap: nowrap;
@@ -309,12 +319,22 @@
             }
             .toolbar {
                 flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            .toolbar input, .toolbar select {
+                width: 100%;
+                max-width: 100%;
             }
             .btn-action, .tab-btn, .toolbar input, .toolbar select, .btn-logout {
                 min-height: 44px; /* UX Pro Max Touch target minimum */
             }
             th, td {
                 white-space: nowrap;
+            }
+            .table-responsive {
+                border-radius: 8px;
+                width: 100%;
             }
         }
     </style>
