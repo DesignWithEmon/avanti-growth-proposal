@@ -317,10 +317,18 @@
             .tabs-nav::-webkit-scrollbar {
                 display: none;
             }
+            .tab-content {
+                width: 100%;
+                max-width: 100vw;
+            }
             .toolbar {
                 flex-direction: column;
                 align-items: stretch;
                 gap: 10px;
+            }
+            .toolbar > div {
+                flex-direction: column;
+                align-items: stretch !important;
             }
             .toolbar input, .toolbar select {
                 width: 100%;
