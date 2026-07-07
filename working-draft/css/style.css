@@ -348,3 +348,76 @@ footer p { font-size: 12px; color: rgba(255,255,255,0.25); }
 /* ── Page transition ── */
 .page-enter { animation: fadeSlideIn 0.4s ease-out; }
 @keyframes fadeSlideIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+/* -- Print / Light Theme -- */
+@media print {
+  :root {
+    --color-bg-dark: #FFFFFF !important;
+    --color-surface-dark: #F9FAFB !important;
+    --color-text-light: #111827 !important;
+    --color-text-muted: #4B5563 !important;
+    --color-white-glass-1: rgba(0,0,0,0.02) !important;
+    --color-white-glass-2: rgba(0,0,0,0.04) !important;
+    --color-white-glass-3: rgba(0,0,0,0.06) !important;
+    --color-white-glass-4: rgba(0,0,0,0.1) !important;
+    --color-white-text-55: rgba(0,0,0,0.6) !important;
+  }
+  
+  body { 
+    background: #FFFFFF !important; 
+    color: #111827 !important; 
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  .t-grad { 
+    background: none !important;
+    -webkit-text-fill-color: var(--color-accent-red) !important;
+    color: var(--color-accent-red) !important; 
+  }
+  
+  .bg-surface-glow-red, .bg-surface-glow-gold, .bg-surface-glow-emerald, .bg-surface-glow-blue, .bg-blueprint {
+    background: #F9FAFB !important;
+    border: 1px solid #E5E7EB !important;
+    box-shadow: none !important;
+  }
+  
+  .glass, .glass-s, .glass-panel {
+    background: #FFFFFF !important;
+    border: 1px solid #E5E7EB !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+    backdrop-filter: none !important;
+  }
+  
+  /* Hide non-printable elements */
+  .lang-toggle, .bottom-nav, #p5-hero, #p5-dataviz, button, .section-nav { 
+    display: none !important; 
+  }
+  
+  /* Optimize layout for PDF */
+  section { page-break-inside: avoid; padding: 40px 0 !important; }
+  .hero { min-height: auto !important; padding: 60px 0 !important; }
+  .container { max-width: 100% !important; padding: 0 20px !important; }
+  
+  h1, h2, h3, p { color: #111827 !important; }
+  
+  /* Fix cards */
+  .feature-card, .metric-card, .bp-card, .pricing-card {
+    background: #FFFFFF !important;
+    border: 1px solid #E5E7EB !important;
+    color: #111827 !important;
+    box-shadow: none !important;
+  }
+  .feature-card h3, .metric-card .metric-label, .bp-card h3, .pricing-card h3 {
+    color: #111827 !important;
+  }
+  .feature-card p, .bp-card p, .pricing-card li, .pricing-card .price-desc {
+    color: #4B5563 !important;
+  }
+  .pricing-card.popular {
+    border: 2px solid var(--color-accent-red) !important;
+  }
+}
+@media print {
+  * { opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; }
+}
