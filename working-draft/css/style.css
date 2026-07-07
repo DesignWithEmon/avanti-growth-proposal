@@ -51,15 +51,42 @@ h1, h2, h3, .font-serif { font-family: 'Playfair Display', Georgia, serif; }
 
 
 
-/* ── Language Toggle ── */
-.lang-toggle { position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 4px; }
-.lang-toggle button {
-  padding: 6px 14px; border-radius: 9999px; font-size: 12px; font-weight: 600;
-  border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04);
-  color: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.2s;
+/* ── Language Toggle (Premium) ── */
+.lang-toggle {
+  position: fixed; top: 20px; right: 20px; z-index: 1000;
+  display: flex; align-items: center; gap: 2px;
+  background: rgba(10, 9, 11, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  padding: 6px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255,255,255,0.02);
 }
-.lang-toggle button:hover { background: rgba(255,255,255,0.08); color: #fff; }
-.lang-toggle button.active { background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.3); color: #fff; }
+
+.lang-toggle button {
+  padding: 8px 20px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.lang-toggle button:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.lang-toggle button.active {
+  background: linear-gradient(135deg, var(--color-accent-red), #e8613a);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(196, 51, 46, 0.4);
+  transform: scale(1.02);
+}
 
 /* ── Bottom Pill Navigation ── */
 .bottom-nav {
