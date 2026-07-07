@@ -24,15 +24,7 @@ function switchLang(lang) {
 (function() {
   var t = localStorage.getItem('theme') || 'dark';
   document.documentElement.setAttribute('data-theme', t);
-  var btn = document.getElementById('themeBtn');
-  if (btn) btn.textContent = t === 'dark' ? '\uD83C\uDF19' : '\u2600\uFE0F';
 })();
-
-function toggleTheme() {
-  var t = localStorage.getItem('theme') === 'dark' ? 'light' : 'dark';
-  localStorage.setItem('theme', t);
-  location.reload();
-}
 
 // ── Progress Bar ──
 window.addEventListener('scroll', function() {

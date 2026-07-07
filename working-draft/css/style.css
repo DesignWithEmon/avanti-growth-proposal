@@ -23,7 +23,7 @@
 
 /* ── Base ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body {
   font-family: 'Inter', -apple-system, sans-serif;
   background: var(--color-bg-dark);
@@ -49,9 +49,7 @@ h1, h2, h3, .font-serif { font-family: 'Playfair Display', Georgia, serif; }
 /* ── Progress Bar ── */
 .progress-bar { position: fixed; top: 0; left: 0; z-index: 9999; height: 2px; background: linear-gradient(90deg,var(--color-accent-red),#e8613a); width: 0%; transition: width 80ms linear; }
 
-/* ── Theme Toggle ── */
-#themeBtn { position: fixed; bottom: calc(var(--nav-height) + 24px); right: 20px; z-index: 999; width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg,var(--color-accent-red),#e8613a); border: none; color: #fff; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(196,51,46,0.2); transition: transform 0.2s; }
-#themeBtn:hover { transform: scale(1.1); }
+
 
 /* ── Language Toggle ── */
 .lang-toggle { position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 4px; }
