@@ -312,7 +312,10 @@ footer p { font-size: 12px; color: rgba(255,255,255,0.25); }
 #p5-hero canvas { display:block; position:absolute; top:0; left:0; width:100% !important; height:100% !important; }
 
 /* ── P5.js Data Viz ── */
-#p5-dataviz { margin-top:28px; display:flex; justify-content:center; }
+#p5-dataviz { margin-top:28px; display:flex; justify-content:flex-start; }
+@media(min-width: 560px) {
+  #p5-dataviz { justify-content:center; }
+}
 #p5-dataviz canvas { display:block; border-radius:16px; background:rgba(255,255,255,0.01); }
 
 /* ── Page transition ── */
