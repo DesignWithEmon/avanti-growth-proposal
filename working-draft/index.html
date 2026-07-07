@@ -747,7 +747,7 @@
     };
 
     p.windowResized = function() {
-      w = Math.min(p.windowWidth - 40, 700);
+      w = Math.max(520, Math.min(p.windowWidth - 40, 700));
       p.resizeCanvas(w, h);
     };
   };
