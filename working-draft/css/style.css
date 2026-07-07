@@ -364,7 +364,7 @@ footer p { font-size: 12px; color: rgba(255,255,255,0.25); }
   }
   
   body { 
-    background: #FFFFFF !important; 
+    background: linear-gradient(135deg, #fdfbf7 0%, #fef5f5 100%) !important; 
     color: #111827 !important; 
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
