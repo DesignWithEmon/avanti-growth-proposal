@@ -487,7 +487,7 @@
     <h2 class="section-title t-grad" data-lang="en" style="display:none">Four Service Outcomes at a Glance</h2>
     <p class="section-desc mx-auto" data-lang="bn">পাঁচ সেকেন্ডের অ্যানিমেশন — প্রতিটি বার নিজে থেকে বাড়তে দেখুন।</p>
     <p class="section-desc mx-auto" data-lang="en" style="display:none">Five-second animation — watch each bar grow on its own.</p>
-    <div id="p5-dataviz"></div>
+    <div id="p5-dataviz" style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch;"></div>
   </div>
 </section>
 
@@ -667,7 +667,7 @@
     const gap = 30;
 
     p.setup = function() {
-      w = Math.min(p.windowWidth - 40, 700);
+      w = Math.max(520, Math.min(p.windowWidth - 40, 700));
       h = 340;
       let canvas = p.createCanvas(w, h);
       canvas.parent('p5-dataviz');
